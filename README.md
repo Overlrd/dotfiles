@@ -8,14 +8,15 @@ The config files of most of my workflow which consists mostly of :
 ## Requirements 
 
 Ensure you have the following package installed :
- - Git 
- - Stow
+ - git 
+ - stow
 
 ## Installation
 
 First clone this repo into your $HOME directory
+
 `$ git clone git@github.com:Overlrd/dotfiles.git` 
 
 then use GNU Stow to create symblinks
-`$ stow .` 
-```
+
+`$ stow .`
