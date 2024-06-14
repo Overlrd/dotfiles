@@ -15,8 +15,10 @@ Ensure you have the following package installed :
 
 First clone this repo into your $HOME directory
 
-`$ git clone git@github.com:Overlrd/dotfiles.git` 
-
+```shell
+$ git clone git@github.com:Overlrd/dotfiles.git
+```
 then use GNU Stow to create symblinks
-
-`$ stow .`
+```shell
+$ stow .
+```
