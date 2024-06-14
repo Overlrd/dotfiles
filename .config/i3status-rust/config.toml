@@ -1,0 +1,55 @@
+icons_format = "{icon}"
+
+[theme]
+theme = "nord-dark"
+[theme.overrides]
+idle_bg = "#698EBF"
+idle_fg = "#000000"
+
+[icons]
+icons = "awesome6"
+[icons.overrides]
+bat = ["|E|", "|_|", "|=|", "|F|"]
+bat_charging = "|^| "
+
+[[block]]
+block = "pomodoro"
+notify_cmd = "notify-send '{msg}' & paplay /usr/share/sounds/freedesktop/stereo/complete.oga"
+blocking_cmd = true
+
+[[block]]
+block = "cpu"
+info_cpu = 20
+warning_cpu = 50
+critical_cpu = 90
+
+[[block]]
+block = "memory"
+format = " $icon $mem_used_percents.eng(w:1) "
+format_alt = " $icon_swap $swap_free.eng(w:3,u:B,p:Mi)/$swap_total.eng(w:3,u:B,p:Mi)($swap_used_percents.eng(w:2)) "
+interval = 1
+warning_mem = 70
+critical_mem = 90
+
+[[block]]
+block = "sound"
+[[block.click]]
+button = "left"
+cmd = "pavucontrol"
+
+[[block]]
+block = "net"
+format = " $icon {$signal_strength $ssid $frequency|Wired connection} via $device "
+
+[[block]]
+block = "battery"
+format = " $percentage {$time |}"
+device = "DisplayDevice"
+driver = "upower"
+missing_format = ""
+model = "DELL P8TC727"
+
+[[block]]
+block = "time"
+interval = 5
+format = " $timestamp.datetime(f:'%a %d/%m %R') "

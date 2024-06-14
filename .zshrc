@@ -140,6 +140,7 @@ unset key
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# use lazyvim config
 export NVIM_APPNAME="lvim"
 # alias
 alias vim=nvim
