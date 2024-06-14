@@ -1,6 +1,6 @@
 # dotfiles 
 
-The config files of most of my workflow which consists mostly of :
+The config files of my system which consists mostly of :
  - i3wm
  - wezterm 
  - neovim 
