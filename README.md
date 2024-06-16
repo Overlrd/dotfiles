@@ -2,7 +2,7 @@
 
 The config files of my system which consists mostly of :
  - i3wm
- - wezterm 
+ - xfce4-terminal
  - neovim 
 
 ## Requirements 
