@@ -201,15 +201,9 @@ bar {
         }
 }
 
-# autostart apps
-# exec --no-startup-id thunderbird
-# exec --no-startup-id /opt/brave.com/brave/brave-browser --profile-directory=Default --app-id=hnpfjngllnobngcgfapefoaidbinmjnm
-
 # Gaps and stuff
 gaps inner 3
 smart_borders on
-default_border pixel 0
 
 # Allocate apps to worksoaces
 for_window [class="thunderbird"] move to workspace $ws2
-# for_window [title="WhatsApp Web" class="Brave-browser"] move to workspace $ws2
