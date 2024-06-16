@@ -185,9 +185,9 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
 bar {
-    font pango: Iosevka, FontAwesome 13
+    font pango: Iosevka, FontAwesome 11
         position bottom
-        status_command i3status-rs $HOME/.config/i3status-rust/config.toml
+        status_command i3status
 
         colors {
                 separator  #666666
@@ -202,15 +202,14 @@ bar {
 }
 
 # autostart apps
-exec --no-startup-id thunderbird
-exec --no-startup-id /opt/brave.com/brave/brave-browser --profile-directory=Default --app-id=hnpfjngllnobngcgfapefoaidbinmjnm
+# exec --no-startup-id thunderbird
+# exec --no-startup-id /opt/brave.com/brave/brave-browser --profile-directory=Default --app-id=hnpfjngllnobngcgfapefoaidbinmjnm
 
 # Gaps and stuff
-gaps inner 2
+gaps inner 3
 smart_borders on
 default_border pixel 0
-for_window [class="Xfce4-notifyd"] border pixel 0
 
 # Allocate apps to worksoaces
 for_window [class="thunderbird"] move to workspace $ws2
-for_window [title="WhatsApp Web" class="Brave-browser"] move to workspace $ws2
+# for_window [title="WhatsApp Web" class="Brave-browser"] move to workspace $ws2

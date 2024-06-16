@@ -5,11 +5,7 @@ return {
 		opts = {},
 	},
 	{ "nmac427/guess-indent.nvim" },
-	{ "onsails/lspkind.nvim" },
-	{
-		"stevearc/dressing.nvim",
-		opts = {},
-	},
+
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter",
@@ -37,11 +33,6 @@ return {
 		event = "InsertEnter",
 		config = true,
 	},
-	{
-		"numToStr/Comment.nvim",
-		opts = {},
-		lazy = false,
-	},
 
 	-- git wrapper
 	"tpope/vim-fugitive",
@@ -53,14 +44,6 @@ return {
 		config = function()
 			vim.cmd("colorscheme rose-pine")
 		end,
-	},
-
-	-- Highlight todo, notes, etc in comments
-	{
-		"folke/todo-comments.nvim",
-		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = { signs = false },
 	},
 
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -171,18 +154,11 @@ return {
 		},
 		config = function()
 			-- See `:help cmp`
-			local lspkind = require("lspkind")
-
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
 			luasnip.config.setup({})
 
 			cmp.setup({
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
-				},
 				completion = { completeopt = "menu,menuone,noinsert" },
 
 				mapping = cmp.mapping.preset.insert({
@@ -224,21 +200,50 @@ return {
 					{ name = "luasnip" },
 					{ name = "path" },
 				},
-				formatting = {
-					format = lspkind.cmp_format({
-						mode = "symbol", -- show only symbol annotations
-						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-						-- can also be a function to dynamically calculate max width such as
-						-- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
-						ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-						show_labelDetails = true, -- show labelDetails in menu. Disabled by default
-
-						before = function(entry, vim_item)
-							return vim_item
-						end,
-					}),
-				},
 			})
+		end,
+	},
+	{
+
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			local harpoon = require("harpoon")
+			-- REQUIRED
+			harpoon:setup()
+			-- REQUIRED
+
+			vim.keymap.set("n", "<leader>a", function()
+				harpoon:list():add()
+			end, { desc = "Harpoom mark current file" })
+			vim.keymap.set("n", "<C-e>", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end, { desc = "Toggle Harpoon menu" })
+
+			vim.keymap.set("n", "<leader>&", function()
+				harpoon:list():select(1)
+			end, { desc = "Harpoon file 1" })
+
+			vim.keymap.set("n", "<leader>é", function()
+				harpoon:list():select(2)
+			end, { desc = "Harpoon file 2" })
+
+			vim.keymap.set("n", '<leader>"', function()
+				harpoon:list():select(3)
+			end, { desc = "Harpoon file 3" })
+
+			vim.keymap.set("n", "<leader>'", function()
+				harpoon:list():select(4)
+			end, { desc = "Harpoon file 4" })
+
+			-- Toggle previous & next buffers stored within Harpoon list
+			vim.keymap.set("n", "<C-PageUp>", function()
+				harpoon:list():prev()
+			end)
+			vim.keymap.set("n", "<C-PageDown>", function()
+				harpoon:list():next()
+			end)
 		end,
 	},
 }
