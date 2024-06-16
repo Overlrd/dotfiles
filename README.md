@@ -7,9 +7,15 @@ The config files of my system which consists mostly of :
 
 ## Requirements 
 
-Ensure you have the following package installed :
+Ensure you have the following packages installed :
  - git 
  - stow
+
+check out how stow works 
+
+```shell
+$ man stow
+```
 
 ## Installation
 
