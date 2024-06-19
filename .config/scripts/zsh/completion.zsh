@@ -1,6 +1,10 @@
 # Should be called before compinit
 zmodload zsh/complist
 
+export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
+export HISTSIZE=10000                   # Maximum events for internal history
+export SAVEHIST=10000                   # Maximum events in history file
+
 # Use hjlk in menu selection (during completion)
 # Doesn't work well with interactive mode
 bindkey -M menuselect 'h' vi-backward-char
