@@ -11,6 +11,7 @@ vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.wrap = false
 vim.opt.clipboard = "unnamedplus"
+vim.opt.guicursor = "n-v-c-i:block"
 
 -- indenting
 vim.opt.tabstop = 4
