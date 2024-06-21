@@ -9,6 +9,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export NVIM_APPNAME="lvim"
+export SCRIPTS_DIR="$HOME/dotfiles/.config/scripts"
 
 # inside .zshrc
 setopt APPEND_HISTORY
