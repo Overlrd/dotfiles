@@ -1,3 +1,7 @@
+import = [
+    "~/dotfiles/.config/alacritty/Gruvbox-Dark.toml"
+]
+
 [env]
 TERM = "xterm-256color"
 
