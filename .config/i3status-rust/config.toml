@@ -1,7 +1,7 @@
 icons_format = "{icon}"
 
 [theme]
-theme = "nord-dark"
+theme = "modern"
 [theme.overrides]
 
 [icons]
