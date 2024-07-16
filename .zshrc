@@ -43,3 +43,5 @@ source ~/.config/scripts/zsh/completion.zsh
 alias vim=nvim
 alias c=clear
 alias x=exit
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/bin:$PATH
