@@ -187,36 +187,37 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-client.background       #F8F8F2
-
 bar {
-i3bar_command i3bar --transparency
+    i3bar_command i3bar --transparency
     font pango: Iosevka, FontAwesome 11
-        position bottom
-        status_command i3status-rs ~/dotfiles/.config/i3status-rust/config.toml
+    position bottom
+    status_command i3status-rs ~/dotfiles/.config/i3status-rust/config.toml
 
-  colors {
-    background #00000000
-    statusline #F8F8F2
-    separator  #44475A
+    colors {
+        background #00000000
+            statusline #d5c4a1
+            separator  #665c54
 
-    focused_workspace  #44475A #44475A #F8F8F2
-    active_workspace   #282A36 #44475A #F8F8F2
-    inactive_workspace #282A36 #282A36 #BFBFBF
-    urgent_workspace   #FF5555 #FF5555 #F8F8F2
-    binding_mode       #FF5555 #FF5555 #F8F8F2
-  }
+                               #border     background  text
+            focused_workspace  #a89984     #a89984  #282828
+            active_workspace   #3c3836     #3c3836  #d5c4a1
+            inactive_workspace #282828     #282828  #928374
+            urgent_workspace   #cc241d     #cc241d  #fbf1c7
+            binding_mode       #665c54     #665c54  #d5c4a1
+    }
 }
 
+# Window borders
+client.focused          #a89984 #a89984 #282828 #d5c4a1
+client.focused_inactive #504945 #504945 #3c3836 #d5c4a1
+client.unfocused        #3c3836 #3c3836 #808080 #d5c4a1
+client.urgent           #cc241d #cc241d #fbf1c7 #fbf1c7
+client.placeholder      #504945 #504945 #928374 #928374
+
+
 # Gaps and stuff
-gaps inner 3
+gaps inner 5
+gaps outer 5
 smart_borders on
 
 # Allocate apps to worksoaces
