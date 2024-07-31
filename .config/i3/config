@@ -34,6 +34,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id picom
 exec --no-startup-id feh --bg-fill ~/dotfiles/.config/i3/wallpaper.png
+exec --no-startup-id setxkbmap fr
 
 # Use pactl to adjust volume in PulseAudio.
 
@@ -188,23 +189,23 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 
 bar {
-    i3bar_command i3bar --transparency
-    font pango: Iosevka, FontAwesome 11
-    position bottom
-    status_command i3status-rs ~/dotfiles/.config/i3status-rust/config.toml
+        # i3bar_command i3bar --transparency
+        font pango: Iosevka, FontAwesome 11
+        position bottom
+        status_command i3status-rs ~/dotfiles/.config/i3status-rust/config.toml
 
-    colors {
-        background #00000000
-            statusline #d5c4a1
-            separator  #665c54
+        colors {
+                background #00000000
+                statusline #d5c4a1
+                separator  #665c54
 
-                               #border     background  text
-            focused_workspace  #a89984     #a89984  #282828
-            active_workspace   #3c3836     #3c3836  #d5c4a1
-            inactive_workspace #282828     #282828  #928374
-            urgent_workspace   #cc241d     #cc241d  #fbf1c7
-            binding_mode       #665c54     #665c54  #d5c4a1
-    }
+                #                  border     background  text
+                focused_workspace  #a89984     #a89984  #282828
+                active_workspace   #3c3836     #3c3836  #d5c4a1
+                inactive_workspace #282828     #282828  #928374
+                urgent_workspace   #cc241d     #cc241d  #fbf1c7
+                binding_mode       #665c54     #665c54  #d5c4a1
+        }
 }
 
 # Window borders
@@ -214,7 +215,6 @@ client.unfocused        #3c3836 #3c3836 #808080 #d5c4a1
 client.urgent           #cc241d #cc241d #fbf1c7 #fbf1c7
 client.placeholder      #504945 #504945 #928374 #928374
 
-
 # Gaps and stuff
 gaps inner 5
 gaps outer 5
@@ -222,6 +222,7 @@ smart_borders on
 
 # Allocate apps to worksoaces
 for_window [class="thunderbird"] move to workspace $ws2
+for_window [class="xdman-Main"] floating enable
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
 
