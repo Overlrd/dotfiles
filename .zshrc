@@ -8,7 +8,7 @@ fi
 export XDG_CONFIG_HOME="$HOME/.config"
 export EDITOR="nvim"
 export VISUAL="nvim"
-export NVIM_APPNAME="nvim"
+export NVIM_APPNAME="lvim"
 export TERMINAL="alacritty"
 
 # inside .zshrc

@@ -1,6 +1,10 @@
 import = [
-    "~/dotfiles/.config/alacritty/Gruvbox-Dark.toml"
+    "~/dotfiles/.config/alacritty/dracula.toml"
 ]
+
+[shell]
+program = "/usr/bin/zsh" 
+args = ["-c", "tmux"]    
 
 [env]
 TERM = "xterm-256color"
