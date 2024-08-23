@@ -38,10 +38,10 @@ bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 # Kill the focused window
 bindsym $mod+Shift+a kill
 
-# Application launcher with rofi and screenshots with xfce4-screenshooter
+# Application launcher with rofi and screenshots with scrot
 bindsym $mod+d exec "rofi -show run -theme 'simple-tokyonight'"
 bindsym $mod+a exec "rofi -show window -theme 'simple-tokyonight'"
-bindsym $mod+x exec "xfce4-screenshooter"
+bindsym $mod+x exec "$HOME/dotfiles/.config/scripts/screenshot.sh"
 
 # Focus change with vim-like keybindings
 bindsym $mod+j focus left
