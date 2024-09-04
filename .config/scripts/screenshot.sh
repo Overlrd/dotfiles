@@ -12,7 +12,7 @@ if [ ! -d "$HOME/Pictures" ]; then
 fi
 
 # Take a screenshot of the active window
-if scrot -u "$output_file"; then
+if scrot -M 0 "$output_file"; then
     paplay "$camera_shutter_sound"
     notify-send "Picture saved!" "Your screenshot has been saved to $output_file."
 else

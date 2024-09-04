@@ -12,12 +12,6 @@ exec --no-startup-id dex-autostart --autostart --environment i3
 # Lock screen with i3lock before suspend
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
-# NetworkManager applet and picom (compositor)
-exec --no-startup-id nm-applet
-exec --no-startup-id picom
-exec --no-startup-id feh --bg-fill ~/dotfiles/.config/i3/wallpaper.png
-exec --no-startup-id setxkbmap fr
-
 # Volume control with pactl
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -37,11 +31,12 @@ bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 
 # Kill the focused window
 bindsym $mod+Shift+a kill
-
-# Application launcher with rofi and screenshots with scrot
-bindsym $mod+d exec "rofi -show run -theme 'simple-tokyonight'"
-bindsym $mod+a exec "rofi -show window -theme 'simple-tokyonight'"
-bindsym $mod+x exec "$HOME/dotfiles/.config/scripts/screenshot.sh"
+bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
+bindsym $mod+x exec "$SCRIPTS_DIR/screenshot.sh"
+bindsym $mod+b exec "$SCRIPTS_DIR/bookmark_clipboard.sh"
+# bindsym --release $mod+t exec "sleep1; $SCRIPTS_DIR/bookmark_brower_tab.sh"
+bindsym --release $mod+t exec --no-startup-id "$SCRIPTS_DIR/bookmark_brower_tab.sh"
+bindsym $mod+i exec "grep -v '^#' $BOOKMARKS | dmenu -i -l 50 | cut -d' ' -f1 | xclip -selection clipboard"
 
 # Focus change with vim-like keybindings
 bindsym $mod+j focus left
@@ -126,59 +121,69 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # Exit i3 with confirmation (uncomment the next line if you want this enabled)
-# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Resize window with mode
 mode "resize" {
     bindsym j resize shrink width 10 px or 10 ppt
-    bindsym k resize grow height 10 px or 10 ppt
-    bindsym l resize shrink height 10 px or 10 ppt
-    bindsym m resize grow width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym m resize grow width 10 px or 10 ppt
 
-    bindsym Left resize shrink width 10 px or 10 ppt
-    bindsym Down resize grow height 10 px or 10 ppt
-    bindsym Up resize shrink height 10 px or 10 ppt
-    bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
 
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+r mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
 # i3bar configuration
 bar {
-    i3bar_command i3bar --transparency
-    position bottom
-    font pango:monospace 9
-    status_command i3status
+        # mode hide
+        # hidden_state hide
+        # modifier $mod
+        i3bar_command i3bar --transparency
+        position top
+        font pango:monospace 8
+        status_command i3status
 
-    colors {
-        background #FFFFFF00
-        statusline #F8F8F2
-        separator  #44475A
+        colors {
+            background #282A3600
+                statusline #F8F8F2
+                separator  #44475A
 
-        focused_workspace  #44475A #44475A #F8F8F2
-        active_workspace   #282A36 #44475A #F8F8F2
-        inactive_workspace #282A36 #282A36 #BFBFBF
-        urgent_workspace   #FF5555 #FF5555 #F8F8F2
-        binding_mode       #FF5555 #FF5555 #F8F8F2
-    }
+                focused_workspace  #44475A #44475A #F8F8F2
+                active_workspace   #282A36 #44475A #F8F8F2
+                inactive_workspace #282A36 #282A36 #BFBFBF
+                urgent_workspace   #FF5555 #FF5555 #F8F8F2
+                binding_mode       #FF5555 #FF5555 #F8F8F2
+        }
 }
 
+
 # Window color settings
-client.focused          #434c5e #434c5e #d8dee9 #6272A4   #434c5e
-client.focused_inactive #44475A #44475A #e5e9f0 #44475A   #434c5e
+# target                 title     bg    text   indicator  border
+client.focused          #434c5e #434c5e #d8dee9 #6272A4   #e0e0e0
+client.focused_inactive #44475A #44475A #e5e9f0 #44475A   #4C4C4C
 client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
 client.urgent           #44475A #FF5555 #e5e9f0 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #e5e9f0 #282A36   #282A36
 
-client.background       #F8F8F2
+client.background       #F8F8F200
 
 # Gaps and borders settings
-gaps outer 2
-smart_borders on
+gaps outer 5
+gaps top 0
+gaps inner 3
+# smart_borders off
+default_border pixel 1
+hide_edge_borders smart
+for_window [class="Dunst"] border pixel 0
 popup_during_fullscreen smart
 
 # Scratchpad bindings
@@ -189,19 +194,3 @@ bindsym $mod+Shift+p scratchpad show
 for_window [class="thunderbird"] move to workspace $ws2
 for_window [class="discord"] move to workspace $ws3
 for_window [class="firefox"] move to workspace $ws1
-
-# Mode system for system operations
-set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
-
-mode "$mode_system" {
-    bindsym l exec --no-startup-id i3lock, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id systemctl suspend && i3lock , mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff, mode "default"
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym $mod+Shift+e mode "$mode_system"
