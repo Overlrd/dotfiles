@@ -34,7 +34,6 @@ bindsym $mod+Shift+a kill
 bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 bindsym $mod+x exec "$SCRIPTS_DIR/screenshot.sh"
 bindsym $mod+b exec "$SCRIPTS_DIR/bookmark_clipboard.sh"
-# bindsym --release $mod+t exec "sleep1; $SCRIPTS_DIR/bookmark_brower_tab.sh"
 bindsym --release $mod+t exec --no-startup-id "$SCRIPTS_DIR/bookmark_brower_tab.sh"
 bindsym $mod+i exec "grep -v '^#' $BOOKMARKS | dmenu -i -l 50 | cut -d' ' -f1 | xclip -selection clipboard"
 
@@ -180,7 +179,7 @@ client.background       #F8F8F200
 gaps outer 5
 gaps top 0
 gaps inner 3
-# smart_borders off
+smart_borders on
 default_border pixel 1
 hide_edge_borders smart
 for_window [class="Dunst"] border pixel 0
@@ -193,4 +192,3 @@ bindsym $mod+Shift+p scratchpad show
 # Allocate specific applications to workspaces
 for_window [class="thunderbird"] move to workspace $ws2
 for_window [class="discord"] move to workspace $ws3
-for_window [class="firefox"] move to workspace $ws1

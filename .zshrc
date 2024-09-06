@@ -58,11 +58,19 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu select
 
+# FUNCTIONS
+# install fzf: https://github.com/junegunn/fzf/releases
+function _fh() {
+    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+}
+zle -N _fh
+
 # KEYBINDINGS
 bindkey '^r' history-incremental-search-backward
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
-bindkey '^r' history-incremental-search-backward
+bindkey '^r' _fh
+# bindkey '^r' history-incremental-search-backward
 
 # ALIASES
 alias ls='ls --color=auto'

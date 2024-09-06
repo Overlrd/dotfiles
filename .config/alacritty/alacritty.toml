@@ -2,8 +2,8 @@ import = [
     "~/dotfiles/.config/alacritty/catppuccin-mocha.toml"
 ]
 
-[shell]
-program = "tmux"
+#[shell]
+#program = "tmux"
 
 [env]
 TERM = "tmux-256color"
@@ -12,7 +12,7 @@ TERM = "tmux-256color"
 dynamic_title = true
 
 [window.padding]
-x = 3
+x = 5
 y = 5
 
 [font]
