@@ -78,6 +78,9 @@ return {
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local servers = {
+				gopls = {},
+				goimports = {},
+				clangd = {},
 				stylua = {},
 				lua_ls = {
 					settings = {
@@ -122,6 +125,12 @@ return {
 					end
 					return "make install_jsregexp"
 				end)(),
+			},
+			{
+				"rafamadriz/friendly-snippets",
+				config = function()
+					require("luasnip.loaders.from_vscode").lazy_load()
+				end,
 			},
 			"saadparwaiz1/cmp_luasnip",
 			"hrsh7th/cmp-nvim-lsp",
