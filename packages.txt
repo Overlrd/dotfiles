@@ -66,3 +66,4 @@ picom
 breeze-icon-theme
 gnome-themes-extra
 thunar-archive-plugin
+imagemagick --no-install-suggests

@@ -1,0 +1,13 @@
+* {
+    font-family: Iosevka Nerd Font, Font Awesome;
+	font-size: 15px;
+}
+
+.modules-right {
+}
+
+
+.modules-right > * {
+	margin-right: 50px; /* Adjust this value to fit your needs */
+}
+
