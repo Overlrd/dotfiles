@@ -1,5 +1,5 @@
 import = [
-    "~/dotfiles/.config/alacritty/catppuccin-mocha.toml"
+    "~/dotfiles/.config/alacritty/nord.toml"
 ]
 
 #[shell]
