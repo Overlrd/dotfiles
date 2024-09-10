@@ -3,7 +3,7 @@ autoload -Uz add-zsh-hook vcs_info
 setopt prompt_subst
 add-zsh-hook precmd vcs_info
 
-PS1='%F{cyan}%~ ${vcs_info_msg_0_}%f $ '
+PS1='%F{cyan}%2~ ${vcs_info_msg_0_}%f $ '
 
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr ' *'
