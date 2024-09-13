@@ -65,7 +65,7 @@ bindkey '^r' history-incremental-search-backward
 bindkey '^ ' _fh
 
 # ALIASES
-alias ls='ls --color=auto'
+alias ls='ls --color=auto -lh'
 alias grep='grep --color=auto'
 alias vim='nvim'
 alias c='clear'

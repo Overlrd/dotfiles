@@ -174,7 +174,7 @@ bar {
         status_command i3status
 
         colors {
-            background #282A3600
+            background #282A36
                 statusline #F8F8F2
                 separator  #44475A
 
@@ -196,9 +196,7 @@ client.placeholder      #282A36 #282A36 #e5e9f0 #282A36   #282A36
 client.background       #F8F8F200
 
 # Gaps and borders settings
-gaps outer 5
 gaps top 0
-gaps inner 3
 smart_borders on
 default_border pixel 1
 hide_edge_borders smart

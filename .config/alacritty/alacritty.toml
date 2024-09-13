@@ -1,5 +1,5 @@
 import = [
-    "~/dotfiles/.config/alacritty/nord.toml"
+    "~/dotfiles/.config/alacritty/catppuccin-mocha.toml"
 ]
 
 #[shell]
@@ -13,10 +13,10 @@ dynamic_title = true
 
 [window.padding]
 x = 5
-y = 5
+y = 4
 
 [font]
-size = 11
+size = 13
 
 [font.normal]
 family = "Iosevka Nerd Font"
@@ -24,4 +24,4 @@ style = "Regular"
 
 [font.offset]
 x = 1
-y = 1
+y = 2
