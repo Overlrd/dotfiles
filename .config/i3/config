@@ -186,15 +186,6 @@ bar {
         }
 }
 
-# Window color settings
-# target                 title     bg    text   indicator  border
-client.focused          #434c5e #434c5e #d8dee9 #6272A4   #e0e0e0
-client.focused_inactive #44475A #44475A #e5e9f0 #44475A   #4C4C4C
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #e5e9f0 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #e5e9f0 #282A36   #282A36
-client.background       #F8F8F200
-
 # Gaps and borders settings
 gaps top 0
 smart_borders on
@@ -209,3 +200,4 @@ bindsym $mod+Shift+p scratchpad show
 # Allocate specific applications to workspaces
 for_window [class="thunderbird"] move to workspace $ws2
 for_window [class="discord"] move to workspace $ws3
+for_window [title="Sublime-Terminal"] floating enable
