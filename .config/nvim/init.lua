@@ -79,7 +79,32 @@ vim.api.nvim_set_keymap("n", "<CR>", "za", { noremap = true, silent = true })
 -- PLUGINS
 require("lazy").setup({
 	spec = {
-		require("more.treesitter"),
+		{ -- Add indentation guides even on blank lines
+			"lukas-reineke/indent-blankline.nvim",
+			main = "ibl",
+			opts = {},
+		},
+		{
+			"folke/tokyonight.nvim",
+			config = function()
+				vim.cmd([[colorscheme tokyonight-night]])
+			end,
+		},
+		{
+			"nvim-treesitter/nvim-treesitter",
+			build = ":TSUpdate",
+			config = function()
+				local configs = require("nvim-treesitter.configs")
+
+				configs.setup({
+					ensure_installed = { "c", "lua", "vim", "vimdoc", "go", "html" },
+					sync_install = false,
+					auto_install = false,
+					highlight = { enable = true },
+					indent = { enable = true },
+				})
+			end,
+		},
 		require("more.telescope"),
 		require("more.completion"),
 		require("more.lsp"),
@@ -88,8 +113,6 @@ require("lazy").setup({
 		require("more.harpoon"),
 		require("more.lazygit"),
 		require("more.tmux"),
-		require("more.color"),
-		require("more.moarr"),
 	},
 	-- colorscheme that will be used when installing plugins.
 	install = { colorscheme = { "habamax" } },

@@ -120,7 +120,6 @@ return {
 					},
 				},
 			},
-			-- Clang Stuff
 			clangd = {},
 		}
 
