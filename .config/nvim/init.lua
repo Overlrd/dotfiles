@@ -39,7 +39,7 @@ vim.opt.undofile = true
 
 vim.o.foldlevel = 99
 vim.wo.foldmethod = "expr"
--- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 vim.opt.ignorecase = true
 vim.opt.hlsearch = true
