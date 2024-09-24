@@ -26,7 +26,6 @@ setopt APPEND_HISTORY            # append to history file
 setopt HIST_NO_STORE             # Don't store history commands
 
 # PLUGINS
-# register
 plugins=(
    "zsh-users/zsh-syntax-highlighting"
    "zsh-users/zsh-autosuggestions"
@@ -50,19 +49,11 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu select
 
-# FUNCTIONS
-# install fzf: https://github.com/junegunn/fzf/releases
-function _fh() {
-    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
-}
-zle -N _fh
-
 # KEYBINDINGS
 bindkey '^r' history-incremental-search-backward
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
 bindkey '^r' history-incremental-search-backward
-bindkey '^ ' _fh
 
 # ALIASES
 alias ls='ls --color=auto -lh'
@@ -70,9 +61,10 @@ alias grep='grep --color=auto'
 alias vim='nvim'
 alias c='clear'
 alias x='exit'
-alias t='tmux'
+alias t='tmux new-session -A -D -s main'
+alias pb='cd ~/Programming/probes/'
+alias dt='cd ~/dotfiles/.config/'
 
 # EXPORT PATH
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="/opt/nvim-linux64/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
