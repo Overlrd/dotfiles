@@ -37,25 +37,30 @@ vim.opt.swapfile = false
 vim.opt.undodir = os.getenv("HOME") .. "/.cache/vim/undodir"
 vim.opt.undofile = true
 
-vim.o.foldlevel = 99
-vim.wo.foldmethod = "expr"
-vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
 vim.opt.ignorecase = true
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
-vim.opt.showmode = false
+vim.opt.inccommand = "split"
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
--- vim.cmd("colorscheme retrobox")
+vim.cmd("colorscheme retrobox")
+
+vim.g.netrw_browse_split = 0
+vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
 
 -- KEYMAPS
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+-- Map Ctrl + Page Up to switch to the previous buffer
+vim.keymap.set("n", "<C-PageUp>", ":bprevious<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-PageDown>", ":bnext<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<C-p>", ":Lexplore<CR>", { silent = true, desc = "Open file Tree" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -80,30 +85,6 @@ vim.api.nvim_set_keymap("n", "<CR>", "za", { noremap = true, silent = true })
 -- PLUGINS
 require("lazy").setup({
 	spec = {
-		{ -- Add indentation guides even on blank lines
-			"lukas-reineke/indent-blankline.nvim",
-			main = "ibl",
-			opts = {},
-		},
-
-		{ -- You can easily change to a different colorscheme.
-			-- Change the name of the colorscheme plugin below, and then
-			-- change the command in the config to whatever the name of that colorscheme is.
-			--
-			-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-			"folke/tokyonight.nvim",
-			priority = 1000, -- Make sure to load this before all the other start plugins.
-			init = function()
-				-- Load the colorscheme here.
-				-- Like many other themes, this one has different styles, and you could load
-				-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-				vim.cmd.colorscheme("tokyonight-night")
-
-				-- You can configure highlights by doing something like:
-				vim.cmd.hi("Comment gui=none")
-			end,
-		},
-
 		-- Highlight todo, notes, etc in comments
 		{
 			"folke/todo-comments.nvim",
@@ -111,95 +92,106 @@ require("lazy").setup({
 			dependencies = { "nvim-lua/plenary.nvim" },
 			opts = { signs = false },
 		},
-
-		{ -- Collection of various small independent plugins/modules
-			"echasnovski/mini.nvim",
-			config = function()
-				-- Better Around/Inside textobjects
-				--
-				-- Examples:
-				--  - va)  - [V]isually select [A]round [)]paren
-				--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-				--  - ci'  - [C]hange [I]nside [']quote
-				require("mini.ai").setup({ n_lines = 500 })
-
-				-- Add/delete/replace surroundings (brackets, quotes, etc.)
-				--
-				-- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-				-- - sd'   - [S]urround [D]elete [']quotes
-				-- - sr)'  - [S]urround [R]eplace [)] [']
-				require("mini.surround").setup()
-
-				-- Simple and easy statusline.
-				--  You could remove this setup call if you don't like it,
-				--  and try some other statusline plugin
-				local statusline = require("mini.statusline")
-				-- set use_icons to true if you have a Nerd Font
-				statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-				-- You can configure sections in the statusline by overriding their
-				-- default behavior. For example, here we set the section for
-				-- cursor location to LINE:COLUMN
-				---@diagnostic disable-next-line: duplicate-set-field
-				statusline.section_location = function()
-					return "%2l:%-2v"
-				end
-
-				-- ... and there is more!
-				--  Check out: https://github.com/echasnovski/mini.nvim
-			end,
-		},
-
 		{
-			"nvim-treesitter/nvim-treesitter",
-			build = ":TSUpdate",
-			config = function()
-				local configs = require("nvim-treesitter.configs")
-				configs.setup({
-					ensure_installed = { "c", "lua", "vim", "vimdoc", "go", "html" },
-					highlight = { enable = true },
-				})
-			end,
+			"stevearc/dressing.nvim",
+			opts = {},
 		},
 		{
-			"nvim-telescope/telescope.nvim",
-			branch = "0.1.x",
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-				{ "nvim-telescope/telescope-ui-select.nvim" },
+			"nvim-lualine/lualine.nvim",
+			dependencies = { "nvim-tree/nvim-web-devicons" },
+			opts = true,
+		},
+		{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+		{
+			"MagicDuck/grug-far.nvim",
+			opts = { headerMaxWidth = 80 },
+			cmd = "GrugFar",
+			keys = {
+				{
+					"<leader>gf",
+					function()
+						local grug = require("grug-far")
+						local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+						grug.open({
+							transient = true,
+							prefills = {
+								filesFilter = ext and ext ~= "" and "*." .. ext or nil,
+							},
+						})
+					end,
+					mode = { "n", "v" },
+					desc = "Search and Replace",
+				},
 			},
-			config = function()
-				require("telescope").setup({
-					extensions = {
-						["ui-select"] = {
-							require("telescope.themes").get_dropdown(),
-						},
+		},
+		{
+			"folke/trouble.nvim",
+			cmd = { "Trouble" },
+			opts = {
+				modes = {
+					lsp = {
+						win = { position = "right" },
 					},
-				})
+				},
+			},
+			keys = {
+				{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+				{
+					"<leader>xX",
+					"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+					desc = "Buffer Diagnostics (Trouble)",
+				},
+				{ "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
+				{ "<leader>cS", "<cmd>Trouble lsp toggle<cr>", desc = "LSP references/definitions/... (Trouble)" },
+				{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+				{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+				{
+					"<C-PageUp>",
+					function()
+						if require("trouble").is_open() then
+							require("trouble").prev({ skip_groups = true, jump = true })
+						else
+							local ok, err = pcall(vim.cmd.cprev)
+							if not ok then
+								vim.notify(err, vim.log.levels.ERROR)
+							end
+						end
+					end,
+					desc = "Previous Trouble/Quickfix Item",
+				},
+				{
+					"<C-PageDown>",
+					function()
+						if require("trouble").is_open() then
+							require("trouble").next({ skip_groups = true, jump = true })
+						else
+							local ok, err = pcall(vim.cmd.cnext)
+							if not ok then
+								vim.notify(err, vim.log.levels.ERROR)
+							end
+						end
+					end,
+					desc = "Next Trouble/Quickfix Item",
+				},
+			},
+		},
 
-				-- Enable Telescope extensions if they are installed
-				pcall(require("telescope").load_extension, "ui-select")
+		{
+			"ibhagwan/fzf-lua",
+			dependencies = { "nvim-tree/nvim-web-devicons" },
+			opts = true,
+			config = function()
+				local fzf = require("fzf-lua")
 
-				-- See `:help telescope.builtin`
-				local builtin = require("telescope.builtin")
-				vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-				vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-				vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-				vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-				vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-				vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
-				vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
-				vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-				vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
-
-				vim.keymap.set("n", "<leader>sc", function()
-					local word = vim.fn.expand("<cword>")
-					builtin.grep_string({ search = word })
-				end, { desc = "[S]earch [C]ursor word" })
-
-				-- Shortcut for searching your Neovim configuration files
+				vim.keymap.set("n", "<leader><leader>", fzf.buffers, { desc = "Fzf Search Buffers" })
+				vim.keymap.set("n", "<leader>sf", fzf.files, { desc = "Fzf Files" })
+				vim.keymap.set("n", "<leader>sr", fzf.resume, { desc = "Fzf Search Resume" })
+				vim.keymap.set("n", "<leader>sg", fzf.git_files, { desc = "Fzf git_files " })
+				vim.keymap.set("n", "<leader>sw", fzf.grep_cword, { desc = "Fzf Grep word under cursor" })
+				vim.keymap.set("n", "<leader>sl", fzf.live_grep, { desc = "Fzf live_grep" })
+				vim.keymap.set("n", "<leader>sk", fzf.builtin, { desc = "Fzf builtin commands" })
 				vim.keymap.set("n", "<leader>sn", function()
-					builtin.find_files({ cwd = vim.fn.stdpath("config") })
+					fzf.files({ cwd = vim.fn.stdpath("config") })
 				end, { desc = "[S]earch [N]eovim files" })
 			end,
 		},
@@ -243,34 +235,105 @@ require("lazy").setup({
 				end)
 			end,
 		},
-		{
+		{ -- Autocompletion
 			"hrsh7th/nvim-cmp",
 			event = "InsertEnter",
 			dependencies = {
+				-- Snippet Engine & its associated nvim-cmp source
+				{
+					"L3MON4D3/LuaSnip",
+					build = (function()
+						-- Build Step is needed for regex support in snippets.
+						-- This step is not supported in many windows environments.
+						-- Remove the below condition to re-enable on windows.
+						if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+							return
+						end
+						return "make install_jsregexp"
+					end)(),
+					dependencies = {
+						-- `friendly-snippets` contains a variety of premade snippets.
+						--    See the README about individual language/framework/plugin snippets:
+						--    https://github.com/rafamadriz/friendly-snippets
+						{
+							"rafamadriz/friendly-snippets",
+							config = function()
+								require("luasnip.loaders.from_vscode").lazy_load()
+							end,
+						},
+					},
+				},
 				"saadparwaiz1/cmp_luasnip",
+
+				-- Adds other completion capabilities.
+				--  nvim-cmp does not ship with all sources by default. They are split
+				--  into multiple repos for maintenance purposes.
 				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-path",
 			},
 			config = function()
+				-- See `:help cmp`
 				local cmp = require("cmp")
+				local luasnip = require("luasnip")
+				luasnip.config.setup({})
 
 				cmp.setup({
+					snippet = {
+						expand = function(args)
+							luasnip.lsp_expand(args.body)
+						end,
+					},
 					completion = { completeopt = "menu,menuone,noinsert" },
 
+					-- For an understanding of why these mappings were
+					-- chosen, you will need to read `:help ins-completion`
+					--
+					-- No, but seriously. Please read `:help ins-completion`, it is really good!
 					mapping = cmp.mapping.preset.insert({
+						-- Select the [n]ext item
+						["<C-n>"] = cmp.mapping.select_next_item(),
+						-- Select the [p]revious item
+						["<C-p>"] = cmp.mapping.select_prev_item(),
+
+						-- Scroll the documentation window [b]ack / [f]orward
 						["<C-b>"] = cmp.mapping.scroll_docs(-4),
 						["<C-f>"] = cmp.mapping.scroll_docs(4),
+
+						--  This will auto-import if your LSP supports it.
 						["<CR>"] = cmp.mapping.confirm({ select = true }),
 						["<Tab>"] = cmp.mapping.select_next_item(),
 						["<S-Tab>"] = cmp.mapping.select_prev_item(),
+
+						-- Manually trigger a completion from nvim-cmp.
 						["<C-Space>"] = cmp.mapping.complete({}),
+
+						-- Think of <c-l> as moving to the right of your snippet expansion.
+						--  So if you have a snippet that's like:
+						--  function $name($args)
+						--    $body
+						--  end
+						--
+						-- <c-l> will move you to the right of each of the expansion locations.
+						-- <c-h> is similar, except moving you backwards.
+						["<C-l>"] = cmp.mapping(function()
+							if luasnip.expand_or_locally_jumpable() then
+								luasnip.expand_or_jump()
+							end
+						end, { "i", "s" }),
+						["<C-h>"] = cmp.mapping(function()
+							if luasnip.locally_jumpable(-1) then
+								luasnip.jump(-1)
+							end
+						end, { "i", "s" }),
+
+						-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
+						--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 					}),
-					sources = cmp.config.sources({
+					sources = {
 						{ name = "nvim_lsp" },
 						{ name = "luasnip" },
 						{ name = "path" },
-						{ name = "buffer" },
-					}),
+					},
 				})
 			end,
 		},
@@ -314,26 +377,28 @@ require("lazy").setup({
 				},
 			},
 		},
-	},
-	-- colorscheme that will be used when installing plugins.
-	install = { colorscheme = { "retrobox" } },
-	-- automatically check for plugin updates
-	checker = { enabled = false },
-	ui = {
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
+		require("more.debug"),
+
+		-- colorscheme that will be used when installing plugins.
+		install = { colorscheme = { "retrobox" } },
+		-- automatically check for plugin updates
+		checker = { enabled = false },
+		ui = {
+			icons = vim.g.have_nerd_font and {} or {
+				cmd = "⌘",
+				config = "🛠",
+				event = "📅",
+				ft = "📂",
+				init = "⚙",
+				keys = "🗝",
+				plugin = "🔌",
+				runtime = "💻",
+				require = "🌙",
+				source = "📄",
+				start = "🚀",
+				task = "📌",
+				lazy = "💤 ",
+			},
 		},
 	},
 })

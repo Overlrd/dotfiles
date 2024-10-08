@@ -1,10 +1,11 @@
+# ZSH Data Home
+ZSH_DATA_HOME=$HOME/.local/share/zsh
+
 # PROMPT
 autoload -Uz add-zsh-hook vcs_info
 setopt prompt_subst
 add-zsh-hook precmd vcs_info
-
-PS1='%F{cyan}%2~ ${vcs_info_msg_0_}%f $ '
-
+PS1='%F{cyan}%2~${vcs_info_msg_0_}%f $ '
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr ' *'
 zstyle ':vcs_info:*' stagedstr ' +'
@@ -12,18 +13,14 @@ zstyle ':vcs_info:git:*' formats       '(%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%u%c)'
 
 # HISTORY
-setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
 setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
-setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
-setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
-setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
-setopt APPEND_HISTORY            # append to history file
-setopt HIST_NO_STORE             # Don't store history commands
 
 # PLUGINS
 plugins=(
@@ -32,7 +29,7 @@ plugins=(
    "zsh-users/zsh-completions"
 )
 
-# install
+# Install plugins
 for plugin in "${plugins[@]}"; do
     plugin_name="${plugin##*/}"
     if [[ ! -d "$ZSH_DATA_HOME/$plugin_name" ]]; then
@@ -40,11 +37,13 @@ for plugin in "${plugins[@]}"; do
     fi
 done
 
-# setup
+# Setup plugins
 source $ZSH_DATA_HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZSH_DATA_HOME/zsh-autosuggestions/zsh-autosuggestions.zsh
 fpath=($ZSH_DATA_HOME/zsh-completions/src $fpath)
-autoload -U compinit -d $XDG_DATA_HOME/zsh/zcompdump && compinit
+autoload -U compinit && compinit
+
+# Completion settings
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu select
@@ -53,7 +52,6 @@ zstyle ':completion:*' menu select
 bindkey '^r' history-incremental-search-backward
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
-bindkey '^r' history-incremental-search-backward
 
 # ALIASES
 alias ls='ls --color=auto -lh'
@@ -62,9 +60,9 @@ alias vim='nvim'
 alias c='clear'
 alias x='exit'
 alias t='tmux new-session -A -D -s main'
-alias pb='cd ~/Programming/probes/'
-alias dt='cd ~/dotfiles/.config/'
 
 # EXPORT PATH
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
+export GOPATH="$HOME/.local/share/go"
+export PATH="$GOPATH/bin:$PATH"

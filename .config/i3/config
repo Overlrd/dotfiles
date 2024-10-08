@@ -4,13 +4,14 @@
 set $mod Mod4
 
 # Font for window titles and i3bar
-font pango:monospace  10
+font pango:Iosevka Nerd Font  10
+
+# set pape
+exec --no-startup-id ~/.fehbg
+exec --no-startup-id redshift -l 6.13:1.2
 
 # register scripts
 set $screenshot         $SCRIPTS_DIR/screenshot.sh
-set $bookmark_tab       $SCRIPTS_DIR/bookmark_brower_tab.sh
-set $load_bookmarks     $SCRIPTS_DIR/load_bookmarks.sh
-set $i3lockwall         $SCRIPTS_DIR/lock.sh
 set $brightness_up      brightnessctl s +10%
 set $brightness_down    brightnessctl s 10%-
 
@@ -41,8 +42,6 @@ bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 bindsym $mod+Shift+a kill
 bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 bindsym $mod+x exec --no-startup-id $screenshot
-bindsym $mod+t exec --no-startup-id $bookmark_tab
-bindsym $mod+i exec --no-startup-id $load_bookmarks
 
 # Focus change with vim-like keybindings
 bindsym $mod+j focus left
@@ -148,29 +147,11 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# shutdown / restart / suspend...
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (x) shutdown
-
-mode "$mode_system" {
-    bindsym l exec --no-startup-id $i3lockwall, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
-    bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym x exec --no-startup-id systemctl poweroff -i, mode "default"
-
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym $mod+BackSpace mode "$mode_system"
-
 # i3bar configuration
 bar {
         i3bar_command i3bar --transparency
         position top
-        font pango:monospace 8
+        font pango:Iosevka Nerd Font  10
         status_command i3status
 
         colors {

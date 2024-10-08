@@ -5,11 +5,11 @@ TERM = "tmux-256color"
 dynamic_title = true
 
 [window.padding]
-x = 5
-y = 4
+x = 0
+y = 0
 
 [font]
-size = 13
+size = 15
 
 [font.normal]
 family = "Iosevka Nerd Font"
