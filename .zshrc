@@ -61,8 +61,8 @@ alias c='clear'
 alias x='exit'
 alias t='tmux new-session -A -D -s main'
 
-# EXPORT PATH
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
-export GOPATH="$HOME/.local/share/go"
 export PATH="$GOPATH/bin:$PATH"
+export GOPATH="$HOME/.local/share/go"
+export PATH="$PATH:/opt/nvim-linux64/bin"
