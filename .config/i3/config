@@ -170,12 +170,10 @@ bar {
 # Gaps and borders settings
 gaps inner 2
 gaps outer 2
-smart_borders on
 default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders smart
 popup_during_fullscreen smart
-hide_edge_borders both
 
 # Scratchpad bindings
 bindsym $mod+p move scratchpad
