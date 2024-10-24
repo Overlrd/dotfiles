@@ -155,7 +155,7 @@ bar {
         status_command i3status
 
         colors {
-            background #282A3600
+                background #F8F8F800
                 statusline #F8F8F2
                 separator  #44475A
 
@@ -168,9 +168,8 @@ bar {
 }
 
 # Gaps and borders settings
-gaps inner 2
-gaps outer 2
-default_border pixel 1
+gaps inner 3
+gaps outer 6
 default_floating_border pixel 1
 hide_edge_borders smart
 popup_during_fullscreen smart
