@@ -20,6 +20,7 @@ return {
 				mappings = {
 					["<leader>e"] = "close_window",
                     ["ga"] = "git_add_file",
+                    ["gc"] = "git_commit",
 				},
 			},
 		},
