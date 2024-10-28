@@ -16,11 +16,16 @@ return {
 	opts = {
 		filesystem = {
 			window = {
-                width = 30,
+				width = 30,
 				mappings = {
 					["<leader>e"] = "close_window",
-                    ["ga"] = "git_add_file",
-                    ["gc"] = "git_commit",
+					["ga"] = "git_add_file",
+					["gc"] = "git_commit",
+					["A"] = "git_add_all",
+					["gu"] = "git_unstage_file",
+					["gr"] = "git_revert_file",
+					["gp"] = "git_push",
+					["gg"] = "git_commit_and_push",
 				},
 			},
 		},
