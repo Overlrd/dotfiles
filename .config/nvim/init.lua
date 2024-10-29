@@ -41,5 +41,4 @@ require("lazy").setup({
 	checker = { enabled = true, notify = false },
 })
 
-require("mason").setup()
 vim.o.showtabline = 2

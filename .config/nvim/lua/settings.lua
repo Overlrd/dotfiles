@@ -43,6 +43,9 @@ vim.opt.splitbelow = true
 -- Always show the sign column
 vim.opt.signcolumn = "yes"
 
+-- tabs 
+vim.o.showtabline = 2
+
 -- Background transparency
 vim.opt.termguicolors = true
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
