@@ -43,7 +43,7 @@ vim.opt.splitbelow = true
 -- Always show the sign column
 vim.opt.signcolumn = "yes"
 
--- tabs 
+-- tabs
 vim.o.showtabline = 2
 
 -- Background transparency

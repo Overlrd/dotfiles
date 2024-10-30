@@ -168,8 +168,6 @@ bar {
 }
 
 # Gaps and borders settings
-gaps inner 3
-gaps outer 6
 default_floating_border pixel 1
 hide_edge_borders smart
 popup_during_fullscreen smart

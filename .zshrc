@@ -67,3 +67,6 @@ export PATH="$GOPATH/bin:$PATH"
 export GOPATH="$HOME/.local/share/go"
 export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/home/augustin/.local/helix-24.07-x86_64-linux"
+export PATH="$HOME/development/flutter/bin/:$PATH"
+export PATH="/opt/android-studio/bin/:$PATH"
+export PATH="/opt/gradle-7.6/bin":$PATH
