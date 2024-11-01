@@ -3,7 +3,7 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"mason.nvim",
-			{ "williamboman/mason-lspconfig.nvim", config = function() end },
+			{ "williamboman/mason-lspconfig.nvim", opts = {}, config = function() end },
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
 			{
