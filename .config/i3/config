@@ -40,8 +40,10 @@ bindsym $mod+Return exec --no-startup-id $term
 
 # Kill the focused window
 bindsym $mod+Shift+a kill
-bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
-bindsym $mod+x exec --no-startup-id $screenshot
+# bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
+bindsym $mod+d exec --no-startup-id  ~/.config/rofi/launchers/type-1/launcher.sh
+
+bindsym $mod+x exec --no-startup-id ~/.config/rofi/powermenu/type-2/powermenu.sh
 
 # Focus change with vim-like keybindings
 bindsym $mod+j focus left
@@ -147,6 +149,15 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# class                 border  backgr. text    indicator
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.unfocused        #2e3440 #1f222d #888888 #1f222d
+client.focused_inactive #2e3440 #1f222d #888888 #1f222d
+client.placeholder      #2e3440 #1f222d #888888 #1f222d
+client.urgent           #900000 #900000 #ffffff #900000
+
+client.background       #242424
+
 # i3bar configuration
 bar {
         i3bar_command i3bar --transparency
@@ -159,18 +170,21 @@ bar {
                 statusline #F8F8F2
                 separator  #44475A
 
-                focused_workspace  #44475A #44475A #F8F8F2
-                active_workspace   #282A36 #44475A #F8F8F2
-                inactive_workspace #282A36 #282A36 #BFBFBF
-                urgent_workspace   #FF5555 #FF5555 #F8F8F2
-                binding_mode       #FF5555 #FF5555 #F8F8F2
+                #                   border  background text
+                focused_workspace  #1f222d #1f222d    #81a1c1
+                active_workspace   #1f222d #252936    #5e81ac
+                inactive_workspace #1f222d #1f222d    #4c566a
+                urgent_workspace   #1f222d #1f222d    #ee829f
+                binding_mode       #1f222d #81a1c1    #2e3440
         }
 }
 
 # Gaps and borders settings
-default_floating_border pixel 1
-hide_edge_borders smart
+gaps inner 5
+gaps outer 5
+hide_edge_borders both
 popup_during_fullscreen smart
+for_window [class="^.*"] border pixel 1
 
 # Scratchpad bindings
 bindsym $mod+p move scratchpad

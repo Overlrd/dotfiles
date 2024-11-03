@@ -1,3 +1,7 @@
+import = [
+  "/home/augustin/dotfiles/.config/alacritty/ayu_dark.toml"
+]
+
 [env]
 TERM = "tmux-256color"
 

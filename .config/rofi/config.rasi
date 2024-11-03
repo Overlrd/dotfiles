@@ -1,1 +1,2 @@
-@theme "simple-tokyonight"
+//@theme "simple-tokyonight"
+@theme "/home/augustin/.local/share/rofi/themes/simple-tokyonight.rasi"
