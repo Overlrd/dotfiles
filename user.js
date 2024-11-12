@@ -10,7 +10,7 @@
 /****************************************************************************
  * Betterfox                                                                *
  * "Ad meliora"                                                             *
- * version: 129                                                             *
+ * version: 131                                                             *
  * url: https://github.com/yokoffing/Betterfox                              *
 ****************************************************************************/
 
@@ -19,7 +19,6 @@
 ****************************************************************************/
 /** GENERAL ***/
 user_pref("content.notify.interval", 100000);
-user_pref("full-screen-api.ignore-widgets", true);
 
 /** GFX ***/
 user_pref("gfx.canvas.accelerated.cache-items", 4096);
@@ -55,7 +54,6 @@ user_pref("network.predictor.enable-prefetch", false);
 /** EXPERIMENTAL ***/
 user_pref("layout.css.grid-template-masonry-value.enabled", true);
 user_pref("dom.enable_web_task_scheduling", true);
-user_pref("dom.security.sanitizer.enabled", true);
 
 /****************************************************************************
  * SECTION: SECUREFOX                                                       *
@@ -64,7 +62,6 @@ user_pref("dom.security.sanitizer.enabled", true);
 user_pref("browser.contentblocking.category", "strict");
 user_pref("urlclassifier.trackingSkipURLs", "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com");
 user_pref("urlclassifier.features.socialtracking.skipURLs", "*.instagram.com, *.twitter.com, *.twimg.com");
-user_pref("network.cookie.sameSite.noneRequiresSecure", true);
 user_pref("browser.download.start_downloads_in_tmp_dir", true);
 user_pref("browser.helperApps.deleteTempFileOnExit", true);
 user_pref("browser.uitour.enabled", false);
@@ -94,8 +91,6 @@ user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
 user_pref("browser.urlbar.update2.engineAliasRefresh", true);
 user_pref("browser.search.suggest.enabled", false);
 user_pref("browser.urlbar.quicksuggest.enabled", false);
-user_pref("browser.urlbar.suggest.quicksuggest.sponsored", false);
-user_pref("browser.urlbar.suggest.quicksuggest.nonsponsored", false);
 user_pref("browser.urlbar.groupLabels.enabled", false);
 user_pref("browser.formfill.enable", false);
 user_pref("security.insecure_connection_text.enabled", true);
@@ -114,17 +109,15 @@ user_pref("editor.truncate_user_pastes", false);
 /** MIXED CONTENT + CROSS-SITE ***/
 user_pref("security.mixed_content.block_display_content", true);
 user_pref("pdfjs.enableScripting", false);
-user_pref("extensions.postDownloadThirdPartyPrompt", false);
+
+/** EXTENSIONS ***/
+user_pref("extensions.enabledScopes", 5);
 
 /** HEADERS / REFERERS ***/
 user_pref("network.http.referer.XOriginTrimmingPolicy", 2);
 
 /** CONTAINERS ***/
 user_pref("privacy.userContext.ui.enabled", true);
-
-/** WEBRTC ***/
-user_pref("media.peerconnection.ice.proxy_only_if_behind_proxy", true);
-user_pref("media.peerconnection.ice.default_address_only", true);
 
 /** SAFE BROWSING ***/
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
@@ -182,16 +175,11 @@ user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", 
 user_pref("browser.preferences.moreFromMozilla", false);
 user_pref("browser.aboutConfig.showWarning", false);
 user_pref("browser.aboutwelcome.enabled", false);
-user_pref("browser.tabs.tabmanager.enabled", false);
 user_pref("browser.profiles.enabled", true);
 
 /** THEME ADJUSTMENTS ***/
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.compactmode.show", true);
-user_pref("browser.display.focus_ring_on_anything", true);
-user_pref("browser.display.focus_ring_style", 0);
-user_pref("browser.display.focus_ring_width", 0);
-user_pref("layout.css.prefers-color-scheme.content-override", 2);
 user_pref("browser.privateWindowSeparation.enabled", false); // WINDOWS
 user_pref("browser.newtabpage.activity-stream.newtabWallpapers.v2.enabled", true);
 
@@ -202,7 +190,6 @@ user_pref("cookiebanners.service.mode.privateBrowsing", 1);
 /** FULLSCREEN NOTICE ***/
 user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
-user_pref("full-screen-api.warning.delay", -1);
 user_pref("full-screen-api.warning.timeout", 0);
 
 /** URL BAR ***/
@@ -212,6 +199,7 @@ user_pref("browser.urlbar.trending.featureGate", false);
 
 /** NEW TAB PAGE ***/
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
+user_pref("browser.newtabpage.activity-stream.showWeather", false);
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 
 /** POCKET ***/
@@ -232,31 +220,18 @@ user_pref("layout.word_select.eat_space_to_next_word", false);
 /****************************************************************************
  * START: MY OVERRIDES                                                      *
 ****************************************************************************/
+// visit https://github.com/yokoffing/Betterfox/wiki/Common-Overrides
+// visit https://github.com/yokoffing/Betterfox/wiki/Optional-Hardening
+// Enter your personal overrides below this line:
 
-// Disable history storage
-user_pref("places.history.enabled", false);
 
-// Disable saving form history
-user_pref("browser.formfill.enabled", false);
+/****************************************************************************
+ * SECTION: SMOOTHFOX                                                       *
+****************************************************************************/
+// visit https://github.com/yokoffing/Betterfox/blob/main/Smoothfox.js
+// Enter your scrolling overrides below this line:
 
-// Clear history when Firefox closes
-user_pref("places.clearOnShutdown.history", true);
-user_pref("places.clearOnShutdown.openPages", true);
-user_pref("places.clearOnShutdown.cookies", true);
-user_pref("places.clearOnShutdown.downloads", true);
-user_pref("places.clearOnShutdown.formdata", true);
-user_pref("places.clearOnShutdown.siteSettings", true);
-user_pref("browser.newtabpage.activity-stream.logowordmark.alwaysVisible", false);
-
-/*** [SECTION 0200]: GEOLOCATION ***/
-user_pref("_user.js.parrot", "0200 syntax error: the parrot's definitely deceased!");
-/* 0202: disable using the OS's geolocation service ***/
-user_pref("geo.provider.use_geoclue", false); // [FF102+] [LINUX]
-
-/** DOWNLOADS ***/
-/* 2651: enable user interaction for security by always asking where to download
- * [SETUP-CHROME] On Android this blocks longtapping and saving images
- * [SETTING] General>Downloads>Always ask you where to save files ***/
+// * [SETTING] General>Downloads>Always ask you where to save files ***/
 user_pref("browser.download.useDownloadDir", false);
 /* 2652: disable downloads panel opening on every download [FF96+] ***/
 user_pref("browser.download.alwaysOpenPanel", false);
@@ -266,15 +241,8 @@ user_pref("browser.download.manager.addToRecentDocs", false);
  * [SETTING] General>Files and Applications>What should Firefox do with other files ***/
 user_pref("browser.download.always_ask_before_handling_new_types", true);
 
-
-// https://forums.debian.net/viewtopic.php?f=6&t=125547&p=598341#p598333
-user_pref("media.gstreamer.enabled", false);
-
-/****************************************************************************
- * SECTION: SMOOTHFOX                                                       *
-****************************************************************************/
-// visit https://github.com/yokoffing/Betterfox/blob/main/Smoothfox.js
-// Enter your scrolling overrides below this line:
+// window fullscreen with i3wm
+user_pref("full-screen-api.ignore-widgets", true);
 
 /****************************************************************************
  * END: BETTERFOX                                                           *

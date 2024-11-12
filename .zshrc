@@ -1,3 +1,6 @@
+export TERMINAL=alacritty
+export EDITOR="/opt/nvim-linux64/bin/nvim"
+
 # ZSH Data Home
 ZSH_DATA_HOME=$HOME/.local/share/zsh
 
@@ -5,7 +8,7 @@ ZSH_DATA_HOME=$HOME/.local/share/zsh
 autoload -Uz add-zsh-hook vcs_info
 setopt prompt_subst
 add-zsh-hook precmd vcs_info
-PS1='%F{cyan}%2~${vcs_info_msg_0_}%f $ '
+PS1='%B%F{cyan}%2~${vcs_info_msg_0_}%f%b %# ' 
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr ' *'
 zstyle ':vcs_info:*' stagedstr ' +'
@@ -61,12 +64,10 @@ alias c='clear'
 alias x='exit'
 alias t='tmux new-session -A -D -s main'
 
+export GOPATH="$HOME/.local/share/go"
+
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
-export GOPATH="$HOME/.local/share/go"
 export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/home/augustin/.local/helix-24.07-x86_64-linux"
-export PATH="$HOME/development/flutter/bin/:$PATH"
-export PATH="/opt/android-studio/bin/:$PATH"
-export PATH="/opt/gradle-7.6/bin":$PATH
