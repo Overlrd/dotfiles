@@ -5,7 +5,7 @@
 ---@type ChadrcConfig
 local M = {}
 
-M.ui = {
+M.base46 = {
 	theme = "ayu_dark",
 	transparency = true,
 }

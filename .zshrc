@@ -1,5 +1,7 @@
 export TERMINAL=alacritty
 export EDITOR="/opt/nvim-linux64/bin/nvim"
+export VENV_PATH="$HOME/envs/"
+fpath+=~/.zfunc
 
 # ZSH Data Home
 ZSH_DATA_HOME=$HOME/.local/share/zsh
@@ -63,6 +65,7 @@ alias vim='nvim'
 alias c='clear'
 alias x='exit'
 alias t='tmux new-session -A -D -s main'
+alias poetry='$VENV_PATH/bin/poetry'
 
 export GOPATH="$HOME/.local/share/go"
 

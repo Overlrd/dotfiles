@@ -2,7 +2,6 @@
 local configs = require("nvchad.configs.lspconfig")
 
 local servers = {
-	html = {},
 	clangd = {
 		mason = false,
 		root_dir = function(fname)
