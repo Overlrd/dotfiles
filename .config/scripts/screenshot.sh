@@ -1,20 +1,29 @@
 #!/bin/bash
-# Take a screenshot with scrot
-# sudo apt install scrot libnotify-bin uuid
-# if not already installed
+# Take a screenshot with scrot and provide notifications
+# Dependencies: scrot, libnotify-bin, paplay, uuid, xfce4-screenshooter
+# Ensure dependencies are installed: sudo apt install scrot libnotify-bin paplay uuid
 
-camera_shutter_sound="/usr/share/sounds/freedesktop/stereo/camera-shutter.oga"
-output_file="$HOME/Pictures/$(date '+%Y.%m.%d')-$(uuid).png"
+# Configuration
+SAVE_DIR="$HOME/Pictures/Screenshots/"
+TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
+FILE_NAME="screenshot_$TIMESTAMP.png"
+OUTPUT_FILE="$SAVE_DIR/$FILE_NAME"
+CAMERA_SHUTTER_SOUND="/usr/share/sounds/freedesktop/stereo/camera-shutter.oga"
 
-# Create the Pictures directory if it does not exist
-if [ ! -d "$HOME/Pictures" ]; then
-    mkdir -p "$HOME/Pictures"
-fi
+# Ensure the directory exists
+mkdir -p "$SAVE_DIR"
 
-# Take a screenshot of the active window
-if scrot -M 0 "$output_file"; then
-    paplay "$camera_shutter_sound"
-    notify-send "Picture saved!" "Your screenshot has been saved to $output_file."
+# Capture the active window using scrot
+if scrot -u "$OUTPUT_FILE"; then
+    # Play shutter sound
+    if [[ -f "$CAMERA_SHUTTER_SOUND" ]]; then
+        paplay "$CAMERA_SHUTTER_SOUND"
+    fi
+
+    # Send success notification
+    notify-send "Screenshot Saved!" "Your screenshot has been saved to:\n$OUTPUT_FILE" -i "$OUTPUT_FILE"
 else
-    notify-send "Something went wrong!" "Failed to capture the screenshot."
+    # Send error notification
+    notify-send "Screenshot Failed!" "An error occurred while capturing the screenshot."
 fi
+

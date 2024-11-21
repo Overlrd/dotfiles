@@ -44,6 +44,7 @@ bindsym $mod+Shift+a kill
 # bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 bindsym $mod+d exec --no-startup-id  ~/.config/rofi/launchers/type-1/launcher.sh
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/powermenu/type-2/powermenu.sh
+bindsym $mod+c exec --no-startup-id ~/.config/scripts/screenshot.sh
 bindsym $mod+shift+x exec betterlockscreen -l dim
 
 # Focus change with vim-like keybindings
