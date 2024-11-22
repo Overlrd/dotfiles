@@ -3,6 +3,7 @@ require 'editor.lazy'
 require 'editor.mappings'
 
 -- TODO: Move this function elsewhere
+
 function ColorMyPencils(color)
   color = color or 'retrobox'
 
