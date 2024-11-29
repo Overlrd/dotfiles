@@ -1,47 +1,31 @@
-require 'editor.options'
-require 'editor.lazy'
-require 'editor.mappings'
+require 'config.options'
+require 'config.keymaps'
 
--- TODO: Move this function elsewhere
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
-function ColorMyPencils(color)
-  color = color or 'retrobox'
+-- PLUGINS
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  if vim.v.shell_error ~= 0 then
+    error('Error cloning lazy.nvim:\n' .. out)
+  end
+end ---@diagnostic disable-next-line: undefined-field
+vim.opt.rtp:prepend(lazypath)
 
-  vim.cmd.colorscheme(color)
+require('lazy').setup {
+  spec = {
+    { import = 'plugins' },
+  },
 
-  vim.cmd [[set termguicolors]]
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-  vim.cmd 'hi Normal guibg=NONE ctermbg=NONE'
-  vim.cmd 'hi CursorColumn cterm=NONE ctermbg=NONE ctermfg=NONE'
-  vim.cmd 'hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE'
-  vim.cmd 'hi CursorLineNr cterm=NONE ctermbg=NONE ctermbg=NONE'
-  vim.cmd 'hi clear LineNr'
-  vim.cmd 'hi clear SignColumn'
-  vim.cmd 'hi clear StatusLine'
-  vim.cmd 'hi clear StatusLineNC' -- Non-focused status line
-  vim.cmd 'hi clear TabLine'
-  vim.cmd 'hi clear TabLineFill'
-  vim.cmd 'hi clear TabLineSel'
-  vim.cmd 'hi clear VertSplit' -- Transparent vertical split line
-  vim.cmd 'hi clear Pmenu' -- Transparent popup menu
-
-  -- Set Bufferline transparency
-  vim.api.nvim_set_hl(0, 'BufferLineFill', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineSeparator', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineSeparatorVisible', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineSeparatorInactive', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineBuffer', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineBufferSelected', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineModified', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineModifiedSelected', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineBackground', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineBackgroundSelected', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineCloseButton', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineCloseButtonVisible', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineCloseButtonSelected', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineIndicatorSelected', { bg = 'none' })
-  vim.api.nvim_set_hl(0, 'BufferLineIndicator', { bg = 'none' })
-end
-
-ColorMyPencils()
+  install = { colorscheme = { 'ayu_dark', 'default' } },
+  checker = { enabled = false },
+  -- additonal change
+}

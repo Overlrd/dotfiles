@@ -5,21 +5,17 @@ set $mod Mod4
 set $term alacritty
 
 # Font for window titles and i3bar
-font pango:Iosevka Nerd Font  10
+font pango:Iosevka Nerd Font 10
 
-# set pape
+# Set wallpaper, adjust screen color temperature, and start system tray apps
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id redshift -l 6.13:1.2
 exec --no-startup-id nm-applet &
 exec --no-startup-id picom &
 
-# register scripts
-# Start XDG autostart .desktop files using dex
-# exec --no-startup-id dex-autostart --autostart --environment i3
+# Register scripts and set lock screen on suspend
 exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l
-
-# Lock screen with i3lock before suspend
-# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id mailspring --password-store='gnome-libsecret'
 
 # Volume control with pactl
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -29,22 +25,25 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Brightness control with brightnessctl
-bindsym XF86MonBrightnessDown   exec --no-startup-id brightnessctl s 10%-
-bindsym XF86MonBrightnessUp     exec --no-startup-id brightnessctl s +10%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 10%- 
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s +10%
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # Start a terminal
-# bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
-bindsym $mod+Return exec --no-startup-id $term
+bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 
 # Kill the focused window
 bindsym $mod+Shift+a kill
-# bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
-bindsym $mod+d exec --no-startup-id  ~/.config/rofi/launchers/type-1/launcher.sh
-bindsym $mod+x exec --no-startup-id ~/.config/rofi/powermenu/type-2/powermenu.sh
-bindsym $mod+c exec --no-startup-id ~/.config/scripts/screenshot.sh
+
+# Use Rofi for application launcher
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/launcher.sh
+
+# Screenshot tool (useful for quick captures)
+bindsym $mod+x exec --no-startup-id ~/.config/scripts/screenshot.sh
+
+# Lock screen (dimmed)
 bindsym $mod+shift+x exec betterlockscreen -l dim
 
 # Focus change with vim-like keybindings
@@ -129,61 +128,60 @@ bindsym $mod+Shift+agrave move container to workspace $ws10
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
-# Exit i3 with confirmation (uncomment the next line if you want this enabled)
+# Exit i3 with confirmation
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Resize window with mode
 mode "resize" {
     bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym m resize grow width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym m resize grow width 10 px or 10 ppt
 
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
-# class                 border  backgr. text    indicator
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.unfocused        #2e3440 #1f222d #888888 #1f222d
-client.focused_inactive #2e3440 #1f222d #888888 #1f222d
-client.placeholder      #2e3440 #1f222d #888888 #1f222d
-client.urgent           #900000 #900000 #ffffff #900000
+# Window colors and borders
+client.focused          #1f222d      #5f6f8c       #F8F8F2 #1f222d
+client.unfocused        #2e3440      #3b4252       #888888 #1f222d
+client.focused_inactive #2e3440      #3b4252       #888888 #1f222d
+client.placeholder      #2e3440      #3b4252       #888888 #1f222d
+client.urgent           #900000      #900000       #ffffff #900000
 
 client.background       #242424
 
 # i3bar configuration
 bar {
-        i3bar_command i3bar --transparency
-        position bottom
-        font pango:Iosevka Nerd Font  10
-        status_command i3status
+    i3bar_command i3bar --transparency
+    position bottom
+    font pango:Iosevka Nerd Font 10
+    status_command i3status
 
-        colors {
-                background #F8F8F800
-                statusline #F8F8F2
-                separator  #44475A
+    colors {
+        background #1f222d00       
+        statusline #F8F8F2         
+        separator  #44475A         
 
-                #                   border  background text
-                focused_workspace  #1f222d #1f222d    #81a1c1
-                active_workspace   #1f222d #252936    #5e81ac
-                inactive_workspace #1f222d #1f222d    #4c566a
-                urgent_workspace   #1f222d #1f222d    #ee829f
-                binding_mode       #1f222d #81a1c1    #2e3440
-        }
+        focused_workspace  #1f222d    #1f222d        #F8F8F2
+        active_workspace   #1f222d    #252936        #F8F8F2
+        inactive_workspace #1f222d    #1f222d        #888888
+        urgent_workspace   #1f222d    #900000        #ffffff
+        binding_mode       #1f222d    #81a1c1        #2e3440
+    }
 }
 
 # Gaps and borders settings
-gaps inner 5
-gaps outer 5
+gaps inner 2
+gaps outer 2
 hide_edge_borders both
 popup_during_fullscreen smart
 for_window [class="^.*"] border pixel 1
