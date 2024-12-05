@@ -2,20 +2,15 @@
 
 # Set the modifier key to Mod4 (usually the Super/Windows key)
 set $mod Mod4
-set $term alacritty
 
 # Font for window titles and i3bar
 font pango:Iosevka Nerd Font 10
 
-# Set wallpaper, adjust screen color temperature, and start system tray apps
-exec --no-startup-id ~/.fehbg
-exec --no-startup-id redshift -l 6.13:1.2
-exec --no-startup-id nm-applet &
-exec --no-startup-id picom &
-
 # Register scripts and set lock screen on suspend
-exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l
-exec --no-startup-id mailspring --password-store='gnome-libsecret'
+exec --no-startup-id sh -c "xss-lock --transfer-sleep-lock -- $SCREENLOCKER"
+
+# Autostart programs
+exec --no-startup-id sh $HOME/.config/autostart.sh
 
 # Volume control with pactl
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -34,17 +29,17 @@ floating_modifier $mod
 # Start a terminal
 bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 
+# Launch programs
+bindsym $mod+d exec --no-startup-id $LAUNCHER 
+
 # Kill the focused window
 bindsym $mod+Shift+a kill
 
-# Use Rofi for application launcher
-bindsym $mod+d exec --no-startup-id ~/.config/rofi/launcher.sh
-
 # Screenshot tool (useful for quick captures)
-bindsym $mod+x exec --no-startup-id ~/.config/scripts/screenshot.sh
+bindsym $mod+Shift+S exec xfce4-screenshooter -s $SCREENSHOT_DIR
 
 # Lock screen (dimmed)
-bindsym $mod+shift+x exec betterlockscreen -l dim
+bindsym $mod+shift+x exec $SCREENLOCKER 
 
 # Focus change with vim-like keybindings
 bindsym $mod+j focus left
@@ -112,6 +107,10 @@ bindsym $mod+underscore workspace $ws8
 bindsym $mod+ccedilla workspace $ws9
 bindsym $mod+agrave workspace $ws10
 
+#navigate workspaces next / previous
+bindsym Shift+Ctrl+Right workspace next
+bindsym Shift+Ctrl+Left workspace prev
+
 # Move focused container to workspace
 bindsym $mod+Shift+ampersand move container to workspace $ws1
 bindsym $mod+Shift+eacute move container to workspace $ws2
@@ -150,14 +149,15 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Window colors and borders
-client.focused          #1f222d      #5f6f8c       #F8F8F2 #1f222d
-client.unfocused        #2e3440      #3b4252       #888888 #1f222d
-client.focused_inactive #2e3440      #3b4252       #888888 #1f222d
-client.placeholder      #2e3440      #3b4252       #888888 #1f222d
-client.urgent           #900000      #900000       #ffffff #900000
+# class                 border  bground text    indicator child_border
+client.focused          #000000 #455A70 #FFFFFF #83CAFA   #51A2DA
+client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C   #8C8C8C
+client.unfocused        #4C4C4C #222222 #888888 #292D2E   #222222
+client.urgent           #EC69A0 #DB3279 #FFFFFF #DB3279   #DB3279
+client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C
 
-client.background       #242424
+client.background       #FFFFFF
+
 
 # i3bar configuration
 bar {
@@ -167,25 +167,28 @@ bar {
     status_command i3status
 
     colors {
-        background #1f222d00       
-        statusline #F8F8F2         
+        background #1E1E2E00       
+        statusline #D9E0EE         
         separator  #44475A         
 
-        focused_workspace  #1f222d    #1f222d        #F8F8F2
-        active_workspace   #1f222d    #252936        #F8F8F2
-        inactive_workspace #1f222d    #1f222d        #888888
-        urgent_workspace   #1f222d    #900000        #ffffff
-        binding_mode       #1f222d    #81a1c1        #2e3440
+        focused_workspace  #1E1E2E    #1E1E2E    #D9E0EE
+        active_workspace   #1A1B26    #2E2F4F    #A4B9EF
+        inactive_workspace #1A1B26    #1E1E2E    #626775
+        urgent_workspace   #1A1B26    #FF5555    #FFFFFF
+        binding_mode       #1E1E2E    #81A1C1    #2E3440
     }
 }
 
 # Gaps and borders settings
-gaps inner 2
-gaps outer 2
-hide_edge_borders both
+gaps inner 4
+gaps outer 8
+hide_edge_borders smart
+for_window [all] title_window_icon padding 10px
 popup_during_fullscreen smart
-for_window [class="^.*"] border pixel 1
 
 # Scratchpad bindings
 bindsym $mod+p move scratchpad
 bindsym $mod+Shift+p scratchpad show
+
+# Assign programs to workspaces
+assign [class="Mailspring"] 3

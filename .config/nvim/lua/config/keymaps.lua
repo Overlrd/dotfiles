@@ -12,3 +12,5 @@ vim.keymap.set('n', '<C-n>', ':Neotree toggle<CR>', { desc = 'NeoTree reveal', s
 vim.keymap.set('n', '<leader>fm', function()
   require('conform').format { async = true, lsp_format = 'fallback' }
 end, { desc = '[F]ormat buffer', silent = true })
+
+vim.keymap.set('n', '<leader>sf', ":lua require('fzf-lua').files()<CR>")

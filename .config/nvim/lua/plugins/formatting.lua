@@ -3,6 +3,7 @@ return {
   dependencies = { 'mason.nvim' },
   lazy = true,
   cmd = 'ConformInfo',
+
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)
@@ -23,6 +24,7 @@ return {
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
+      markdown = { 'prettier' },
     },
   },
 }

@@ -9,6 +9,7 @@ return {
         'stylua',
         'shfmt',
         'markdownlint',
+        'prettier',
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
@@ -80,6 +81,43 @@ return {
         },
         -- LSP Server Settings
         servers = {
+          -- CLANG
+          clangd = {
+            mason = false,
+            keys = {
+              { '<leader>ch', '<cmd>ClangdSwitchSourceHeader<cr>', desc = 'Switch Source/Header (C/C++)' },
+            },
+            root_dir = function(fname)
+              return require('lspconfig.util').root_pattern(
+                'Makefile',
+                'configure.ac',
+                'configure.in',
+                'config.h.in',
+                'meson.build',
+                'meson_options.txt',
+                'build.ninja'
+              )(fname) or require('lspconfig.util').root_pattern('compile_commands.json', 'compile_flags.txt')(fname) or require('lspconfig.util').find_git_ancestor(
+                fname
+              )
+            end,
+            capabilities = {
+              offsetEncoding = { 'utf-16' },
+            },
+            cmd = {
+              'clangd',
+              '--background-index',
+              '--clang-tidy',
+              '--header-insertion=iwyu',
+              '--completion-style=detailed',
+              '--function-arg-placeholders',
+              '--fallback-style=llvm',
+            },
+            init_options = {
+              usePlaceholders = true,
+              completeUnimported = true,
+              clangdFileStatus = true,
+            },
+          },
           -- PYTHON
           ruff = {
             init_options = {
@@ -127,6 +165,13 @@ return {
               },
             },
           },
+        },
+        setup = {
+          clangd = function(_, opts)
+            local clangd_ext_opts = require('clangd_extensions').opts
+            require('clangd_extensions').setup(vim.tbl_deep_extend('force', clangd_ext_opts or {}, { server = opts }))
+            return false
+          end,
         },
       }
     end,

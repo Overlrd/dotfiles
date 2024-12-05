@@ -1,9 +1,9 @@
 general.import = [
-  "/home/augustin/dotfiles/.config/alacritty/ayu_dark.toml"
+  "ayu_dark.toml"
 ]
 
 [env]
-TERM = "tmux-256color"
+TERM = "alacritty"
 
 [window]
 dynamic_title = true
@@ -16,14 +16,15 @@ key = "Return"
 mods = "Control|Shift"
 
 [scrolling]
-history = 100000
+history = 10000
+multiplier = 3
 
 [window.padding]
 x = 2
-y = 0
+y = 8
 
 [font]
-size = 12
+size = 13
 
 [font.normal]
 family = "Iosevka Nerd Font"

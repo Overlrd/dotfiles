@@ -12,8 +12,8 @@
 configuration {
     modi:                       "drun,run";
     show-icons:                 false;
-    display-drun:               "";
-    display-run:                "";
+    display-drun:               "a";
+    display-run:                " ";
     display-filebrowser:        "";
     display-window:             "";
     drun-display-format:        "{name}";
@@ -24,30 +24,31 @@ configuration {
 @import                          "shared/colors.rasi"
 @import                          "shared/fonts.rasi"
 
+
 * {
-    border-colour:               #3a3f56;  /* i3 selected border color */
-    handle-colour:               #F8F8F2;  /* i3 foreground */
-    background-colour:           #2e3440;  /* i3 background */
-    foreground-colour:           #F8F8F2;  /* i3 foreground */
-    alternate-background:        #1f222d;  /* Dark background for inactive items */
-    normal-background:           #2e3440;  /* i3 background */
-    normal-foreground:           #F8F8F2;  /* i3 foreground */
-    urgent-background:           #900000;  /* i3 urgent color */
-    urgent-foreground:           #F8F8F2;  /* i3 foreground */
-    active-background:           #3a3f56;  /* Active items using i3's border color */
-    active-foreground:           #F8F8F2;  /* i3 foreground */
-    selected-normal-background:  #3a3f56;  /* Selected item background */
-    selected-normal-foreground:  #2e3440;  /* Background of selected item */
-    selected-urgent-background:  #900000;  /* Urgent color for selected items */
-    selected-urgent-foreground:  #F8F8F2;  /* i3 foreground */
-    selected-active-background:  #900000;  /* Active selected color */
-    selected-active-foreground:  #F8F8F2;  /* i3 foreground */
-    alternate-normal-background: #2e3440;  /* i3 background */
-    alternate-normal-foreground: #F8F8F2;  /* i3 foreground */
-    alternate-urgent-background: #900000;  /* i3 urgent */
-    alternate-urgent-foreground: #F8F8F2;  /* i3 foreground */
-    alternate-active-background: #3a3f56;  /* Active background for alternate items */
-    alternate-active-foreground: #F8F8F2;  /* i3 foreground */
+    border-colour:               var(selected);
+    handle-colour:               var(foreground);
+    background-colour:           var(background);
+    foreground-colour:           var(foreground);
+    alternate-background:        var(background-alt);
+    normal-background:           var(background);
+    normal-foreground:           var(foreground);
+    urgent-background:           var(urgent);
+    urgent-foreground:           var(background);
+    active-background:           var(active);
+    active-foreground:           var(background);
+    selected-normal-background:  var(selected);
+    selected-normal-foreground:  var(background);
+    selected-urgent-background:  var(active);
+    selected-urgent-foreground:  var(background);
+    selected-active-background:  var(urgent);
+    selected-active-foreground:  var(background);
+    alternate-normal-background: var(background);
+    alternate-normal-foreground: var(foreground);
+    alternate-urgent-background: var(urgent);
+    alternate-urgent-foreground: var(background);
+    alternate-active-background: var(active);
+    alternate-active-foreground: var(background);
 }
 
 /*****----- Main Window -----*****/
