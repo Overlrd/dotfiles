@@ -193,6 +193,36 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"p00f/clangd_extensions.nvim",
+			lazy = true,
+			config = function() end,
+			opts = {
+				inlay_hints = {
+					inline = true,
+				},
+				ast = {
+					--These require codicons (https://github.com/microsoft/vscode-codicons)
+					role_icons = {
+						type = "",
+						declaration = "",
+						expression = "",
+						specifier = "",
+						statement = "",
+						["template argument"] = "",
+					},
+					kind_icons = {
+						Compound = "",
+						Recovery = "",
+						TranslationUnit = "",
+						PackExpansion = "",
+						TemplateTypeParm = "",
+						TemplateTemplateParm = "",
+						TemplateParamObject = "",
+					},
+				},
+			},
+		},
+		{
 			"neovim/nvim-lspconfig",
 			dependencies = {
 				"mason.nvim",
@@ -224,6 +254,47 @@ require("lazy").setup({
 						},
 					},
 					servers = {
+						clangd = {
+							mason = false,
+							keys = {
+								{
+									"<leader>ch",
+									"<cmd>ClangdSwitchSourceHeader<cr>",
+									desc = "Switch Source/Header (C/C++)",
+								},
+							},
+							root_dir = function(fname)
+								return require("lspconfig.util").root_pattern(
+									"Makefile",
+									"configure.ac",
+									"configure.in",
+									"config.h.in",
+									"meson.build",
+									"meson_options.txt",
+									"build.ninja"
+								)(fname) or require("lspconfig.util").root_pattern(
+									"compile_commands.json",
+									"compile_flags.txt"
+								)(fname) or require("lspconfig.util").find_git_ancestor(fname)
+							end,
+							capabilities = {
+								offsetEncoding = { "utf-16" },
+							},
+							cmd = {
+								"clangd",
+								"--background-index",
+								"--clang-tidy",
+								"--header-insertion=iwyu",
+								"--completion-style=detailed",
+								"--function-arg-placeholders",
+								"--fallback-style=llvm",
+							},
+							init_options = {
+								usePlaceholders = true,
+								completeUnimported = true,
+								clangdFileStatus = true,
+							},
+						},
 						lua_ls = {
 							-- ---@type LazyKeysSpec[]
 							settings = {
@@ -260,6 +331,15 @@ require("lazy").setup({
 							},
 						},
 					},
+					setup = {
+						clangd = function(_, opts)
+							local clangd_ext_opts = require("clangd_extensions").opts
+							require("clangd_extensions").setup(
+								vim.tbl_deep_extend("force", clangd_ext_opts or {}, { server = opts })
+							)
+							return false
+						end,
+					},
 				}
 				return ret
 			end,
@@ -281,19 +361,47 @@ require("lazy").setup({
 				require("mason").setup()
 
 				local servers = opts.servers
-				local ensure_installed = vim.tbl_keys(servers or {})
+
+				local function setup(server)
+					local server_opts = vim.tbl_deep_extend("force", {
+						capabilities = vim.deepcopy(capabilities),
+					}, servers[server] or {})
+					if server_opts.enabled == false then
+						return
+					end
+
+					if opts.setup[server] then
+						if opts.setup[server](server, server_opts) then
+							return
+						end
+					elseif opts.setup["*"] then
+						if opts.setup["*"](server, server_opts) then
+							return
+						end
+					end
+					require("lspconfig")[server].setup(server_opts)
+				end
+
+				local ensure_installed = {} ---@type string[]
+				for server, server_opts in pairs(servers) do
+					if server_opts then
+						server_opts = server_opts == true and {} or server_opts
+						if server_opts.enabled ~= false then
+							-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
+							if server_opts.mason == false then
+								setup(server)
+							else
+								ensure_installed[#ensure_installed + 1] = server
+							end
+						end
+					end
+				end
 
 				require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 				require("mason-lspconfig").setup({
-					handlers = {
-						function(server_name)
-							local server = servers[server_name] or {}
-							server.capabilities =
-								vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-							require("lspconfig")[server_name].setup(server)
-						end,
-					},
+					ensure_installed = vim.tbl_deep_extend("force", ensure_installed, {}),
+					handlers = { setup },
 				})
 			end,
 		},
