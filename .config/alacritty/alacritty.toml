@@ -1,6 +1,8 @@
-general.import = [
-  "ayu_dark.toml"
-]
+general.import = []
+
+[colors.primary]
+background = '#0a0b10'
+foreground = '#d7dae1'
 
 [env]
 TERM = "alacritty"
@@ -20,14 +22,14 @@ history = 10000
 multiplier = 3
 
 [window.padding]
-x = 2
-y = 8
+x = 0
+y = 0
 
 [font]
 size = 13
 
 [font.normal]
-family = "Iosevka Nerd Font"
+family = "Iosevka Term Nerd Font"
 style = "Regular"
 
 [font.offset]

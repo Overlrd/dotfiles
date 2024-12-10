@@ -149,14 +149,14 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# class                 border  bground text    indicator child_border
-client.focused          #000000 #455A70 #FFFFFF #83CAFA   #51A2DA
-client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C   #8C8C8C
-client.unfocused        #4C4C4C #222222 #888888 #292D2E   #222222
-client.urgent           #EC69A0 #DB3279 #FFFFFF #DB3279   #DB3279
-client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C
+# class                 border      bground     text        indicator   child_border
+client.focused          #2c2e33     #1c1d23     #ffffff     #4f5258     #2c2e33
+client.focused_inactive #4f5258     #1c1d23     #ffffff     #4f5258     #4f5258
+client.unfocused        #1c1d23     #1c1d23     #999999     #4f5258     #1c1d23
+client.urgent           #BF616A     #4f5258     #ffffff     #BF616A     #4f5258
+client.placeholder      #1c1d23     #4f5258     #ffffff     #1c1d23     #4f5258
 
-client.background       #FFFFFF
+client.background       #0a0b10
 
 
 # i3bar configuration
@@ -167,22 +167,19 @@ bar {
     status_command i3status
 
     colors {
-        background #1E1E2E00       
-        statusline #D9E0EE         
-        separator  #44475A         
+        background #0a0b10       # Deep grey background
+        statusline #D9E0EE       # Light greyish text for status line
+        separator  #44475A       # Muted grey for separators
 
-        focused_workspace  #1E1E2E    #1E1E2E    #D9E0EE
-        active_workspace   #1A1B26    #2E2F4F    #A4B9EF
-        inactive_workspace #1A1B26    #1E1E2E    #626775
-        urgent_workspace   #1A1B26    #FF5555    #FFFFFF
-        binding_mode       #1E1E2E    #81A1C1    #2E3440
+        focused_workspace  #2c2e33   #1c1d23   #ffffff
+        active_workspace   #1c1d23   #2c2e33   #A4B9EF
+        inactive_workspace #0a0b10   #1c1d23   #626775
+        urgent_workspace   #4f5258   #BF616A   #ffffff
+        binding_mode       #1c1d23   #4f5258   #2E3440
     }
 }
 
 # Gaps and borders settings
-gaps inner 2
-gaps outer 2
-hide_edge_borders smart
 for_window [all] title_window_icon padding 10px
 popup_during_fullscreen smart
 

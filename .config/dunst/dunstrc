@@ -60,12 +60,12 @@ frame_color = "#da6e89"
 
 [urgency_normal]
 timeout = 5
-background = "#1e1e1e44"
+background = "#1e1e1e"
 foreground = "#c8ccd4"
 frame_color = "#da6e89"
 
 [urgency_critical]
 timeout = 0
-background = "#1e1e1e44"
+background = "#1e1e1e"
 foreground = "#e06c75"
 frame_color = "#e06c75"
