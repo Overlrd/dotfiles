@@ -10,8 +10,9 @@ font pango:Iosevka Nerd Font 10
 exec --no-startup-id sh -c "xss-lock --transfer-sleep-lock -- $SCREENLOCKER"
 
 # Autostart programs
-exec --no-startup-id sh $HOME/.config/autostart
-
+exec --no-startup-id $HOME/.config/autostart
+# exec --no-startup-id $HOME/.config/autostart > ~/.i3-autostart.log 2>&1
+ 
 # Volume control with pactl
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 """
-My autostart script.
-Launches different programs just after i3wm starts.
+My autostart script for i3wm.
 """
 
 import os
@@ -12,62 +11,56 @@ import shutil
 
 GEOLOC_FP = Path("~/.geoloc").expanduser()
 
-# Fetch location information from a free API
 def get_location() -> str:
+    """Fetch location information from a free API."""
     try:
         response = requests.get('https://ipinfo.io/json')
-        response.raise_for_status()  # This will raise an error if the HTTP request fails
+        response.raise_for_status()
         data = response.json()
-
         loc = data.get('loc', '')
-        if loc:
-            lat, lon = loc.split(',')
-            return f"{lat}:{lon}"
-        else:
-            return ""
+        return ":".join(loc.split(',')) if loc else ""
     except requests.RequestException as e:
         print(f"Error fetching location: {e}")
-        return "" 
+        return ""
 
-def write_location():
+def get_or_update_location() -> str:
+    """Retrieve or fetch location data and store it."""
     if not GEOLOC_FP.exists():
-        if loc := get_location():
-            with open(GEOLOC_FP, "w") as f:
-                f.write(loc)
-            return loc
-
-def read_location():
-    if not GEOLOC_FP.exists():
-        return write_location()
-    else:
-        loc = ""
-        with open(GEOLOC_FP, "r") as f:
-            loc = f.readline().strip()
+        loc = get_location()
+        if loc:
+            GEOLOC_FP.write_text(loc)
         return loc
+    return GEOLOC_FP.read_text().strip()
 
-# Check if a command exists
 def command_exists(command: str) -> bool:
+    """Check if a command exists in the system."""
     return shutil.which(command) is not None
 
-# Set wallpaper
-if command_exists("feh"):
-    os.system("feh --bg-fill $HOME/.config/wallpaper.png")
+def autostart():
+    """Launch autostart applications."""
+    # Set wallpaper
+    wallpaper = os.path.expandvars("$HOME/.config/wallpaper.png")
+    if command_exists("feh") and Path(wallpaper).exists():
+        os.system(f"feh --bg-fill {wallpaper} &")
 
-# Start network manager applet
-if command_exists("nm-applet"):
-    os.system("nm-applet")
+    # Start network manager applet
+    if command_exists("nm-applet"):
+        os.system("nm-applet &")
 
-# Start the compositor for transparency and effects
-if command_exists("picom"):
-    os.system("picom --experimental-backends")
+    # Start compositor
+    if command_exists("picom"):
+        os.system("picom &")
 
-# Start Mailspring with the appropriate password store
-if command_exists("mailspring"):
-    os.system("mailspring --password-store='gnome-libsecret'")
+    # Start email client
+    if command_exists("mailspring"):
+        os.system("mailspring --password-store='gnome-libsecret' &")
 
-# Start redshift with the location from the file
-location = read_location()
-if location:
-    os.system(f"redshift -l {location} -t 6500:3400")
-else:
-    print("No location found for redshift.")
+    # Start redshift
+    location = get_or_update_location()
+    if location:
+        os.system(f"redshift -l {location} -t 6500:3400 &")
+    else:
+        print("Redshift skipped: No valid location found.")
+
+if __name__ == "__main__":
+    autostart()
