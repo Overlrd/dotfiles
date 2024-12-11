@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+"""
+My autostart script.
+Launches different programs just after i3wm starts.
+"""
+
+import os
+import requests
+from pathlib import Path
+import shutil
+
+GEOLOC_FP = Path("~/.geoloc").expanduser()
+
+# Fetch location information from a free API
+def get_location() -> str:
+    try:
+        response = requests.get('https://ipinfo.io/json')
+        response.raise_for_status()  # This will raise an error if the HTTP request fails
+        data = response.json()
+
+        loc = data.get('loc', '')
+        if loc:
+            lat, lon = loc.split(',')
+            return f"{lat}:{lon}"
+        else:
+            return ""
+    except requests.RequestException as e:
+        print(f"Error fetching location: {e}")
+        return "" 
+
+def write_location():
+    if not GEOLOC_FP.exists():
+        if loc := get_location():
+            with open(GEOLOC_FP, "w") as f:
+                f.write(loc)
+            return loc
+
+def read_location():
+    if not GEOLOC_FP.exists():
+        return write_location()
+    else:
+        loc = ""
+        with open(GEOLOC_FP, "r") as f:
+            loc = f.readline().strip()
+        return loc
+
+# Check if a command exists
+def command_exists(command: str) -> bool:
+    return shutil.which(command) is not None
+
+# Set wallpaper
+if command_exists("feh"):
+    os.system("feh --bg-fill $HOME/.config/wallpaper.png")
+
+# Start network manager applet
+if command_exists("nm-applet"):
+    os.system("nm-applet")
+
+# Start the compositor for transparency and effects
+if command_exists("picom"):
+    os.system("picom --experimental-backends")
+
+# Start Mailspring with the appropriate password store
+if command_exists("mailspring"):
+    os.system("mailspring --password-store='gnome-libsecret'")
+
+# Start redshift with the location from the file
+location = read_location()
+if location:
+    os.system(f"redshift -l {location} -t 6500:3400")
+else:
+    print("No location found for redshift.")

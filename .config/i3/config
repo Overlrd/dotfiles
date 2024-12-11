@@ -10,7 +10,7 @@ font pango:Iosevka Nerd Font 10
 exec --no-startup-id sh -c "xss-lock --transfer-sleep-lock -- $SCREENLOCKER"
 
 # Autostart programs
-exec --no-startup-id sh $HOME/.config/autostart.sh
+exec --no-startup-id sh $HOME/.config/autostart
 
 # Volume control with pactl
 set $refresh_i3status killall -SIGUSR1 i3status
