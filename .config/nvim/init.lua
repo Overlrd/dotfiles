@@ -46,6 +46,36 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highl
 -- Format buffer
 vim.keymap.set('n', '<space>fm', function() vim.lsp.buf.format { async = true } end)
 
+-- On on_attach function to run whenever a language server is attached to a buffer
+local on_attach = function (event)
+    local map = function(keys, func, desc, mode)
+        mode = mode or 'n'
+        vim.keymap.set(mode, keys, func, { buffer = event.buf, noremap = true, silent = true, desc = desc })
+    end
+
+    -- Rename the variable under your cursor.
+    map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+
+    -- Execute a code action, usually your cursor needs to be on top of an error
+    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+
+    -- WARN: This is not Goto Definition, this is Goto Declaration.
+    map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+    -- Hover documentation
+    map('K', vim.lsp.buf.hover, "LSP: Hover Documentation")
+
+    -- Signature help
+    map('<C-k>', vim.lsp.buf.signature_help, "LSP: Signature Help")
+
+    -- Diagnostics navigation
+    map('<A-p>', vim.diagnostic.goto_prev, "LSP: Previous Diagnostic")
+    map('<A-n>', vim.diagnostic.goto_next, "LSP: Next Diagnostic")
+
+    -- Open diagnostics in floating window
+    map('<leader>e', vim.diagnostic.open_float, "LSP: Show Diagnostics")
+end
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -134,6 +164,21 @@ require("lazy").setup({
                 })
             end,
         },
+        {
+            "ibhagwan/fzf-lua",
+            dependencies = { "nvim-tree/nvim-web-devicons" },
+            config = function()
+                require("fzf-lua").setup({})
+                vim.keymap.set("n", "<Leader>ff", require('fzf-lua').files, { desc = "Fzf Files" })
+                vim.keymap.set('n', '<leader>fg', require('fzf-lua').live_grep, { desc = 'Fzf live grep' })
+                vim.keymap.set('n', '<leader><leader>', require('fzf-lua').buffers, { desc = 'Telescope buffers' })
+
+                -- Shortcut for searching your Neovim configuration files
+                vim.keymap.set('n', '<leader>sn', function()
+                    require('fzf-lua').files { cwd = vim.fn.stdpath 'config' }
+                end, { desc = '[S]earch [N]eovim files' })
+            end
+        },
 
         -- LSP Configuration
         {
@@ -145,6 +190,10 @@ require("lazy").setup({
                 { "j-hui/fidget.nvim", opts = {} },
             },
             config = function()
+                vim.api.nvim_create_autocmd('LspAttach', {
+                    callback = on_attach
+                })
+
                 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
                 local servers = {
@@ -236,7 +285,7 @@ require("lazy").setup({
                 end
 
                 vim.list_extend(ensure_installed, {
-                    'stylua', 'shfmt','shellcheck',
+                    'stylua', 'shfmt', 'shellcheck',
                 })
 
                 require('mason').setup()
@@ -273,6 +322,7 @@ require("lazy").setup({
                 end
             end,
         },
+
         -- debug
         require 'neovim.debug',
     },

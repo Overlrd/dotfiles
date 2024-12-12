@@ -134,6 +134,7 @@ RPS1='%*'  # Shows current time on the right side
 alias v=nvim
 alias vim=nvim
 alias c=clear
+alias t='tmux new-session -A -D -s main'
 alias x=exit
 
 # Setup plugins
