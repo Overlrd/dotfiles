@@ -2,7 +2,7 @@ general.import = []
 
 [colors.primary]
 background = '#0a0b10'
-foreground = '#d7dae1'
+foreground = '#ebeef5'
 
 [env]
 TERM = "alacritty"
@@ -34,4 +34,4 @@ style = "Regular"
 
 [font.offset]
 x = 0
-y = 1
+y = 0

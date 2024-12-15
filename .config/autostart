@@ -38,10 +38,10 @@ def command_exists(command: str) -> bool:
 
 def autostart():
     """Launch autostart applications."""
-    # Set wallpaper
-    wallpaper = os.path.expandvars("$HOME/.config/wallpaper.png")
-    if command_exists("feh") and Path(wallpaper).exists():
-        os.system(f"feh --bg-fill {wallpaper} &")
+    # Set background
+    background = os.path.expandvars("$HOME/.fehbg")
+    if command_exists("feh") and Path(background).exists():
+        os.system("~/.fehbg &")
 
     # Start network manager applet
     if command_exists("nm-applet"):
@@ -52,8 +52,8 @@ def autostart():
         os.system("picom &")
 
     # Start email client
-    if command_exists("mailspring"):
-        os.system("mailspring --password-store='gnome-libsecret' &")
+    if command_exists("claws-mail --receive-all &"):
+        os.system("")
 
     # Start redshift
     location = get_or_update_location()
