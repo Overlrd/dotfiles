@@ -4,7 +4,7 @@
 My autostart script for i3wm.
 """
 
-import os
+import subprocess
 import requests
 from pathlib import Path
 import shutil
@@ -15,7 +15,7 @@ GEOLOC_FP = Path("~/.geoloc").expanduser()
 def get_location() -> str:
     """Fetch location information from a free API."""
     try:
-        response = requests.get("https://ipinfo.io/json")
+        response = requests.get("https://ipinfo.io/json", timeout=5)
         response.raise_for_status()
         data = response.json()
         loc = data.get("loc", "")
@@ -27,12 +27,13 @@ def get_location() -> str:
 
 def get_or_update_location() -> str:
     """Retrieve or fetch location data and store it."""
-    if not GEOLOC_FP.exists():
-        loc = get_location()
-        if loc:
-            GEOLOC_FP.write_text(loc)
-        return loc
-    return GEOLOC_FP.read_text().strip()
+    if GEOLOC_FP.exists():
+        return GEOLOC_FP.read_text().strip()
+
+    loc = get_location()
+    if loc:
+        GEOLOC_FP.write_text(loc)
+    return loc
 
 
 def command_exists(command: str) -> bool:
@@ -40,32 +41,40 @@ def command_exists(command: str) -> bool:
     return shutil.which(command) is not None
 
 
-def autostart():
+def run_command(command: list[str]):
+    """Run a command in the background."""
+    try:
+        subprocess.Popen(command)
+    except Exception as e:
+        print(f"Failed to execute {command[0]}: {e}")
+
+
+def main():
     """Launch autostart applications."""
-    # Set background
-    background = os.path.expandvars("$HOME/.fehbg")
-    if command_exists("feh") and Path(background).exists():
-        os.system("~/.fehbg &")
+    # Set wallpaper using feh
+    wallpaper_script = Path.home() / ".fehbg"
+    if command_exists("feh") and wallpaper_script.exists():
+        run_command([str(wallpaper_script)])
 
     # Start network manager applet
     if command_exists("nm-applet"):
-        os.system("nm-applet &")
+        run_command(["nm-applet"])
 
     # Start compositor
     if command_exists("picom"):
-        os.system("picom &")
+        run_command(["picom"])
 
     # Start email client
     if command_exists("claws-mail"):
-        os.system("claws-mail --receive-all &")
+        run_command(["claws-mail", "--receive-all"])
 
-    # Start redshift
+    # Start redshift with location-based settings
     location = get_or_update_location()
-    if location:
-        os.system(f"redshift -l {location} -t 6500:3400 &")
+    if location and command_exists("redshift"):
+        run_command(["redshift", "-l", location, "-t", "6500:3400"])
     else:
-        print("Redshift skipped: No valid location found.")
+        print("Redshift skipped: No valid location found or command not available.")
 
 
 if __name__ == "__main__":
-    autostart()
+    main()
