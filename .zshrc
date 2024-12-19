@@ -53,6 +53,7 @@ alias c=clear
 alias t='tmux new-session -A -D -s main'
 alias q=exit
 alias notes='cd ~/notes/2024/12/'
+alias books='cd ~/Books/Technical/Programming/'
 alias fnotes='grep -r --exclude-dir=".git" "date: " ~/notes/ | sort -t":" -k2 -r | fzf'
 
 # Source note-taking scripts

@@ -47,7 +47,7 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highl
 vim.keymap.set('n', '<space>fm', function() vim.lsp.buf.format { async = true } end)
 
 -- On on_attach function to run whenever a language server is attached to a buffer
-local on_attach = function (event)
+local on_attach = function(event)
     local map = function(keys, func, desc, mode)
         mode = mode or 'n'
         vim.keymap.set(mode, keys, func, { buffer = event.buf, noremap = true, silent = true, desc = desc })
@@ -91,6 +91,7 @@ require("lazy").setup({
     spec = {
         -- Detect tabstop and shiftwidth automatically
         "tpope/vim-sleuth",
+
         -- Git commands
         "tpope/vim-fugitive",
 

@@ -11,17 +11,19 @@ import shutil
 
 GEOLOC_FP = Path("~/.geoloc").expanduser()
 
+
 def get_location() -> str:
     """Fetch location information from a free API."""
     try:
-        response = requests.get('https://ipinfo.io/json')
+        response = requests.get("https://ipinfo.io/json")
         response.raise_for_status()
         data = response.json()
-        loc = data.get('loc', '')
-        return ":".join(loc.split(',')) if loc else ""
+        loc = data.get("loc", "")
+        return ":".join(loc.split(",")) if loc else ""
     except requests.RequestException as e:
         print(f"Error fetching location: {e}")
         return ""
+
 
 def get_or_update_location() -> str:
     """Retrieve or fetch location data and store it."""
@@ -32,9 +34,11 @@ def get_or_update_location() -> str:
         return loc
     return GEOLOC_FP.read_text().strip()
 
+
 def command_exists(command: str) -> bool:
     """Check if a command exists in the system."""
     return shutil.which(command) is not None
+
 
 def autostart():
     """Launch autostart applications."""
@@ -61,6 +65,7 @@ def autostart():
         os.system(f"redshift -l {location} -t 6500:3400 &")
     else:
         print("Redshift skipped: No valid location found.")
+
 
 if __name__ == "__main__":
     autostart()
