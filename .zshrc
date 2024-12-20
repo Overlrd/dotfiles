@@ -46,6 +46,9 @@ zstyle ':vcs_info:*' stagedstr ' +'
 zstyle ':vcs_info:git:*' formats '(%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%u%c)'
 
+# Key bindings
+bindkey -v
+
 # Aliases
 alias v=nvim
 alias vim=nvim

@@ -327,6 +327,8 @@ require("lazy").setup({
         -- debug
         require 'neovim.debug',
     },
+
     install = { colorscheme = { "default" } },
     checker = { enabled = false },
+
 })
