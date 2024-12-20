@@ -7,6 +7,9 @@ if wezterm.config_builder then config = wezterm.config_builder() end
 
 config.default_prog = { '/usr/bin/zsh' }
 
+-- Use wayland, boomer
+config.enable_wayland = false
+
 -- Settings
 config.color_scheme = 'Atom'
 config.font = wezterm.font_with_fallback({
