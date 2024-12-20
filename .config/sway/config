@@ -215,21 +215,27 @@ bindsym Print exec grim
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position bottom
-        font pango: Iosevka Nerd Font 10
-        swaybar_command waybar
+        position top
+        status_command i3status
 
         colors {
-            statusline #ffffff
-            background #323232
-            inactive_workspace #32323200 #32323200 #5c5c5c
+                background #00000080
+                statusline #FFFFFF
+                separator  #666666
+
+                focused_workspace  #2c2e33   #1c1d23   #ffffff
+                active_workspace   #1c1d23   #2c2e33   #A4B9EF
+                inactive_workspace #0a0b10   #1c1d23   #626775
+                urgent_workspace   #4f5258   #BF616A   #ffffff
+                binding_mode       #1c1d23   #4f5258   #2E3440
         }
 }
 
-#class                border      background     text         indicator   child_border
-client.focused         #1d1f21     #2e3440        #eceff4      #88c0d0     #2e3440
-client.focused_inactive #2e3440     #3b4252        #d8dee9      #4c566a     #3b4252
-client.unfocused       #2e3440     #3b4252        #d8dee9      #4c566a     #3b4252
-client.urgent          #2e3440     #bf616a        #eceff4      #d08770     #bf616a
+
+#class                     border        background     text         indicator   child_border
+client.focused             #adadad       #2d2d2d        #cccccc      #2d2d2d     #2d2d2d
+client.focused_inactive    #393939       #393939        #888888      #292d2d     #393939
+client.unfocused           #2d2d2d       #2d2d2d        #999999      #292d2d     #2d2d2d
+client.urgent              #f2777a       #900000        #ffffff      #900000     #900000
 
 include /etc/sway/config.d/*

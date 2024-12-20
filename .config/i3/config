@@ -198,7 +198,7 @@ bar {
         status_command i3status-rs $HOME/.config/i3status-rust/config.toml
 
         colors {
-            background #00000000
+                background #00000000
                 statusline #FFFFFF
                 separator  #666666
 
