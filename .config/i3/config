@@ -193,22 +193,22 @@ client.background       #F8F8F2
 bar {
 
     i3bar_command i3bar --transparency
-    position bottom
-    font pango:Iosevka Nerd Font 10
-    status_command i3status
+        position bottom
+        font pango:Iosevka Nerd Font 10
+        status_command i3status-rs $HOME/.config/i3status-rust/config.toml
 
-    colors {
-        background #00000000
-        statusline #FFFFFF
-        separator  #666666
+        colors {
+            background #00000000
+                statusline #FFFFFF
+                separator  #666666
 
-        focused_workspace  #2c2e33   #1c1d23   #ffffff
-        active_workspace   #1c1d23   #2c2e33   #A4B9EF
-        inactive_workspace #0a0b10   #1c1d23   #626775
-        urgent_workspace   #4f5258   #BF616A   #ffffff
-        binding_mode       #1c1d23   #4f5258   #2E3440
+                focused_workspace  #2c2e33   #1c1d23   #ffffff
+                active_workspace   #1c1d23   #2c2e33   #A4B9EF
+                inactive_workspace #0a0b10   #1c1d23   #626775
+                urgent_workspace   #4f5258   #BF616A   #ffffff
+                binding_mode       #1c1d23   #4f5258   #2E3440
 
-    }
+        }
 }
 
 # Gaps and borders settings
