@@ -44,6 +44,8 @@ exec swayidle -w \
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
+exec_always nm-applet --indicator
+
 ### Input configuration
 #
 # Example configuration:
@@ -215,14 +217,19 @@ bindsym Print exec grim
 bar {
     position bottom
         font pango: Iosevka Nerd Font 10
-
         swaybar_command waybar
 
         colors {
             statusline #ffffff
-                background #323232
-                inactive_workspace #32323200 #32323200 #5c5c5c
+            background #323232
+            inactive_workspace #32323200 #32323200 #5c5c5c
         }
 }
+
+#class                border      background     text         indicator   child_border
+client.focused         #1d1f21     #2e3440        #eceff4      #88c0d0     #2e3440
+client.focused_inactive #2e3440     #3b4252        #d8dee9      #4c566a     #3b4252
+client.unfocused       #2e3440     #3b4252        #d8dee9      #4c566a     #3b4252
+client.urgent          #2e3440     #bf616a        #eceff4      #d08770     #bf616a
 
 include /etc/sway/config.d/*
