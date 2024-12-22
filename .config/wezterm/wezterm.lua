@@ -12,10 +12,12 @@ config.enable_wayland = false
 
 -- Settings
 config.color_scheme = 'Atom'
+config.font_size = 11
 config.font = wezterm.font_with_fallback({
     { family = "Iosevka Nerd Font",        scale = 1.2, weight = "Medium", },
     { family = "FantasqueSansM Nerd Font", scale = 1.3, },
 })
+
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
 config.default_workspace = "main"
