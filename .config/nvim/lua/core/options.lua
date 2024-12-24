@@ -22,7 +22,6 @@ opt.cursorline = true
 opt.scrolloff = 8
 opt.laststatus = 3
 vim.opt.laststatus = 3  -- Global status line
-vim.opt.winbar = '%=%m %f'  -- Show buffer name in window bar
 
 -- Editing
 opt.expandtab = true

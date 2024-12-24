@@ -64,5 +64,63 @@ return {
         config = function()
             vim.keymap.set('n', '<C-g>', "<cmd>Neogit kind=vsplit<CR>", {desc = 'Open Neogit'})
         end,
-    }
+    },
+
+    { -- Autocompletion
+        'hrsh7th/nvim-cmp',
+        event = 'InsertEnter',
+        dependencies = {
+            -- Snippet Engine & its associated nvim-cmp source
+            {
+                'L3MON4D3/LuaSnip',
+                build = (function()
+                    return 'make install_jsregexp'
+                end)(),
+                dependencies = {
+                    --    https://github.com/rafamadriz/friendly-snippets
+                    {
+                        'rafamadriz/friendly-snippets',
+                        config = function()
+                            require('luasnip.loaders.from_vscode').lazy_load()
+                        end,
+                    },
+                },
+            },
+            'saadparwaiz1/cmp_luasnip',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-path',
+        },
+        config = function()
+            -- See `:help cmp`
+            local cmp = require 'cmp'
+            local luasnip = require 'luasnip'
+            luasnip.config.setup {}
+
+            cmp.setup {
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end,
+                },
+                completion = { completeopt = 'menu,menuone,noinsert' },
+
+                mapping = cmp.mapping.preset.insert {
+                    ['<CR>'] = cmp.mapping.confirm { select = true },
+                    ['<Tab>'] = cmp.mapping.select_next_item(),
+                    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+
+                    -- Manually trigger a completion from nvim-cmp.
+                    ['<C-Space>'] = cmp.mapping.complete {},
+
+                },
+                sources = {
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' },
+                    { name = 'path' },
+                    { name = 'buffer' },
+                },
+            }
+        end,
+    },
 }
