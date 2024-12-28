@@ -1,6 +1,23 @@
 -- plugins.lua
 return {
     {
+        'neovim/nvim-lspconfig',
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function ()
+            local configs = require("nvim-treesitter.configs")
+
+            configs.setup({
+                ensure_installed = { "c", "lua"},
+                sync_install = false,
+                highlight = { enable = true },
+                indent = { enable = false },
+            })
+        end
+    },
+    {
         'stevearc/dressing.nvim',
         opts = {},
     },
@@ -55,15 +72,24 @@ return {
     },
 
     {
-        "NeogitOrg/neogit",
-        dependencies = {
-            "nvim-lua/plenary.nvim",         -- required
-            "sindrets/diffview.nvim",        -- optional - Diff integration
-            "nvim-telescope/telescope.nvim", -- optional
+        "kdheepak/lazygit.nvim",
+        lazy = true,
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile",
         },
-        config = function()
-            vim.keymap.set('n', '<C-g>', "<cmd>Neogit kind=vsplit<CR>", {desc = 'Open Neogit'})
-        end,
+        -- optional for floating window border decoration
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        -- setting the keybinding for LazyGit with 'keys' is recommended in
+        -- order to load the plugin when the command is run for the first time
+        keys = {
+            { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+        }
     },
 
     { -- Autocompletion

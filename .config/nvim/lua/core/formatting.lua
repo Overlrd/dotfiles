@@ -43,14 +43,6 @@ local function format_current_buffer()
 end
 
 function M.setup()
-    local format_group = vim.api.nvim_create_augroup("FormatOnSave", { clear = true })
-
-    -- Format on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-        group = format_group,
-        callback = format_current_buffer
-    })
-
     -- Add keymapping for manual formatting
     vim.keymap.set('n', '<leader>fm', format_current_buffer, { desc = 'Format current buffer' })
 end

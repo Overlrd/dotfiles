@@ -3,6 +3,7 @@ require('core.options')
 require('core.keymaps')
 require('core.autocmds')
 require('core.formatting').setup()
+require('ayu_dark').setup()
 
 -- [[ Setup 'lazy.nvim' plugin manager ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -21,5 +22,7 @@ require("lazy").setup({
         { import = "core.plugins"},
     },
     install = { colorscheme = { "default" } },
-    checker = { enabled = true },
+    checker = { enabled = false },
 })
+
+require('core.lsp')
