@@ -1,0 +1,39 @@
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# fonts
+font-size = 14.5
+font-family = "Iosevka Nerd Font"
+adjust-cell-width = -1
+
+# Window
+gtk-single-instance = true
+gtk-wide-tabs = false
+window-padding-x = 5,5
+window-padding-y = 5,0
+window-padding-balance = true
+window-decoration = false
+window-theme = system
+confirm-close-surface = false
+resize-overlay = never
+gtk-adwaita = false
+title = "Ghostty"
+
+# theming
+window-theme = dark
+background = #0E0F13
+selection-background = #1c1d23 
+selection-foreground = #ffffff  
+cursor-color = #ffffff  
+palette = 0=#0a0b10  
+palette = 1=#5e0009  
+palette = 2=#015825  
+palette = 3=#6e5600  
+palette = 4=#005078  
+palette = 5=#4c0049  
+bold-is-bright = true
+
+# Other
+copy-on-select = clipboard
+shell-integration-features = no-cursor,sudo,no-title

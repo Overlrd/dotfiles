@@ -1,25 +1,7 @@
 -- plugins.lua
 return {
-    {
+    { -- Lsp Quickstart for Neovim
         'neovim/nvim-lspconfig',
-    },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        config = function ()
-            local configs = require("nvim-treesitter.configs")
-
-            configs.setup({
-                ensure_installed = { "c", "lua"},
-                sync_install = false,
-                highlight = { enable = true },
-                indent = { enable = false },
-            })
-        end
-    },
-    {
-        'stevearc/dressing.nvim',
-        opts = {},
     },
 
     { -- Fuzzy Finder (files, lsp, etc)
@@ -28,19 +10,11 @@ return {
         branch = '0.1.x',
         dependencies = {
             'nvim-lua/plenary.nvim',
-            { -- If encountering errors, see telescope-fzf-native README for installation instructions
-                'nvim-telescope/telescope-fzf-native.nvim',
-                build = 'make',
-            },
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
             { 'nvim-telescope/telescope-ui-select.nvim' },
         },
         config = function()
             require('telescope').setup {
-                pickers = {
-                    find_files = {
-                        theme = "dropdown",
-                    },
-                },
                 extensions = {
                     ['ui-select'] = {
                         require('telescope.themes').get_dropdown(),
@@ -53,6 +27,7 @@ return {
             pcall(require('telescope').load_extension, 'ui-select')
 
             local builtin = require 'telescope.builtin'
+            -- Fuzzy keymaps
             vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
             vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
             vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -71,7 +46,7 @@ return {
         end,
     },
 
-    {
+    {   
         "kdheepak/lazygit.nvim",
         lazy = true,
         cmd = {
@@ -148,5 +123,26 @@ return {
                 },
             }
         end,
+    },
+    { -- Autoformat
+        'stevearc/conform.nvim',
+        event = { 'BufWritePre' },
+        cmd = { 'ConformInfo' },
+        keys = {
+            {
+                '<leader>fm',
+                function()
+                    require('conform').format { async = true, lsp_format = 'fallback' }
+                end,
+                mode = '',
+                desc = '[F]ormat buffer',
+            },
+        },
+        opts = {
+            notify_on_error = false,
+            formatters_by_ft = {
+                python = { "ruff" },
+            },
+        },
     },
 }

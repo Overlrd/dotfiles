@@ -1,16 +1,11 @@
 general.import = []
 
-[colors.primary]
-background = '#0a0b10'
-foreground = '#ebeef5'
-
 [env]
 TERM = "alacritty"
 
 [window]
 dynamic_title = true
 dynamic_padding = true
-opacity = 1
 
 [[keyboard.bindings]]
 action = "CreateNewWindow"
@@ -22,15 +17,15 @@ history = 10000
 multiplier = 3
 
 [window.padding]
-x = 0
-y = 0
+x = 10
+y = 5
 
 [font]
-size = 13
+size = 15
 
 [font.normal]
 family = "Iosevka Term Nerd Font"
-style = "Regular"
+style = "Medium"
 
 [font.offset]
 x = 0
