@@ -1,149 +1,60 @@
-// =============================================================================
-//
-// Waybar configuration
-//
-// Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
-//
-// =============================================================================
-
 {
-    // -------------------------------------------------------------------------
-    // Global configuration
-    // -------------------------------------------------------------------------
-
     "layer": "top",
-
     "position": "bottom",
-
-    // If height property would be not present, it'd be calculated dynamically
-    "height": 30,
-
-    "modules-left": [
-        "sway/workspaces",
-    ],
-
-    "modules-center": [
-        "clock#date",
-        "clock#time"
-    ],
-
-    "modules-right": [
-    "network",
-    "memory",
-    "cpu",
-    "battery",
-    "pulseaudio",
-    "tray",
-    ],
-
-
-    // -------------------------------------------------------------------------
-    // Modules
-    // -------------------------------------------------------------------------
-
+    "height": 20,
+    "spacing": 4,
+    
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["clock"],
+    "modules-right": ["cpu", "memory", "network", "battery", "pulseaudio", "tray"],
+    
     "battery": {
+        "format": "BAT: (CHAR, {capacity}%)",
+        "format-discharging": "BAT: ({capacity}%)",
         "interval": 10,
         "states": {
             "warning": 30,
             "critical": 15
-        },
-        // Connected to AC
-        "format": "BAT: (CHAR, {capacity}%)", // Icon: bolt
-        // Not connected to AC
-        "format-discharging": "BAT: ({capacity}%)",
-        "format-icons": [],
-        "tooltip": true
+        }
     },
 
-    "clock#time": {
-        "interval": 1,
-        "format": "{:%H:%M:%S}",
-        "tooltip": false
-    },
-
-    "clock#date": {
-        "interval": 10,
-        "format": "  {:%e %b %Y}", // Icon: calendar-alt
-        "tooltip-format": "{:%e %B %Y}"
+    "clock": {
+        "format": "{:%H:%M %Y-%m-%d}",
+        "tooltip-format": "<tt>{calendar}</tt>"
     },
 
     "cpu": {
-        "interval": 5,
-        "format": "CPU: {usage}% ({load})", // Icon: microchip
+        "format": "CPU: {usage}%",
         "states": {
             "warning": 70,
             "critical": 90
-        }
-    },
-
-    "custom/keyboard-layout": {
-        "exec": "swaymsg -t get_inputs | grep -m1 'xkb_active_layout_name' | cut -d '\"' -f4",
-        // Interval set only as a fallback, as the value is updated by signal
-        "interval": 30,
-        "format": "KEYBOARD: {}", // Icon: keyboard
-                           // Signal sent by Sway key binding (~/.config/sway/key-bindings)
-        "signal": 1, // SIGHUP
-        "tooltip": false
+        },
+        "tooltip": true
     },
 
     "memory": {
-        "interval": 5,
-        "format": "RAM: {}%", // Icon: memory
-        "states": {
-            "warning": 70,
-            "critical": 90
-        }
+        "format": "RAM: {percentage}%",
+        "tooltip-format": "{used:0.1f}G/{total:0.1f}G"
     },
 
     "network": {
-        "interval": 5,
-        "format-wifi": "WIFI: {essid} ({signalStrength}%)", // Icon: wifi
-        "format-ethernet": "WIFI: {ifname}: {ipaddr}/{cidr}", // Icon: ethernet
+        "format-wifi": "WIFI: {essid} ({signalStrength}%)",
+        "format-ethernet": "WIFI: {ifname}: {ipaddr}/{cidr}",
         "format-disconnected": "WIFI: Disconnected",
         "tooltip-format": "{ifname}: {ipaddr}"
     },
 
-    "sway/mode": {
-        "format": "<span style=\"italic\">MODE: {}</span>", // Icon: expand-arrows-alt
-        "tooltip": false
-    },
-
-    "sway/window": {
-        "format": "{}",
-        "max-length": 120
-    },
-
-    "sway/workspaces": {
-        "all-outputs": false,
-        "disable-scroll": true,
-        "format": "{icon} {name}",
-        "format-icons": {
-            "urgent": "",
-            "focused": "",
-            "default": ""
-        }
-    },
-
     "pulseaudio": {
-        //"scroll-step": 1,
         "format": "VOL: {volume}%",
-        "format-bluetooth": "{icon}  {volume}%",
         "format-muted": "MUTED",
-        "format-icons": {},
+        "format-icons": {
+            "default": ["", "", ""]
+        },
         "on-click": "pavucontrol"
     },
 
-    "temperature": {
-        "critical-threshold": 80,
-        "interval": 5,
-        "format": "TEMP: {temperatureC}°C",
-        "format-icons": [],
-        "tooltip": true
-    },
-
     "tray": {
-        "icon-size": 21,
+        "icon-size": 18,
         "spacing": 10
     }
-
 }

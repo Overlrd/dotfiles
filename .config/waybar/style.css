@@ -1,209 +1,60 @@
-/* =============================================================================
- *
- * Waybar configuration
- *
- * Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
- * Palette: https://coolors.co/palette/22223b-4a4e69-9a8c98-c9ada7-f2e9e4
- *
- * =========================================================================== */
-
-/* -----------------------------------------------------------------------------
- * Keyframes
- * -------------------------------------------------------------------------- */
-
-@keyframes blink-warning {
-    70% {
-        color: white;
-    }
-
-    to {
-        color: white;
-        background-color: orange;
-    }
-}
-
-@keyframes blink-critical {
-    70% {
-        color: white;
-    }
-
-    to {
-        color: white;
-        background-color: red;
-    }
-}
-
-
-/* -----------------------------------------------------------------------------
- * Base styles
- * -------------------------------------------------------------------------- */
-
-/* Reset all styles */
 * {
-    border: none;
-    border-radius: 0;
-    min-height: 0;
-    margin: 0;
-    padding: 0;
+   border: none;
+   border-radius: 0;
+   min-height: 0;
+   margin: 0;
+   padding: 0;
+   font-family: "Iosevka Nerd Font", sans-serif;
+   font-size: 13px;
 }
 
-/* The whole bar */
 #waybar {
-    background: rgba(00, 00, 00, 0.3);
-    color: white;
-    font-family: Iosevka Nerd Font, Noto Sans, sans-serif;
-    font-size: 13px;
+   background: rgba(11, 14, 20, 0.3);
+   color: #dddddd;
 }
 
-/* Each module */
-#battery,
-#cpu,
-#custom-keyboard-layout,
-#memory,
-#mode,
-#network,
-#pulseaudio,
-#temperature {
-    padding-left: 10px;
-    padding-right: 10px;
-    border-right: 1px solid #9A8C98;
+/* Module spacing */
+#battery, #cpu, #memory, #network, #pulseaudio {
+   padding: 0 10px;
+   margin: 0 5px;
+   background: #3c5273;
 }
 
-#clock,
-#tray {
-    padding-left: 10px;
-    padding-right: 10px;
+#clock, #tray {
+   padding: 0 10px;
+   background: rgba(48, 82, 115, 0.3);
 }
 
-
-/* -----------------------------------------------------------------------------
- * Module styles
- * -------------------------------------------------------------------------- */
-
-#battery {
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+/* States */
+.warning {
+   color: #f7768e;
 }
 
-#battery.warning {
-    color: orange;
+.critical {
+   color: #db4b4b;
 }
 
-#battery.critical {
-    color: red;
-}
-
-#battery.warning.discharging {
-    animation-name: blink-warning;
-    animation-duration: 3s;
-}
-
-#battery.critical.discharging {
-    animation-name: blink-critical;
-    animation-duration: 2s;
-}
-
-#clock {
-    font-weight: bold;
-}
-
-#cpu {
-    /* No styles */
-}
-
-#cpu.warning {
-    color: orange;
-}
-
-#cpu.critical {
-    color: red;
-}
-
-#memory {
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-#memory.warning {
-    color: orange;
-}
-
-#memory.critical {
-    color: red;
-    animation-name: blink-critical;
-    animation-duration: 2s;
-}
-
-#mode {
-    background: #64727D;
-    border-top: 2px solid white;
-    /* To compensate for the top border and still have vertical centering */
-    padding-bottom: 2px;
-}
-
-#network {
-    /* No styles */
-}
-
-#network.disconnected {
-    color: orange;
-}
-
-#pulseaudio {
-    /* No styles */
-}
-
-#pulseaudio.muted {
-    /* No styles */
-}
-
-#custom-spotify {
-    color: rgb(102, 220, 105);
-}
-
-#temperature {
-    /* No styles */
-}
-
-#temperature.critical {
-    color: red;
-}
-
-#tray {
-    /* No styles */
-}
-
-#window {
-    font-weight: bold;
-    margin-left: 10px;
-    min-width: 50px;
-    border-color: #4c7899;
-    color: white;
-}
-
+/* Workspaces */
 #workspaces button {
-    padding-left: 10px;
-    padding-right: 10px;
-    color: #888888;
+   padding: 0 10px;
+   color: #A9B1D6;
 }
 
 #workspaces button.focused {
-    border-color: #4c7899;
-    color: white;
-    background-color: rgba(74, 78, 105, 0.9);
+   color: #ffffff;
+   background: #3c5273;
 }
 
 #workspaces button.urgent {
-    border-color: #c9545d;
-    color: #c9545d;
+   color: #f7768e;
 }
 
-tooltip * {
-    background:	transparent;
+/* Tooltips */
+tooltip {
+   background: #1a1b26;
+   border: 1px solid #1f2335;
 }
 
-tooltip.background {
-    background:	rgba(154,140,152,0.4);
+tooltip label {
+   color: #ffffff;
 }

@@ -103,9 +103,16 @@ vim.opt.rtp:prepend(lazypath)
 -- Initialize plugins
 require("lazy").setup({
     spec = {
+
         { import = "plugins" },
         { import = "lsp" },
+
     },
     install = { colorscheme = { "default" } },
     checker = { enabled = false },
 })
+
+-- Hide all semantic highlights
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
+end
