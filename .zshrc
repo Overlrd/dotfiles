@@ -1,35 +1,28 @@
-# Zsh Configuration
-
-# Performance Profiling (optional - only enable when debugging)
-# zmodload zsh/zprof
+# https://thevaluable.dev/zsh-install-configure-mouseless/
+# https://thevaluable.dev/zsh-line-editor-configuration-mouseless/
 
 # Shell Options
-setopt AUTO_CD           # Type directory name to cd
-setopt CORRECT           # Command correction
-setopt AUTO_PUSHD        # Push directory to stack automatically
-setopt PUSHD_IGNORE_DUPS # Don't push duplicate directories
-setopt HIST_IGNORE_ALL_DUPS  # Remove older duplicate entries from history
-setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from history
-setopt EXTENDED_HISTORY      # Save timestamp and duration in history
+setopt AUTO_CD              # Automatically change to directory if name is typed
+setopt CORRECT              # Command correction
+setopt AUTO_PUSHD           # Automatically push directories onto directory stack
+setopt PUSHD_IGNORE_DUPS    # Avoid duplicate directories in the stack
+setopt HIST_IGNORE_ALL_DUPS # Remove duplicate history entries
+setopt HIST_REDUCE_BLANKS   # Remove excess blanks in history
 
 # Environment Variables
-export EDITOR=nvim
-export NOTES_DIR="$HOME/notes"
 export PATH="$HOME/.local/bin:$PATH"
+export EDITOR="nvim"
 
 # History Configuration
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-
-# Completion
-autoload -Uz compinit
-compinit -C  # -C skips security check, speeds up startup
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
 
 # Enhanced Completion
+autoload -U compinit; compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # Case-insensitive completion
-zstyle ':completion:*' menu select  # Interactive completion menu
-zstyle ':completion:*' list-colors ''  # Colored completion listings
+zstyle ':completion:*' menu select                   # Interactive menu selection
+zstyle ':completion:*' list-colors ''                # Colored completion listings
 
 # Prompt Configuration
 autoload -Uz add-zsh-hook vcs_info
@@ -46,21 +39,20 @@ zstyle ':vcs_info:*' stagedstr ' +'
 zstyle ':vcs_info:git:*' formats '(%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%u%c)'
 
-# Key bindings
-bindkey -v
+# Key Bindings
+bindkey -v  # Use Vi keybindings
+
+# Add shell-to-Neovim editing feature
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd e edit-command-line
 
 # Aliases
-alias v=nvim
 alias vim=nvim
 alias c=clear
 alias t='tmux new-session -A -D -s main'
 alias q=exit
-alias notes='cd ~/notes/2024/12/'
-alias books='cd ~/Books/Technical/Programming/'
 alias fnotes='grep -r --exclude-dir=".git" "date: " ~/notes/ | sort -t":" -k2 -r | fzf'
 
-# Source note-taking scripts
-source "$HOME/.local/bin/note.sh"
-
-# Optional: Uncomment for startup performance analysis
-# zprof
+# Source custom scripts
+[[ -f "$HOME/.local/bin/note.sh" ]] && source "$HOME/.local/bin/note.sh"

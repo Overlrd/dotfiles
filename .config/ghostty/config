@@ -6,6 +6,7 @@ cursor-style-blink = false
 font-size = 14.5
 font-family = "Iosevka Nerd Font"
 adjust-cell-width = -1
+font-thicken = true
 
 # Window
 gtk-single-instance = true
@@ -16,7 +17,7 @@ window-padding-balance = true
 window-decoration = false
 confirm-close-surface = false
 resize-overlay = never
-gtk-adwaita = false
+gtk-adwaita = true
 adw-toolbar-style = flat
 title = "Ghostty"
 

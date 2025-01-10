@@ -10,11 +10,11 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-set $term wezterm
+set $term ghostty
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 9
+font pango:DejaVu Sans Mono 5
 
 # Autostart script to launch some default programs
 exec --no-startup-id $HOME/.config/autostart
@@ -192,9 +192,19 @@ client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
-# Gaps and borders settings
-for_window [all] title_window_icon padding 10px
+new_window pixel 1
+new_float pixel 1
+
+# Set gaps between windows
+gaps inner 5px
+gaps outer 5px
+
 popup_during_fullscreen smart
+
+
+for_window [class="^.*"] border pixel 1
+for_window [class=".*"] title_format " "
+
 
 # Scratchpad bindings
 bindsym $mod+p move scratchpad

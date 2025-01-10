@@ -22,6 +22,7 @@ opt.signcolumn = "yes"
 opt.cursorline = true
 opt.scrolloff = 8
 opt.laststatus = 3  -- Global status line
+vim.o.colorcolumn = "80"
 
 -- Editor behavior
 opt.clipboard = "unnamedplus"
