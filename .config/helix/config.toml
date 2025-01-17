@@ -1,0 +1,7 @@
+theme = "autumn_night"
+
+[editor]
+line-number = "absolute"
+gutters = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+auto-completion = true
+auto-format = true
