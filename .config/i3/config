@@ -196,15 +196,13 @@ new_window pixel 1
 new_float pixel 1
 
 # Set gaps between windows
-gaps inner 5px
-gaps outer 5px
+gaps inner 0px
+gaps outer 0px
 
 popup_during_fullscreen smart
 
-
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 2
 for_window [class=".*"] title_format " "
-
 
 # Scratchpad bindings
 bindsym $mod+p move scratchpad
@@ -212,5 +210,6 @@ bindsym $mod+Shift+p scratchpad show
 
 # Assign programs to workspaces
 assign [class="Claws-mail"] 3
+assign [class="thunderbird"] 3
 
 bindsym $mod+a exec --no-startup-id polybar-msg cmd toggle

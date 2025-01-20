@@ -65,8 +65,12 @@ def main():
         run_command(["picom"])
 
     # Start email client
-    if command_exists("claws-mail"):
-        run_command(["claws-mail", "--receive-all"])
+    if command_exists("thunderbird"):
+        run_command(
+            [
+                "thunderbird",
+            ]
+        )
 
     # Start redshift with location-based settings
     location = get_or_update_location()

@@ -110,14 +110,6 @@ return {
 				end
 			end
 
-			-- Setup mason-lspconfig
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-				},
-				automatic_installation = true,
-			})
-
 			-- LSP server configurations
 			local capabilities = vim.tbl_deep_extend(
 				"force",
@@ -134,7 +126,9 @@ return {
 
 			-- Server specific settings
 			local servers = {
+				-- lua
 				lua_ls = {
+					mason = true,
 					settings = {
 						Lua = {
 							workspace = { checkThirdParty = false },
@@ -144,6 +138,8 @@ return {
 						},
 					},
 				},
+
+				-- python
 				pyright = {
 					mason = false,
 					settings = {
@@ -157,12 +153,16 @@ return {
 						},
 					},
 				},
+
+				-- python
 				ruff = {
 					mason = false,
 					on_attach = function(client, bufnr)
 						client.server_capabilities.hoverProvider = false
 					end,
 				},
+
+				-- c/c++
 				clangd = {
 					mason = false,
 					capabilities = vim.tbl_deep_extend("force", capabilities, {
@@ -177,6 +177,8 @@ return {
 						"--function-arg-placeholders",
 					},
 				},
+
+				-- zig
 				zls = {
 					mason = false,
 					cmd = { "zls" },
@@ -184,7 +186,26 @@ return {
 					root_dir = require("lspconfig.util").root_pattern("zls.json", "build.zig", ".git"),
 					single_file_support = true,
 				},
+
+				-- java
+				jdtls = {
+					mason = false,
+				},
 			}
+
+			-- Collect servers that should be installed by mason
+			local ensure_installed = {}
+			for server_name, config in pairs(servers) do
+				if config.mason then
+					table.insert(ensure_installed, server_name)
+				end
+			end
+
+			-- Setup mason-lspconfig
+			require("mason-lspconfig").setup({
+				ensure_installed = ensure_installed,
+				automatic_installation = false,
+			})
 
 			-- Setup all servers
 			local setup_server = function(server_name)

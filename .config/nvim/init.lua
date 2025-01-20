@@ -63,7 +63,6 @@ opt.splitbelow = true
 -- File operations
 map("n", "<Leader>w", ":w<CR>", { desc = "Save file" })
 map("n", "<Leader>q", ":q<CR>", { desc = "Quit file" })
-map("n", "<Leader>Q", ":qa<CR>", { desc = "Quit all" })
 
 -- Navigation
 map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
