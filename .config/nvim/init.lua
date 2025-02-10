@@ -36,9 +36,9 @@ opt.timeoutlen = 300 -- Faster key sequence completion
 opt.updatetime = 250 -- Faster CursorHold events
 
 -- Slight typing delay settings
-opt.ttimeoutlen = 10 -- Very short time to wait for key code sequences
-opt.timeout = true
-opt.ttyfast = true
+-- opt.ttimeoutlen = 10 -- Very short time to wait for key code sequences
+-- opt.timeout = true
+-- opt.ttyfast = true
 
 -- Search settings
 opt.ignorecase = true

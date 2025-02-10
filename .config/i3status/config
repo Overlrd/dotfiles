@@ -1,64 +1,71 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
 general {
-    output_format = "i3bar"
     colors = true
-    markup = pango
     interval = 5
+    output_format = "i3bar"
 }
 
-# Add the order of items to appear in the bar
-order += "load"
-order += "cpu_temperature 0"
-order += "memory"
-order += "wireless wlp2s0"
+order += "tztime local"
 order += "volume master"
-order += "battery 0"
-order += "time"
+order += "cpu_usage"
+order += "disk /"
+order += "battery all"
 
-# CPU load formatting with a more informative and visually distinct display
-load {
-    format = "<span background='#1f222d'>  </span><span background='#1f222d'> Load: %5min </span>"
+cpu_usage {
+    format = "CPU %usage"
+    max_threshold = 75
 }
 
-# CPU temperature display with a clearer, more visible format
-cpu_temperature 0 {
-    format = "<span background='#1f222d'>  </span><span background='#1f222d'> Temp: %degrees°C </span>"
-    path = "/sys/class/thermal/thermal_zone0/temp"
-}
-
-# Memory usage with a dynamic and informative format
-memory {
-    format = "<span background='#1f222d'> 󰍛 </span><span background='#1f222d'> RAM: %used / %total </span>"
-}
-
-# Wireless network status, more friendly format with SSID
-wireless wlp2s0 {
-    format_up = "<span background='#1f222d'>  </span><span background='#1f222d'> %essid </span>"
-    format_down = "<span background='#1f222d'> 󰖪 </span><span background='#1f222d'> Disconnected </span>"
-}
-
-# Volume control with better feedback on mute status
 volume master {
-    format = "<span background='#1f222d'>  </span><span background='#1f222d'> Volume: %volume </span>"
-    format_muted = "<span background='#1f222d'>  </span><span background='#1f222d'> Muted </span>"
+    format = "VOL %volume"
+    format_muted = "VOL muted"
     device = "default"
     mixer = "Master"
     mixer_idx = 0
 }
 
-# Battery status with more detailed information
-battery 0 {
-    last_full_capacity = true
-    format = "<span background='#1f222d'> %status </span><span background='#1f222d'> %percentage </span>"
-    format_down = "<span background='#1f222d'> No Battery </span>"
-    status_chr = " +"
-    status_bat = ""
-    status_full = ""
-    path = "/sys/class/power_supply/BAT%d/uevent"
-    low_threshold = 30
-    integer_battery_capacity = true
+wireless _first_ {
+    format_up = "W: (%quality at %essid) %ip"
+    format_down = "W: down"
 }
 
-# Time display with better readability and visual elements
-time {
-    format = "<span background='#1f222d'> 󰃭 </span><span background='#1f222d'> %b %d | %H:%M </span>"
+ethernet _first_ {
+    # if you use %speed, i3status requires root privileges
+    format_up = "E: %ip (%speed)"
+    format_down = "E: down"
+}
+
+battery all {
+    format = "%status %percentage %remaining"
+    format_down = ""
+    status_chr = "CHR"
+    status_bat = "BAT"
+    status_unk = "UNK"
+    status_full = "FULL"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    low_threshold = 10
+}
+
+tztime local {
+    format = "%Y-%m-%d %I:%M"
+}
+
+load {
+    format = "%1min"
+}
+
+disk "/" {
+    format = "%avail"
+}
+
+cpu_temperature 0 {
+    format = "T: %degrees °C"
+    path = "/sys/devices/platform/coretemp.0/temp1_input"
 }
