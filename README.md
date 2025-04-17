@@ -1,3 +1,2 @@
-# My config files
+# dotfiles
 
-![screenshot](screenshot.png)
