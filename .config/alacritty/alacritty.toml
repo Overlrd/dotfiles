@@ -26,10 +26,10 @@ x = 5
 y = 5
 
 [font]
-size = 14
+size = 15
 
 [font.normal]
-family = "Iosevka Term Nerd Font"
+family = "Iosevka Nerd Font"
 style = "Medium"
 
 [font.offset]

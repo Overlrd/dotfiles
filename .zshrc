@@ -10,7 +10,6 @@ setopt HIST_IGNORE_ALL_DUPS # Remove duplicate history entries
 setopt HIST_REDUCE_BLANKS   # Remove excess blanks in history
 
 # Environment Variables
-export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 
 # History Configuration
@@ -29,7 +28,7 @@ autoload -Uz add-zsh-hook vcs_info
 setopt prompt_subst
 add-zsh-hook precmd vcs_info
 
-PS1='%B%F{cyan}%n@%m %2~${vcs_info_msg_0_}%f%b %# '
+PS1='%B[%F{red}%n%f@%m] %2~${vcs_info_msg_0_}%b %# '
 
 # VCS Info settings
 zstyle ':vcs_info:*' enable git
@@ -52,7 +51,3 @@ alias vim=nvim
 alias c=clear
 alias t='tmux new-session -A -D -s main'
 alias q=exit
-alias fnotes='grep -r --exclude-dir=".git" "date: " ~/notes/ | sort -t":" -k2 -r | fzf'
-
-# Source custom scripts
-[[ -f "$HOME/.local/bin/note.sh" ]] && source "$HOME/.local/bin/note.sh"

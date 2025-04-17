@@ -51,31 +51,10 @@ def run_command(command: list[str]):
 
 def main():
     """Launch autostart applications."""
-    # Set wallpaper using feh
-    wallpaper_script = Path.home() / ".fehbg"
-    if command_exists("feh") and wallpaper_script.exists():
-        run_command([str(wallpaper_script)])
-
-    # Start network manager applet
-    if command_exists("nm-applet"):
-        run_command(["nm-applet"])
-
-    # Start compositor
-    if command_exists("picom"):
-        run_command(["picom"])
-
-    # Start email client
-    if command_exists("thunderbird"):
-        run_command(
-            [
-                "thunderbird",
-            ]
-        )
-
     # Start redshift with location-based settings
     location = get_or_update_location()
     if location and command_exists("redshift"):
-        run_command(["redshift", "-l", location, "-t", "6500:3400"])
+        run_command(["redshift", "-l", location, "-t", "5500:5000"])
     else:
         print("Redshift skipped: No valid location found or command not available.")
 

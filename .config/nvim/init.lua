@@ -9,9 +9,16 @@ local map = vim.keymap.set
 g.mapleader = " "
 g.maplocalleader = " "
 
--- Global settings
-g.have_nerd_font = true
 g.undodir = os.getenv("HOME") .. "/.cache/vim/undodir/"
+
+-- Disable some default plugins
+g.loaded_gzip = 1
+g.loaded_matchit = 1
+g.loaded_matchparen = 1
+g.loaded_tarPlugin = 1
+g.loaded_tohtml = 1
+g.loaded_tutor = 1
+g.loaded_zipPlugin = 1
 
 -- Editor UI
 opt.background = "dark"
@@ -22,7 +29,7 @@ opt.signcolumn = "yes"
 opt.cursorline = true
 opt.scrolloff = 8
 opt.laststatus = 3 -- Global status line
-opt.showmode = false -- Mode is shown in statusline
+opt.showmode = true
 opt.pumheight = 10 -- Limit popup menu height
 opt.conceallevel = 2 -- Hide markdown formatting
 
@@ -105,7 +112,7 @@ create_autocmd("TextYankPost", {
 
 -- Spell checking for specific files
 create_autocmd("FileType", {
-	pattern = { "markdown", "text", "gitcommit" },
+	pattern = { "gitcommit" },
 	callback = function()
 		vim.opt_local.spell = true
 		vim.opt_local.spelllang = "en_us"
@@ -128,45 +135,4 @@ create_autocmd("VimResized", {
 	callback = function()
 		vim.cmd("tabdo wincmd =")
 	end,
-})
-
---[[ Plugin Management ]]
--- Install lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"--branch=stable",
-		"https://github.com/folke/lazy.nvim.git",
-		lazypath,
-	})
-end
-vim.opt.rtp:prepend(lazypath)
-
--- Initialize plugins
-require("lazy").setup({
-	spec = {
-		{ import = "plugins" },
-		{ import = "lsp" },
-	},
-	install = { colorscheme = { "default" } },
-	checker = { enabled = false },
-	change_detection = {
-		notify = false,
-	},
-	performance = {
-		rtp = {
-			disabled_plugins = {
-				"gzip",
-				"matchit",
-				"matchparen",
-				"tarPlugin",
-				"tohtml",
-				"tutor",
-				"zipPlugin",
-			},
-		},
-	},
 })
