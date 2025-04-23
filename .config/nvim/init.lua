@@ -32,6 +32,7 @@ opt.laststatus = 3 -- Global status line
 opt.showmode = true
 opt.pumheight = 10 -- Limit popup menu height
 opt.conceallevel = 2 -- Hide markdown formatting
+vim.cmd('colorscheme sorbet')
 
 -- Editor behavior
 opt.clipboard = "unnamedplus"
@@ -136,3 +137,30 @@ create_autocmd("VimResized", {
 		vim.cmd("tabdo wincmd =")
 	end,
 })
+
+-- diagnostics
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true, 
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
+
+-- C
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
+    callback = function()
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        vim.cmd("silent! %!clang-format")
+        vim.api.nvim_win_set_cursor(0, { row, col })
+    end,
+})
+
+vim.lsp.config["clangd"] = {
+    cmd = { 'clangd', '--background-index' },
+    root_markers = { 'compile_commands.json', 'compile_flags.txt' },
+    filetypes = { 'c', 'cpp' },
+}
+
+vim.lsp.enable({'clangd'})
