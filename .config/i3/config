@@ -3,7 +3,6 @@
 set $mod Mod4
 set $term alacritty
 set $FONT Iosevka Nerd Font
-set $location 6.12874:1.22154
 
 set $bg-color        #1C1C24
 set $inactive-color  #292C35
@@ -20,8 +19,6 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id picom
 exec --no-startup-id $HOME/.fehbg
-
-exec_always --no-startup-id redshift -l $location -t 5500:5000
 
 # Volume and media keys
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -169,3 +166,6 @@ bindsym $mod+Shift+p scratchpad show
 # Workspace assignments
 assign [class="Claws-mail"] 3
 assign [class="thunderbird"] 3
+
+# Force i3 borders on gtk windows
+for_window [class="^.*"] border 1pixel
