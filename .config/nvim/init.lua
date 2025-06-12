@@ -1,166 +1,108 @@
 -- init.lua
--- Initialize configuration
+-- Simple, solid Neovim configuration
+
 local opt = vim.opt
 local g = vim.g
 local map = vim.keymap.set
 
---[[ Core Settings ]]
--- Leader keys
+--[[ Leader Key ]]
 g.mapleader = " "
-g.maplocalleader = " "
 
-g.undodir = os.getenv("HOME") .. "/.cache/vim/undodir/"
-
--- Disable some default plugins
-g.loaded_gzip = 1
-g.loaded_matchit = 1
-g.loaded_matchparen = 1
-g.loaded_tarPlugin = 1
-g.loaded_tohtml = 1
-g.loaded_tutor = 1
-g.loaded_zipPlugin = 1
-
--- Editor UI
-opt.background = "dark"
-opt.termguicolors = true
+--[[ Basic Settings ]]
+-- UI
 opt.number = true
 opt.relativenumber = true
-opt.signcolumn = "yes"
 opt.cursorline = true
 opt.scrolloff = 8
-opt.laststatus = 3 -- Global status line
-opt.showmode = true
-opt.pumheight = 10 -- Limit popup menu height
-opt.conceallevel = 2 -- Hide markdown formatting
-vim.cmd('colorscheme sorbet')
+opt.signcolumn = "yes"
+opt.termguicolors = true
+opt.background = "dark"
 
--- Editor behavior
-opt.clipboard = "unnamedplus"
+-- Indentation
 opt.expandtab = true
 opt.tabstop = 4
 opt.shiftwidth = 4
-opt.wrap = false
-opt.timeoutlen = 300 -- Faster key sequence completion
-opt.updatetime = 250 -- Faster CursorHold events
+opt.smartindent = true
 
--- Slight typing delay settings
--- opt.ttimeoutlen = 10 -- Very short time to wait for key code sequences
--- opt.timeout = true
--- opt.ttyfast = true
-
--- Search settings
+-- Search
 opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = true
 opt.incsearch = true
 
--- File handling
+-- Files
 opt.swapfile = false
-opt.backup = false -- Modern systems don't need this
-opt.writebackup = false
+opt.backup = false
 opt.undofile = true
-opt.undodir = g.undodir
-opt.autowrite = true -- Auto save before commands like :next and :make
+opt.undodir = vim.fn.stdpath("cache") .. "/undodir"
+opt.autowrite = true
 
--- Better buffer management
-opt.hidden = true -- Allow hidden buffers
-opt.splitright = true -- Split windows right/below by default
+-- Behavior
+opt.splitright = true
 opt.splitbelow = true
+opt.wrap = false
+opt.timeoutlen = 300
+opt.updatetime = 250
+opt.clipboard = "unnamedplus"
 
---[[ Keymaps ]]
+--[[ Colorscheme ]]
+vim.cmd('colorscheme default')
+vim.cmd [[highlight Normal guibg=NONE ctermbg=NONE]]
+
+--[[ Key Mappings ]]
 -- File operations
-map("n", "<Leader>w", ":w<CR>", { desc = "Save file" })
-map("n", "<Leader>q", ":q<CR>", { desc = "Quit file" })
+map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
+map("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 
 -- Navigation
 map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
-map("n", "n", "nzzzv", { desc = "Next search result and center" })
+map("n", "n", "nzzzv", { desc = "Next search and center" })
+map("n", "N", "Nzzzv", { desc = "Previous search and center" })
 
-map("n", "N", "Nzzzv", { desc = "Previous search result and center" })
+-- Buffers
 map("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
-map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
+map("n", "<S-Tab>", ":bprev<CR>", { desc = "Previous buffer" })
+map("n", "<leader>x", ":bd<CR>", { desc = "Close buffer" })
 
--- Window management
-map("n", "<leader>v", "<C-w>v", { desc = "Split window vertically" })
-map("n", "<leader>h", "<C-w>s", { desc = "Split window horizontally" })
-map("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-map("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-map("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+-- Windows
+map("n", "<leader>v", "<C-w>v", { desc = "Split vertical" })
+map("n", "<leader>s", "<C-w>s", { desc = "Split horizontal" })
+map("n", "<C-h>", "<C-w>h", { desc = "Move left" })
+map("n", "<C-j>", "<C-w>j", { desc = "Move down" })
+map("n", "<C-k>", "<C-w>k", { desc = "Move up" })
+map("n", "<C-l>", "<C-w>l", { desc = "Move right" })
 
 -- Quick fixes
-map("n", "<leader>x", "<cmd>bd<CR>", { desc = "Close current buffer" })
-map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+map("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear highlights" })
 map("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
--- Better indenting
-map("v", "<", "<gv", { desc = "Indent left and reselect" })
-map("v", ">", ">gv", { desc = "Indent right and reselect" })
+-- Visual mode
+map("v", "<", "<gv", { desc = "Indent left" })
+map("v", ">", ">gv", { desc = "Indent right" })
 
 --[[ Autocommands ]]
-local function create_autocmd(event, opts)
-	vim.api.nvim_create_autocmd(event, opts)
-end
-
 -- Highlight on yank
-create_autocmd("TextYankPost", {
-	group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
 })
 
--- Spell checking for specific files
-create_autocmd("FileType", {
-	pattern = { "gitcommit" },
-	callback = function()
-		vim.opt_local.spell = true
-		vim.opt_local.spelllang = "en_us"
-	end,
+-- Return to last position
+vim.api.nvim_create_autocmd("BufReadPost", {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
 })
 
--- Return to last edit position
-create_autocmd("BufReadPost", {
-	callback = function()
-		local mark = vim.api.nvim_buf_get_mark(0, '"')
-		local lcount = vim.api.nvim_buf_line_count(0)
-		if mark[1] > 0 and mark[1] <= lcount then
-			pcall(vim.api.nvim_win_set_cursor, 0, mark)
-		end
-	end,
+-- Auto-resize windows
+vim.api.nvim_create_autocmd("VimResized", {
+  callback = function()
+    vim.cmd("wincmd =")
+  end,
 })
-
--- Auto-resize splits when Vim is resized
-create_autocmd("VimResized", {
-	callback = function()
-		vim.cmd("tabdo wincmd =")
-	end,
-})
-
--- diagnostics
-vim.diagnostic.config({
-  virtual_text = true,
-  signs = true, 
-  underline = true,
-  update_in_insert = false,
-  severity_sort = true,
-})
-
--- C
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
-    callback = function()
-        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-        vim.cmd("silent! %!clang-format")
-        vim.api.nvim_win_set_cursor(0, { row, col })
-    end,
-})
-
-vim.lsp.config["clangd"] = {
-    cmd = { 'clangd', '--background-index' },
-    root_markers = { 'compile_commands.json', 'compile_flags.txt' },
-    filetypes = { 'c', 'cpp' },
-}
-
-vim.lsp.enable({'clangd'})

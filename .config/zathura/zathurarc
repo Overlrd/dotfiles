@@ -1,0 +1,65 @@
+# Navigation
+set scroll-step 100
+set smooth-scroll true
+
+# Zoom
+set zoom-step 5
+
+# Interface
+set window-title-basename "true"
+set selection-clipboard clipboard
+
+map D set "first-page-column 1:1"
+map <C-d> set "first-page-column 1:2"
+
+# Notification colors
+set notification-error-bg       "#3A3A3A"
+set notification-error-fg       "#FFFFFF"
+set notification-warning-bg     "#3A3A3A"
+set notification-warning-fg     "#D08770"
+
+set notification-bg             "#3A3A3A"
+set notification-fg             "#AAAAAA"
+
+# Completion colors
+set completion-bg               "#2E2E2E"
+set completion-fg               "#AAAAAA"
+
+set completion-group-bg         "#1C1C1C"
+set completion-group-fg         "#888888"
+
+set completion-highlight-bg     "#888888"
+set completion-highlight-fg     "#1A1A1A"
+
+# Index colors
+set index-bg                    "#2A2A2A"
+set index-fg                    "#B0B0B0"
+
+set index-active-bg             "#888888"
+set index-active-fg             "#1A1A1A"
+
+# Inputbar colors
+set inputbar-bg                 "#2E2E2E"
+set inputbar-fg                 "#AAAAAA"
+
+# Statusbar colors
+set statusbar-bg                "#2E2E2E"
+set statusbar-fg                "#AAAAAA"
+
+# Highlights
+set highlight-color             "#D08770"
+set highlight-active-color      "#803030"
+
+# Default background and foreground
+set default-bg                  "#2A2A2A"
+set default-fg                  "#D8DEE9"
+
+# Loading screen
+set render-loading              "true"
+set render-loading-bg           "#2A2A2A"
+set render-loading-fg           "#888888"
+
+# Recoloring (invert colors)
+set recolor-lightcolor          "#2A2A2A"
+set recolor-darkcolor           "#ECEFF4"
+set recolor                     "true"

@@ -1,60 +1,85 @@
 * {
-   border: none;
-   border-radius: 0;
-   min-height: 0;
-   margin: 0;
-   padding: 0;
-   font-family: "Iosevka Nerd Font", sans-serif;
-   font-size: 13px;
+    margin: 0;
+    padding: 0;
+    font-family: "Iosevka Nerd Font", monospace, sans-serif;
+    font-size: 16px;
+    min-height: 0;
 }
 
 #waybar {
-   background: rgba(11, 14, 20, 0.3);
-   color: #dddddd;
+    background: rgba(10, 10, 10, 0.8);
+    color: #c0c0c0;
 }
 
-/* Module spacing */
-#battery, #cpu, #memory, #network, #pulseaudio {
-   padding: 0 10px;
-   margin: 0 5px;
-   background: #3c5273;
-}
-
-#clock, #tray {
-   padding: 0 10px;
-   background: rgba(48, 82, 115, 0.3);
-}
-
-/* States */
-.warning {
-   color: #f7768e;
-}
-
-.critical {
-   color: #db4b4b;
-}
-
-/* Workspaces */
 #workspaces button {
-   padding: 0 10px;
-   color: #A9B1D6;
+    padding: 2px 10px;
+    margin: 1px 2px;
+    color: #888888;
+    background: transparent;
 }
 
 #workspaces button.focused {
-   color: #ffffff;
-   background: #3c5273;
+    color: #ffffff;
+    background: #333333;
 }
 
 #workspaces button.urgent {
-   color: #f7768e;
+    color: #e06c75;
+    background: rgba(224, 108, 117, 0.15);
 }
 
-/* Tooltips */
-tooltip {
-   background: #1a1b26;
-   border: 1px solid #1f2335;
+#workspaces button:hover {
+    color: #cccccc;
+    background: rgba(255, 255, 255, 0.1);
 }
 
-tooltip label {
-   color: #ffffff;
+#mode {
+    padding: 2px 8px;
+    background: rgba(224, 108, 117, 0.2);
+    color: #e06c75;
+}
+
+#clock {
+    padding: 2px 8px;
+    background: #202020;
+    color: #d0d0d0;
+    font-weight: 600;
+    margin: 0 4px;
+}
+
+#clock:hover {
+    background: #2a2a2a;
+}
+
+#cpu, #memory, #disk, #network, #battery, #pulseaudio {
+    padding: 4px 8px;
+    margin: 0 3px;
+    background: #1e1e1e;
+    color: #cccccc;
+}
+
+#cpu:hover, #memory:hover, #disk:hover, #network:hover, #battery:hover, #pulseaudio:hover {
+    background: #252525;
+}
+
+#cpu.warning, #memory.warning, #disk.warning, #battery.warning {
+    color: #e06c75;
+    background: rgba(224, 108, 117, 0.15);
+}
+
+#cpu.critical, #memory.critical, #disk.critical, #battery.critical {
+    color: #ff5555;
+    background: rgba(255, 85, 85, 0.2);
+}
+
+#network.disconnected, #pulseaudio.muted {
+    color: #888888;
+    background: rgba(136, 136, 136, 0.15);
+}
+
+#tray {
+    padding: 2px 8px;
+    background: #202020;
+    color: #d0d0d0;
+    margin: 0 4px;
 }
