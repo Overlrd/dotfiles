@@ -140,12 +140,8 @@ bindsym $mod+e layout toggle split
 bindsym $mod+a focus parent
 bindsym $mod+Shift+a focus child
 
-## Scratchpad
-bindsym $mod+Shift+grave move scratchpad
-bindsym $mod+grave scratchpad show
-
 ## Screenshot & Recording
-bindsym Print exec grimshot copy area
+bindsym Print exec grimshot --notify savecopy active
 
 ## Clipboard Management
 bindsym $mod+c exec cliphist list | wmenu -bl 5 -p "Clipboard history"| cliphist decode | wl-copy
@@ -166,6 +162,11 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 
 ## Quick Actions
+# Write notes
+bindsym $mod+n exec $HOME/.local/bin/write-notes.sh
+
+# Power management
+bindsym $mod+p exec $HOME/.local/bin/power.sh
 
 ### Resize Mode
 mode "resize" {

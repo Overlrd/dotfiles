@@ -6,32 +6,32 @@ indicator-caps-lock
 
 font-size=20
 
-image=$HOME/Downloads/pape.jpg
+image=$HOME/.local/share/wallpapers/wallpaper.png
 
-# Inside: dark background
+# Inside
 inside-color=000000
 inside-clear-color=000000
 inside-caps-lock-color=000000
 inside-ver-color=000000
 inside-wrong-color=000000
 
-# Key highlight colors: light gray for visibility
+# Key highlight colors
 key-hl-color=aaaaaa
 bs-hl-color=000000
 caps-lock-bs-hl-color=000000
 caps-lock-key-hl-color=aaaaaa
 
-# Ring: use light gray for neutral, red for wrong
+# Ring
 ring-color=aaaaaa
 ring-clear-color=aaaaaa
 ring-caps-lock-color=aaaaaa
 ring-ver-color=aaaaaa
 ring-wrong-color=ff4c4c
 
-# Separator: dark
+# Separator
 separator-color=000000
 
-# Text: light gray where needed
+# Text
 text-color=aaaaaa
 text-clear-color=aaaaaa
 text-caps-lock-color=aaaaaa

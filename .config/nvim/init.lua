@@ -69,7 +69,6 @@ map("n", "<C-l>", "<C-w>l", { desc = "Move right" })
 
 -- Quick fixes
 map("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear highlights" })
-map("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
 -- Visual mode
 map("v", "<", "<gv", { desc = "Indent left" })

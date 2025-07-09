@@ -10,7 +10,7 @@ case "$(printf "Kill Process\nLock\nSuspend\nReboot\nShutdown" | dmenu -i -l 5 $
         ;;
     "Lock")
         # Lock the screen and suspend the system with a sleep interval
-        i3lock -b -f -k -c F5F5F5 --nofork
+        swaylock -f -k -c F5F5F5
         ;;
     "Suspend")
         # Suspend the system
