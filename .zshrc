@@ -48,6 +48,9 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd vcs_info
 PS1='%B[%F{red}%n%f@%m] %2~${vcs_info_msg_0_}%b %# '
 
+# Key Bindings
+bindkey -v  # Use Vi keybindings
+
 # Line Editor Configuration
 autoload -Uz edit-command-line
 zle -N edit-command-line
