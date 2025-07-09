@@ -1,5 +1,7 @@
-/* You may copy+paste this file and use it as it is.
- *
+//
+/* Enhanced Firefox user.js Configuration
+ * Based on Betterfox with detailed comments and privacy enhancements
+ * 
  * If you make changes to your about:config while the program is running, the
  * changes will be overwritten by the user.js when the application restarts.
  *
@@ -9,125 +11,344 @@
 /****************************************************************************
  * Betterfox                                                                *
  * "Ad meliora"                                                             *
- * version: 131                                                             *
+ * version: 138                                                             *
  * url: https://github.com/yokoffing/Betterfox                              *
 ****************************************************************************/
 
 /****************************************************************************
- * SECTION: FASTFOX                                                         *
+ * SECTION: FASTFOX - Performance Optimizations                            *
 ****************************************************************************/
+
 /** GENERAL ***/
+// Content notification interval in microseconds (100000 = 100ms)
+// Higher values reduce CPU usage but may delay content updates
+// Values: 100000 (default), 50000 (faster), 200000 (slower)
 user_pref("content.notify.interval", 100000);
 
-/** GFX ***/
-user_pref("gfx.canvas.accelerated.cache-items", 4096);
+/** GFX - Graphics Acceleration ***/
+// Canvas cache size in MB for hardware acceleration
+// Higher values improve performance with canvas-heavy sites
+// Values: 256, 512 (default), 1024
 user_pref("gfx.canvas.accelerated.cache-size", 512);
+
+// Font cache size in MB for Skia rendering
+// Higher values reduce font rendering overhead
+// Values: 10, 20 (default), 40
 user_pref("gfx.content.skia-font-cache-size", 20);
 
 /** DISK CACHE ***/
-user_pref("browser.cache.jsbc_compression_level", 3);
+// Disable disk cache to improve performance and privacy
+// Forces everything to use memory cache instead
+// Values: true (enable disk cache), false (disable - recommended for privacy)
+user_pref("browser.cache.disk.enable", false);
+
+/** MEMORY CACHE ***/
+// Maximum number of pages kept in session history for back/forward
+// Lower values save memory, higher values improve back/forward speed
+// Values: 2, 4 (default), 8, -1 (unlimited)
+user_pref("browser.sessionhistory.max_total_viewers", 4);
 
 /** MEDIA CACHE ***/
+// Maximum media cache size in KB
+// Higher values improve media playback but use more memory
+// Values: 32768, 65536 (default), 131072
 user_pref("media.memory_cache_max_size", 65536);
+
+// Media cache readahead limit in seconds
+// How much media to buffer ahead
+// Values: 3600, 7200 (default), 14400
 user_pref("media.cache_readahead_limit", 7200);
+
+// Media cache resume threshold in seconds
+// When to resume caching after pause
+// Values: 1800, 3600 (default), 7200
 user_pref("media.cache_resume_threshold", 3600);
 
 /** IMAGE CACHE ***/
+// Bytes decoded per iteration for images
+// Higher values improve image loading speed
+// Values: 16384, 32768 (default), 65536
 user_pref("image.mem.decode_bytes_at_a_time", 32768);
 
 /** NETWORK ***/
+// Maximum total HTTP connections
+// Higher values improve parallel loading
+// Values: 900, 1800 (default), 2700
 user_pref("network.http.max-connections", 1800);
+
+// Maximum persistent connections per server
+// Higher values improve loading from single domains
+// Values: 6 (default), 10 (current), 15
 user_pref("network.http.max-persistent-connections-per-server", 10);
+
+// Maximum urgent connections per host
+// Balances performance vs server load
+// Values: 3, 5 (default), 10
 user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5);
+
+// Disable HTTP request pacing for better performance
+// May increase server load but improves speed
+// Values: true (enable pacing), false (disable - faster)
 user_pref("network.http.pacing.requests.enabled", false);
+
+// DNS cache expiration in seconds
+// Higher values reduce DNS lookups but may use stale data
+// Values: 60, 3600 (default), 86400
 user_pref("network.dnsCacheExpiration", 3600);
+
+// SSL token cache capacity
+// Higher values improve HTTPS performance
+// Values: 2048, 10240 (default), 20480
 user_pref("network.ssl_tokens_cache_capacity", 10240);
 
-/** SPECULATIVE LOADING ***/
+/** SPECULATIVE LOADING - Disabled for Privacy ***/
+// Disable speculative parallel connections
+// Prevents unnecessary connections that leak browsing data
+// Values: 0 (disabled), 6 (default)
+user_pref("network.http.speculative-parallel-limit", 0);
+
+// Disable DNS prefetching to prevent privacy leaks
+// Stops Firefox from resolving DNS for links you haven't clicked
+// Values: true (disable), false (enable - default)
 user_pref("network.dns.disablePrefetch", true);
 user_pref("network.dns.disablePrefetchFromHTTPS", true);
+
+// Disable speculative connections from URL bar
+// Prevents connections when typing in address bar
+// Values: true (enable), false (disable - privacy)
+user_pref("browser.urlbar.speculativeConnect.enabled", false);
+
+// Disable speculative connections from bookmarks/history
+// Values: true (enable), false (disable - privacy)
+user_pref("browser.places.speculativeConnect.enabled", false);
+
+// Disable link prefetching
+// Prevents downloading linked pages before clicking
+// Values: true (enable), false (disable - privacy)
 user_pref("network.prefetch-next", false);
+
+// Disable network predictor
+// Stops Firefox from predicting network requests
+// Values: true (enable), false (disable - privacy)
 user_pref("network.predictor.enabled", false);
 user_pref("network.predictor.enable-prefetch", false);
 
 /** EXPERIMENTAL ***/
+// Enable CSS Grid masonry layout
+// Experimental feature for advanced layouts
+// Values: true (enable), false (disable)
 user_pref("layout.css.grid-template-masonry-value.enabled", true);
-user_pref("dom.enable_web_task_scheduling", true);
 
 /****************************************************************************
- * SECTION: SECUREFOX                                                       *
+ * SECTION: SECUREFOX - Security & Privacy Enhancements                    *
 ****************************************************************************/
+
 /** TRACKING PROTECTION ***/
+// Use strict content blocking for maximum privacy
+// Blocks trackers, fingerprinters, cryptominers, and social media trackers
+// Values: "standard", "strict" (recommended), "custom"
 user_pref("browser.contentblocking.category", "strict");
-user_pref("urlclassifier.trackingSkipURLs", "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com");
-user_pref("urlclassifier.features.socialtracking.skipURLs", "*.instagram.com, *.twitter.com, *.twimg.com");
+
+// Download files to temp directory first (security)
+// Prevents malicious files from being saved directly
+// Values: true (secure), false (direct download)
 user_pref("browser.download.start_downloads_in_tmp_dir", true);
+
+// Delete temporary files on exit
+// Improves privacy by removing traces
+// Values: true (clean), false (keep)
 user_pref("browser.helperApps.deleteTempFileOnExit", true);
+
+// Disable UI tours (reduces attack surface)
+// Values: true (enable), false (disable - recommended)
 user_pref("browser.uitour.enabled", false);
+
+// Enable Global Privacy Control header
+// Tells websites not to sell/share your data
+// Values: true (enable - recommended), false (disable)
 user_pref("privacy.globalprivacycontrol.enabled", true);
 
 /** OCSP & CERTS / HPKP ***/
+// Disable OCSP to prevent certificate validation leaks
+// May reduce security but improves privacy
+// Values: 0 (disabled), 1 (enabled), 2 (required)
 user_pref("security.OCSP.enabled", 0);
-user_pref("security.remote_settings.crlite_filters.enabled", true);
+
+// Use CRLite for certificate validation
+// Better privacy than OCSP while maintaining security
+// Values: 0 (disabled), 1 (enabled), 2 (enforced)
 user_pref("security.pki.crlite_mode", 2);
 
 /** SSL / TLS ***/
+// Treat unsafe SSL renegotiation as broken
+// Improves security against certain attacks
+// Values: true (secure), false (permissive)
 user_pref("security.ssl.treat_unsafe_negotiation_as_broken", true);
+
+// Show expert certificate error pages
+// Provides more information about SSL errors
+// Values: true (detailed), false (simple)
 user_pref("browser.xul.error_pages.expert_bad_cert", true);
+
+// Disable TLS 0-RTT data
+// Prevents replay attacks but may slow initial connections
+// Values: true (allow), false (disable - secure)
 user_pref("security.tls.enable_0rtt_data", false);
 
 /** DISK AVOIDANCE ***/
+// Force media cache in memory during private browsing
+// Prevents media files from being saved to disk
+// Values: true (memory only), false (allow disk)
 user_pref("browser.privatebrowsing.forceMediaMemoryCache", true);
+
+// Session store interval in milliseconds
+// How often Firefox saves session data
+// Values: 15000 (default), 60000 (current - less frequent)
 user_pref("browser.sessionstore.interval", 60000);
 
 /** SHUTDOWN & SANITIZING ***/
+// Reset private browsing mode on restart
+// Ensures complete cleanup of private sessions
+// Values: true (reset), false (preserve)
+user_pref("browser.privatebrowsing.resetPBM.enabled", true);
+
+// Enable custom history settings
+// Required for granular history control
+// Values: true (custom), false (default)
 user_pref("privacy.history.custom", true);
 
 /** SEARCH / URL BAR ***/
+// Trim HTTPS from URL bar display
+// Cleaner appearance while maintaining security
+// Values: true (trim), false (show full URL)
 user_pref("browser.urlbar.trimHttps", true);
+
+// Show full URL when interacting with address bar
+// Values: true (show on interaction), false (always trimmed)
 user_pref("browser.urlbar.untrimOnUserInteraction.featureGate", true);
+
+// Enable separate private search engine selection
+// Values: true (separate engines), false (same engine)
 user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
+
+// Enable search engine alias refresh
+// Values: true (enable), false (disable)
 user_pref("browser.urlbar.update2.engineAliasRefresh", true);
+
+// Disable search suggestions for privacy
+// Prevents queries from being sent to search engines while typing
+// Values: true (enable), false (disable - privacy)
 user_pref("browser.search.suggest.enabled", false);
+
+// Disable Firefox Suggest quick suggestions
+// Prevents data sharing with Mozilla/partners
+// Values: true (enable), false (disable - privacy)
 user_pref("browser.urlbar.quicksuggest.enabled", false);
+
+// Disable URL bar group labels
+// Values: true (show labels), false (hide)
 user_pref("browser.urlbar.groupLabels.enabled", false);
+
+// Disable form autofill for privacy
+// Prevents form data from being stored
+// Values: true (enable), false (disable - privacy)
 user_pref("browser.formfill.enable", false);
-user_pref("security.insecure_connection_text.enabled", true);
-user_pref("security.insecure_connection_text.pbmode.enabled", true);
+
+// Show punycode for internationalized domain names
+// Security feature to prevent domain spoofing
+// Values: true (show punycode - secure), false (show unicode)
 user_pref("network.IDN_show_punycode", true);
 
-/** HTTPS-FIRST POLICY ***/
-user_pref("dom.security.https_first", true);
-
 /** PASSWORDS ***/
+// Disable formless password capture
+// Prevents capturing passwords from non-form elements
+// Values: true (enable), false (disable - recommended)
 user_pref("signon.formlessCapture.enabled", false);
+
+// Disable password capture in private browsing
+// Values: true (enable), false (disable - privacy)
 user_pref("signon.privateBrowsingCapture.enabled", false);
+
+// Allow HTTP auth for subresources
+// Values: 1 (allow), 2 (disallow)
 user_pref("network.auth.subresource-http-auth-allow", 1);
+
+// Don't truncate user pastes
+// Useful for long passwords/tokens
+// Values: true (truncate), false (don't truncate)
 user_pref("editor.truncate_user_pastes", false);
 
 /** MIXED CONTENT + CROSS-SITE ***/
+// Block mixed content display
+// Prevents HTTP content on HTTPS pages
+// Values: true (block - secure), false (allow)
 user_pref("security.mixed_content.block_display_content", true);
+
+// Disable JavaScript in PDFs
+// Security measure to prevent PDF-based attacks
+// Values: true (enable JS), false (disable - secure)
 user_pref("pdfjs.enableScripting", false);
 
 /** EXTENSIONS ***/
+// Control extension installation scopes
+// Values: 5 (current), 1 (profile only), 15 (all scopes)
 user_pref("extensions.enabledScopes", 5);
 
 /** HEADERS / REFERERS ***/
+// Trim cross-origin referer headers
+// Privacy enhancement - only send origin for cross-site requests
+// Values: 0 (full URL), 1 (scheme+host+port+path), 2 (scheme+host+port)
 user_pref("network.http.referer.XOriginTrimmingPolicy", 2);
 
 /** CONTAINERS ***/
+// Enable container tabs UI
+// Allows compartmentalization of browsing sessions
+// Values: true (enable), false (disable)
 user_pref("privacy.userContext.ui.enabled", true);
 
 /** SAFE BROWSING ***/
+// Disable remote safe browsing downloads
+// Prevents sharing download info with Google
+// Values: true (enable), false (disable - privacy)
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
 
-/** MOZILLA ***/
-user_pref("permissions.default.desktop-notification", 2);
+/** GEOLOCATION - MAXIMUM PRIVACY ***/
+// Block geolocation requests by default
+// Values: 0 (always ask), 1 (allow), 2 (block)
 user_pref("permissions.default.geo", 2);
-user_pref("permissions.manager.defaultsUrl", "");
-user_pref("webchannel.allowObject.urlWhitelist", "");
 
-/** TELEMETRY ***/
+// Disable geoclue (Linux geolocation service)
+// Values: true (enable), false (disable - privacy)
+user_pref("geo.provider.use_geoclue", false);
+
+// Disable location services entirely
+// Values: true (enable), false (disable - maximum privacy)
+user_pref("geo.enabled", false);
+
+// Clear location provider URL
+user_pref("geo.provider.network.url", "");
+
+// Disable Wi-Fi geolocation
+user_pref("geo.wifi.uri", "");
+
+/** MOZILLA CONNECTIONS ***/
+// Block desktop notifications by default
+// Values: 0 (always ask), 1 (allow), 2 (block)
+user_pref("permissions.default.desktop-notification", 2);
+
+// Disable search engine updates
+// Values: true (enable), false (disable)
+user_pref("browser.search.update", false);
+
+// Clear default permissions URL
+user_pref("permissions.manager.defaultsUrl", "");
+
+// Disable add-on repository cache
+// Values: true (enable), false (disable - privacy)
+user_pref("extensions.getAddons.cache.enabled", false);
+
+/** TELEMETRY - COMPLETE DISABLE ***/
+// Disable all data submission to Mozilla
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("toolkit.telemetry.unified", false);
@@ -144,99 +365,238 @@ user_pref("toolkit.coverage.opt-out", true);
 user_pref("toolkit.coverage.endpoint.base", "");
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.telemetry", false);
+user_pref("datareporting.usage.uploadEnabled", false);
 
 /** EXPERIMENTS ***/
+// Disable Shield studies
+// Values: true (enable), false (disable - privacy)
 user_pref("app.shield.optoutstudies.enabled", false);
+
+// Disable Normandy recipe system
+// Values: true (enable), false (disable - privacy)
 user_pref("app.normandy.enabled", false);
 user_pref("app.normandy.api_url", "");
 
 /** CRASH REPORTS ***/
+// Disable crash reporting
 user_pref("breakpad.reportURL", "");
 user_pref("browser.tabs.crashReporting.sendReport", false);
-user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false);
-
-/** DETECTION ***/
-user_pref("captivedetect.canonicalURL", "");
-user_pref("network.captive-portal-service.enabled", false);
-user_pref("network.connectivity-service.enabled", false);
 
 /****************************************************************************
- * SECTION: PESKYFOX                                                        *
+ * SECTION: PESKYFOX - UI & UX Improvements                                *
 ****************************************************************************/
+
 /** MOZILLA UI ***/
+// Disable VPN promotion URLs
 user_pref("browser.privatebrowsing.vpnpromourl", "");
+
+// Hide add-ons recommendations pane
+// Values: true (show), false (hide)
 user_pref("extensions.getAddons.showPane", false);
+
+// Disable add-on recommendations
+// Values: true (enable), false (disable)
 user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
+
+// Disable Firefox Discovery
+// Values: true (enable), false (disable)
 user_pref("browser.discovery.enabled", false);
+
+// Don't check if Firefox is default browser
+// Values: true (check), false (don't check)
 user_pref("browser.shell.checkDefaultBrowser", false);
+
+// Disable CFR (Contextual Feature Recommender)
 user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons", false);
 user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", false);
+
+// Hide "More from Mozilla" in preferences
+// Values: true (show), false (hide)
 user_pref("browser.preferences.moreFromMozilla", false);
+
+// Don't show about:config warning
+// Values: true (show warning), false (skip warning)
 user_pref("browser.aboutConfig.showWarning", false);
+
+// Disable welcome screen
+// Values: true (show), false (hide)
 user_pref("browser.aboutwelcome.enabled", false);
+
+// Enable Firefox profiles
+// Values: true (enable), false (disable)
 user_pref("browser.profiles.enabled", true);
 
 /** THEME ADJUSTMENTS ***/
+// Enable userChrome.css support
+// Allows custom CSS styling of Firefox interface
+// Values: true (enable), false (disable)
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-user_pref("browser.compactmode.show", true);
-user_pref("browser.privateWindowSeparation.enabled", false); // WINDOWS
-user_pref("browser.newtabpage.activity-stream.newtabWallpapers.v2.enabled", true);
 
-/** COOKIE BANNER HANDLING ***/
-user_pref("cookiebanners.service.mode", 1);
-user_pref("cookiebanners.service.mode.privateBrowsing", 1);
+// Show compact mode option
+// Values: true (show option), false (hide)
+user_pref("browser.compactmode.show", true);
+
+// Disable private window separation (Windows)
+// Values: true (separate), false (don't separate)
+user_pref("browser.privateWindowSeparation.enabled", false);
 
 /** FULLSCREEN NOTICE ***/
+// Remove fullscreen transition delays
 user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
+
+// Disable fullscreen warning timeout
+// Values: 0 (no warning), 3000 (default - 3 seconds)
 user_pref("full-screen-api.warning.timeout", 0);
 
 /** URL BAR ***/
-user_pref("browser.urlbar.suggest.calculator", true);
+// Enable unit conversion in URL bar
+// Values: true (enable), false (disable)
 user_pref("browser.urlbar.unitConversion.enabled", true);
+
+// Disable trending searches
+// Values: true (enable), false (disable - privacy)
 user_pref("browser.urlbar.trending.featureGate", false);
 
+// Enable text fragments
+// Values: true (enable), false (disable)
+user_pref("dom.text_fragments.create_text_fragment.enabled", true);
+
 /** NEW TAB PAGE ***/
-user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
-user_pref("browser.newtabpage.activity-stream.showWeather", false);
+// Clear default top sites
+user_pref("browser.newtabpage.activity-stream.default.sites", "");
+
+// Disable sponsored top sites
+// Values: true (show), false (hide)
+user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
+
+// Disable Pocket stories section
+// Values: true (show), false (hide)
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 
+// Disable sponsored content
+// Values: true (show), false (hide)
+user_pref("browser.newtabpage.activity-stream.showSponsored", false);
+
 /** POCKET ***/
+// Disable Pocket integration
+// Values: true (enable), false (disable)
 user_pref("extensions.pocket.enabled", false);
 
 /** DOWNLOADS ***/
+// Don't add downloads to recent documents
+// Values: true (add), false (don't add - privacy)
 user_pref("browser.download.manager.addToRecentDocs", false);
 
 /** PDF ***/
-user_pref("browser.download.open_pdf_attachments_inline", true);
+// Don't open PDF attachments inline
+// Values: true (open inline), false (download)
+user_pref("browser.download.open_pdf_attachments_inline", false);
 
 /** TAB BEHAVIOR ***/
+// Keep bookmark menu open when opening in tab
+// Values: true (close menu), false (keep open)
 user_pref("browser.bookmarks.openInTabClosesMenu", false);
+
+// Show "View Image Info" in context menu
+// Values: true (show), false (hide)
 user_pref("browser.menu.showViewImageInfo", true);
+
+// Highlight all matches in find bar
+// Values: true (highlight all), false (highlight current)
 user_pref("findbar.highlightAll", true);
+
+// Don't select space when double-clicking words
+// Values: true (select space), false (don't select)
 user_pref("layout.word_select.eat_space_to_next_word", false);
 
-
-
 /****************************************************************************
- * SECTION: SMOOTHFOX                                                       *
+ * SECTION: ENHANCED PRIVACY & FINGERPRINTING PROTECTION                   *
 ****************************************************************************/
-// visit https://github.com/yokoffing/Betterfox/blob/main/Smoothfox.js
-// Enter your scrolling overrides below this line:
 
-// * [SETTING] General>Downloads>Always ask you where to save files ***/
-user_pref("browser.download.useDownloadDir", false);
-/* 2652: disable downloads panel opening on every download [FF96+] ***/
-user_pref("browser.download.alwaysOpenPanel", false);
-/* 2653: disable adding downloads to the system's "recent documents" list ***/
-user_pref("browser.download.manager.addToRecentDocs", false);
-/* 2654: enable user interaction for security by always asking how to handle new mimetypes [FF101+]
- * [SETTING] General>Files and Applications>What should Firefox do with other files ***/
-user_pref("browser.download.always_ask_before_handling_new_types", true);
+/** FINGERPRINTING RESISTANCE ***/
+// Enable comprehensive fingerprinting protection
+// This may break some sites but provides maximum privacy
+// Values: true (enable - maximum privacy), false (disable)
+user_pref("privacy.resistFingerprinting", true);
 
-/****************************************************************************
- * END: BETTERFOX                                                           *
-****************************************************************************/
+// Spoof timezone to UTC when fingerprinting resistance is enabled
+// Values: true (spoof), false (use real timezone)
+user_pref("privacy.resistFingerprinting.spoofTimeZone", true);
+
+// Block fingerprinting in all modes
+// Values: true (block), false (allow)
+user_pref("privacy.trackingprotection.fingerprinting.enabled", true);
+user_pref("privacy.trackingprotection.cryptomining.enabled", true);
+
+// Disable WebGL for fingerprinting protection
+// May break some websites and games
+// Values: true (enable WebGL), false (disable - privacy)
+user_pref("webgl.disabled", true);
+
+// Disable Canvas fingerprinting
+// Values: true (enable canvas), false (disable - privacy)
+user_pref("gfx.canvas.hide_fingerprinting", true);
+
+// Disable font fingerprinting
+user_pref("browser.display.use_document_fonts", 0);
+
+/** HISTORY & DATA RETENTION - NON-PERSISTENT HISTORY ***/
+// Clear history when Firefox closes
+user_pref("privacy.sanitize.sanitizeOnShutdown", true);
+
+// Specify what to clear on shutdown (everything except logins)
+user_pref("privacy.clearOnShutdown.cache", true);
+user_pref("privacy.clearOnShutdown.cookies", false);  // Keep cookies for persistent logins
+user_pref("privacy.clearOnShutdown.downloads", true);
+user_pref("privacy.clearOnShutdown.formdata", true);
+user_pref("privacy.clearOnShutdown.history", true);
+user_pref("privacy.clearOnShutdown.offlineApps", true);
+user_pref("privacy.clearOnShutdown.sessions", false);  // Keep sessions for tabs
+user_pref("privacy.clearOnShutdown.siteSettings", false);  // Keep site permissions
+
+// Don't remember browsing history
+// Values: 0 (remember), 1 (never remember), 2 (custom)
+user_pref("places.history.enabled", false);
+
+// Disable location bar suggestions from history
+user_pref("browser.urlbar.suggest.history", false);
+user_pref("browser.urlbar.suggest.bookmark", true);  // Keep bookmarks
+user_pref("browser.urlbar.suggest.openpage", false);
+
+/** COOKIE & SESSION MANAGEMENT ***/
+// Keep cookies until they expire (for persistent logins)
+// Values: 0 (until expiry), 1 (until browser close), 2 (accept for session), 3 (never accept)
+user_pref("network.cookie.lifetimePolicy", 0);
+
+// Accept cookies from visited sites only
+// Values: 0 (accept all), 1 (accept from originating server only), 2 (never accept), 3 (visited only)
+user_pref("network.cookie.cookieBehavior", 1);
+
+// Enable same-site cookie protection
+// Values: 0 (disabled), 1 (enabled)
+user_pref("network.cookie.sameSite.laxByDefault", true);
+
+/** PERMISSIONS & SITE DATA ***/
+// Block camera access by default
+// Values: 0 (always ask), 1 (allow), 2 (block)
+user_pref("permissions.default.camera", 2);
+
+// Block microphone access by default
+// Values: 0 (always ask), 1 (allow), 2 (block)  
+user_pref("permissions.default.microphone", 2);
+
+// Block autoplay media
+// Values: 0 (allow), 1 (block audio), 2 (block all), 5 (block all with exceptions)
+user_pref("media.autoplay.default", 5);
+
+// Disable push notifications by default
+// Values: 0 (always ask), 1 (allow), 2 (block)
+user_pref("dom.push.enabled", false);
+
+// Disable service workers (may break some modern websites)
+// Values: true (enable), false (disable - privacy)
+user_pref("dom.serviceWorkers.enabled", false);
 
 /****************************************************************************
  * START: MY OVERRIDES                                                      *
@@ -245,162 +605,26 @@ user_pref("browser.download.always_ask_before_handling_new_types", true);
 // visit https://github.com/yokoffing/Betterfox/wiki/Optional-Hardening
 // Enter your personal overrides below this line:
 
+// Example: If you want to re-enable WebGL for specific sites:
+// user_pref("webgl.disabled", false);
 
-// window fullscreen with i3wm
-user_pref("full-screen-api.ignore-widgets", true);
+// Example: If you want to allow geolocation for specific trusted sites:
+// You would need to set permissions manually in Firefox for those sites
 
-// https://brainfucksec.github.io/firefox-hardening-guide#firefox-preferences
-user_pref("geo.provider.use_gpsd", false);
-user_pref("geo.provider.use_geoclue", false);
-user_pref("browser.region.network.url", "");
-user_pref("browser.region.update.enabled", false);
-user_pref("intl.accept_languages", "en-US, en");
+// Example: If some sites break with fingerprinting resistance:
+// user_pref("privacy.resistFingerprinting", false);
 
-// Block fingerpinting - may break some websites
-user_pref("privacy.resistfingerprinting", true);
+/****************************************************************************
+ * SECTION: SMOOTHFOX                                                       *
+****************************************************************************/
+// visit https://github.com/yokoffing/Betterfox/blob/main/Smoothfox.js
+// Enter your scrolling overrides below this line:
 
-// Default home page
-user_pref("browser.startup.page", 1);
-user_pref("browser.startup.homepage", "about:home");
-user_pref("browser.newtabpage.activity-stream.showSponsored", false); // [FF58+]
-user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false); // [FF83+] Shortcuts>Sponsored shortcuts
+// Example smooth scrolling preferences:
+// user_pref("general.smoothScroll", true);
+// user_pref("mousewheel.min_line_scroll_amount", 10);
+// user_pref("general.smoothScroll.mouseWheel.durationMinMS", 80);
 
-// bookmarks
-// Disable Bookmarks Toolbar
-user_pref("browser.toolbars.bookmarks.visibility", "never");
-
-// Remove the Bookmarks Menu item
-user_pref("browser.bookmarks.menu", false);
-
-// Remove Bookmarks Sidebar
-user_pref("browser.sidebar.bookmarks", false);
-
-// Language / Locale
-user_pref("intl.accept_languages", "en-US, en");
-user_pref("javascript.use_us_english_locale", true);
-
-// Disable saving passwords
-user_pref("signon.rememberSignons", false);
-// Disable formless login capture for Password Manager:
-user_pref("signon.formlessCapture.enabled", false);
-
-/* 0322: disable personalized Extension Recommendations in about:addons and AMO [FF65+]
- * [NOTE] This pref has no effect when Health Reports (0331) are disabled
- * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to make personalized extension recommendations
- * [1] https://support.mozilla.org/kb/personalized-extension-recommendations ***/
-user_pref("browser.discovery.enabled", false);
-/* 0323: disable shopping experience [FF116+]
- * [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1840156#c0 ***/
-user_pref("browser.shopping.experience2023.enabled", false); // [DEFAULT: false]
-
-// FROM arkenfox
-/*** [SECTION 2800]: SHUTDOWN & SANITIZING ***/
-user_pref("_user.js.parrot", "2800 syntax error: the parrot's bleedin' demised!");
-/* 2810: enable Firefox to clear items on shutdown
- * [NOTE] In FF129+ clearing "siteSettings" on shutdown (2811), or manually via site data (2820) and
- * via history (2830), will no longer remove sanitize on shutdown "cookie and site data" site exceptions (2815)
- * [SETTING] Privacy & Security>History>Custom Settings>Clear history when Firefox closes | Settings ***/
-user_pref("privacy.sanitize.sanitizeOnShutdown", true);
-
-/** SANITIZE ON SHUTDOWN: IGNORES "ALLOW" SITE EXCEPTIONS | v2 migration is FF128+ ***/
-/* 2811: set/enforce what items to clear on shutdown (if 2810 is true) [SETUP-CHROME]
- * [NOTE] If "history" is true, downloads will also be cleared ***/
-user_pref("privacy.clearOnShutdown.cache", true);     // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown_v2.cache", true);  // [FF128+] [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.downloads", true); // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.formdata", true);  // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.history", true);   // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", true); // [FF128+] [DEFAULT: true]
-   // user_pref("privacy.clearOnShutdown.siteSettings", false); // [DEFAULT: false]
-   // user_pref("privacy.clearOnShutdown_v2.siteSettings", false); // [FF128+] [DEFAULT: false]
-/* 2812: set Session Restore to clear on shutdown (if 2810 is true) [FF34+]
- * [NOTE] Not needed if Session Restore is not used (0102) or it is already cleared with history (2811)
- * [NOTE] If true, this prevents resuming from crashes (also see 5008) ***/
-   // user_pref("privacy.clearOnShutdown.openWindows", true);
-
-/** SANITIZE ON SHUTDOWN: RESPECTS "ALLOW" SITE EXCEPTIONS FF103+ | v2 migration is FF128+ ***/
-/* 2815: set "Cookies" and "Site Data" to clear on shutdown (if 2810 is true) [SETUP-CHROME]
- * [NOTE] Exceptions: A "cookie" permission also controls "offlineApps" (see note below). For cross-domain logins,
- * add exceptions for both sites e.g. https://www.youtube.com (site) + https://accounts.google.com (single sign on)
- * [NOTE] "offlineApps": Offline Website Data: localStorage, service worker cache, QuotaManager (IndexedDB, asm-cache)
- * [NOTE] "sessions": Active Logins (has no site exceptions): refers to HTTP Basic Authentication [1], not logins via cookies
- * [WARNING] Be selective with what sites you "Allow", as they also disable partitioning (1767271)
- * [SETTING] to add site exceptions: Ctrl+I>Permissions>Cookies>Allow (when on the website in question)
- * [SETTING] to manage site exceptions: Options>Privacy & Security>Permissions>Settings
- * [1] https://en.wikipedia.org/wiki/Basic_access_authentication ***/
-user_pref("privacy.clearOnShutdown.cookies", true); // Cookies
-user_pref("privacy.clearOnShutdown.offlineApps", true); // Site Data
-user_pref("privacy.clearOnShutdown.sessions", true);  // Active Logins [DEFAULT: true]
-user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", true); // Cookies, Site Data, Active Logins [FF128+]
-
-/** SANITIZE SITE DATA: IGNORES "ALLOW" SITE EXCEPTIONS ***/
-/* 2820: set manual "Clear Data" items [SETUP-CHROME] [FF128+]
- * Firefox remembers your last choices. This will reset them when you start Firefox
- * [SETTING] Privacy & Security>Browser Privacy>Cookies and Site Data>Clear Data ***/
-user_pref("privacy.clearSiteData.cache", true);
-user_pref("privacy.clearSiteData.cookiesAndStorage", false); // keep false until it respects "allow" site exceptions
-user_pref("privacy.clearSiteData.historyFormDataAndDownloads", true);
-   // user_pref("privacy.clearSiteData.siteSettings", false);
-
-/** SANITIZE HISTORY: IGNORES "ALLOW" SITE EXCEPTIONS | clearHistory migration is FF128+ ***/
-/* 2830: set manual "Clear History" items, also via Ctrl-Shift-Del [SETUP-CHROME]
- * Firefox remembers your last choices. This will reset them when you start Firefox
- * [NOTE] Regardless of what you set "downloads" to, as soon as the dialog
- * for "Clear Recent History" is opened, it is synced to the same as "history"
- * [SETTING] Privacy & Security>History>Custom Settings>Clear History ***/
-user_pref("privacy.cpd.cache", true);    // [DEFAULT: true]
-user_pref("privacy.clearHistory.cache", true);
-user_pref("privacy.cpd.formdata", true); // [DEFAULT: true]
-user_pref("privacy.cpd.history", true);  // [DEFAULT: true]
-   // user_pref("privacy.cpd.downloads", true); // not used, see note above
-user_pref("privacy.clearHistory.historyFormDataAndDownloads", true);
-user_pref("privacy.cpd.cookies", false);
-user_pref("privacy.cpd.sessions", true); // [DEFAULT: true]
-user_pref("privacy.cpd.offlineApps", false); // [DEFAULT: false]
-user_pref("privacy.clearHistory.cookiesAndStorage", false);
-   // user_pref("privacy.cpd.openWindows", false); // Session Restore
-   // user_pref("privacy.cpd.passwords", false);
-   // user_pref("privacy.cpd.siteSettings", false);
-   // user_pref("privacy.clearHistory.siteSettings", false);
-
-/** SANITIZE MANUAL: TIMERANGE ***/
-/* 2840: set "Time range to clear" for "Clear Data" (2820) and "Clear History" (2830)
- * Firefox remembers your last choice. This will reset the value when you start Firefox
- * 0=everything, 1=last hour, 2=last two hours, 3=last four hours, 4=today
- * [NOTE] Values 5 (last 5 minutes) and 6 (last 24 hours) are not listed in the dropdown,
- * which will display a blank value, and are not guaranteed to work ***/
-user_pref("privacy.sanitize.timeSpan", 0);
-
-/*** [SECTION 4000]: FPP (fingerprintingProtection)
-   RFP (4501) overrides FPP
-
-   In FF118+ FPP is on by default in private windows (4001) and in FF119+ is controlled
-   by ETP (2701). FPP will also use Remote Services in future to relax FPP protections
-   on a per site basis for compatibility (4004).
-
-   https://searchfox.org/mozilla-central/source/toolkit/components/resistfingerprinting/RFPTargetsDefault.inc
-
-   [NOTE] RFPTargets + granular overrides are somewhat experimental and may produce unexpected results
-   - e.g. FrameRate can only be controlled per process, not per origin
-
-   1826408 - restrict fonts to system (kBaseFonts + kLangPackFonts) (Windows, Mac, some Linux)
-      https://searchfox.org/mozilla-central/search?path=StandardFonts*.inc
-   1858181 - subtly randomize canvas per eTLD+1, per session and per window-mode (FF120+)
-***/
-user_pref("_user.js.parrot", "4000 syntax error: the parrot's bereft of life!");
-/* 4001: enable FPP in PB mode [FF114+]
- * [NOTE] In FF119+, FPP for all modes (7016) is enabled with ETP Strict (2701) ***/
-   // user_pref("privacy.fingerprintingProtection.pbmode", true); // [DEFAULT: true FF118+]
-/* 4002: set global FPP overrides [FF114+]
- * uses "RFPTargets" [1] which despite the name these are not used by RFP
- * e.g. "+AllTargets,-CSSPrefersColorScheme,-JSDateTimeUTC" = all targets but allow prefers-color-scheme and do not change timezone
- * e.g. "-AllTargets,+CanvasRandomization,+JSDateTimeUTC" = no targets but do use FPP canvas and change timezone
- * [NOTE] Not supported by arkenfox. Either use RFP or FPP at defaults
- * [1] https://searchfox.org/mozilla-central/source/toolkit/components/resistfingerprinting/RFPTargets.inc ***/
-   // user_pref("privacy.fingerprintingProtection.overrides", "");
-/* 4003: set granular FPP overrides
- * JSON format: e.g."[{\"firstPartyDomain\": \"netflix.com\", \"overrides\": \"-CanvasRandomization,-FrameRate,\"}]"
- * [NOTE] Not supported by arkenfox. Either use RFP or FPP at defaults ***/
-   // user_pref("privacy.fingerprintingProtection.granularOverrides", "");
-/* 4004: disable remote FPP overrides [FF127+] ***/
-   // user_pref("privacy.fingerprintingProtection.remoteOverrides.enabled", false);
+/****************************************************************************
+ * END: BETTERFOX                                                           *
+****************************************************************************/

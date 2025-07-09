@@ -1,64 +1,51 @@
 general {
-    output_format = "i3bar"
-    colors = true
-    markup = pango
-    interval = 5
+        colors = true
+        interval = 5
+        color_good = "#b8b08d"
+        color_degraded = "#f2d492"
+        color_bad = "#f29559"
 }
 
-# Define order of items in the bar
-order += "load"
-order += "cpu_temperature 0"
+order += "cpu_usage"
 order += "memory"
-order += "wireless wlp2s0"
+order += "ethernet _first_"
+order += "wireless _first_"
 order += "volume master"
-order += "battery 0"
-order += "time"
+order += "battery all"
+order += "tztime local"
 
-# CPU load: Icon in accent (ephemeral flash) and text in soft off-white.
-load {
-    format = "<span background='#E57A44' foreground='#1C1C24'>   </span><span background='#1C1C24' foreground='#F2E9E1'> Load: %5min </span>"
+cpu_usage {
+        format = "CPU %usage"
 }
 
-# CPU temperature: Using the same scheme; icon in accent, text in soft color.
-cpu_temperature 0 {
-    format = "<span background='#E57A44' foreground='#1C1C24'>  </span><span background='#1C1C24' foreground='#F2E9E1'> Temp: %degrees°C </span>"
-    path = "/sys/class/thermal/thermal_zone0/temp"
-}
-
-# Memory usage: Icon with accent color; text in soft off-white.
 memory {
-    format = "<span background='#E57A44' foreground='#1C1C24'> 󰍛 </span><span background='#1C1C24' foreground='#F2E9E1'> RAM: %used / %total </span>"
+        format = "RAM %used/%total"
+        threshold_degraded = "1G"
+        format_degraded = "MEMORY < %available"
 }
 
-# Wireless status: When connected, show SSID; icon uses accent.
-wireless wlp2s0 {
-    format_up = "<span background='#E57A44' foreground='#1C1C24'>   </span><span background='#1C1C24' foreground='#F2E9E1'> %essid </span>"
-    format_down = "<span background='#D9534F' foreground='#1C1C24'> 󰖪  </span><span background='#1C1C24' foreground='#F2E9E1'> Disconnected </span>"
+ethernet _first_ {
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
 }
 
-# Volume control: Icon color changes when muted.
+wireless _first_ {
+        format_up = "W: (%quality at %essid) %ip"
+        format_down = "W: down"
+}
+
 volume master {
-    format = "<span background='#E57A44' foreground='#1C1C24'>   </span><span background='#1C1C24' foreground='#F2E9E1'> Volume: %volume </span>"
-    format_muted = "<span background='#D9534F' foreground='#1C1C24'>  </span><span background='#1C1C24' foreground='#F2E9E1'> Muted </span>"
-    device = "default"
-    mixer = "Master"
-    mixer_idx = 0
+        format = "♪ %volume"
+        format_muted = "♪ muted (%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
 }
 
-# Battery status: Keeping detailed info with status icons.
-battery 0 {
-    last_full_capacity = true
-    format = "<span background='#E57A44' foreground='#1C1C24'> %status </span><span background='#1C1C24' foreground='#F2E9E1'> %percentage </span>"
-    format_down = "<span background='#D9534F' foreground='#1C1C24'> No Battery </span>"
-    status_chr = " +"
-    status_bat = " "
-    status_full = " "
-    path = "/sys/class/power_supply/BAT%d/uevent"
-    low_threshold = 30
-    integer_battery_capacity = true
+battery all {
+        format = "%status %percentage %remaining"
 }
 
-# Time display: Icon with accent; text clean and legible.
-time {
-    format = "<span background='#E57A44' foreground='#1C1C24'> 󰃭  </span><span background='#1C1C24' foreground='#F2E9E1'> %b %d | %H:%M </span>"
+tztime local {
+        format = "%Y-%m-%d %H:%M:%S"
 }

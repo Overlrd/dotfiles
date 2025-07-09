@@ -52,24 +52,6 @@ zstyle ':vcs_info:*' stagedstr ' +'
 zstyle ':vcs_info:git:*' formats ' (%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats ' (%b|%a%u%c)'
 
-# Key Bindings
-bindkey -v  # Use Vi keybindings
-
-# Add shell-to-Neovim editing feature
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd e edit-command-line
-
-# Vi mode indicator in prompt
-function zle-keymap-select {
-  vi_mode="${${KEYMAP/vicmd/[VI]}/(main|viins)/}"
-  zle reset-prompt
-}
-zle -N zle-keymap-select
-
-# Initialize vi_mode variable
-vi_mode=""
-
 # Aliases
 alias vim=nvim
 alias c=clear
@@ -81,5 +63,5 @@ alias l='ls -CF'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-# 
+# PATH Variables
 export PATH="/$HOME/.local/bin:$PATH"

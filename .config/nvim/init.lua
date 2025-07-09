@@ -1,14 +1,9 @@
 -- init.lua
--- Simple, solid Neovim configuration
-
 local opt = vim.opt
 local g = vim.g
 local map = vim.keymap.set
+g.mapleader = vim.keycode("<space>")
 
---[[ Leader Key ]]
-g.mapleader = " "
-
---[[ Basic Settings ]]
 -- UI
 opt.number = true
 opt.relativenumber = true
@@ -21,7 +16,7 @@ opt.background = "dark"
 -- Indentation
 opt.expandtab = true
 opt.tabstop = 4
-opt.shiftwidth = 4
+opt.shiftwidth = 0
 opt.smartindent = true
 
 -- Search
@@ -32,7 +27,6 @@ opt.incsearch = true
 
 -- Files
 opt.swapfile = false
-opt.backup = false
 opt.undofile = true
 opt.undodir = vim.fn.stdpath("cache") .. "/undodir"
 opt.autowrite = true
@@ -45,8 +39,8 @@ opt.timeoutlen = 300
 opt.updatetime = 250
 opt.clipboard = "unnamedplus"
 
---[[ Colorscheme ]]
-vim.cmd('colorscheme default')
+-- Colorscheme
+vim.cmd('colorscheme retrobox')
 vim.cmd [[highlight Normal guibg=NONE ctermbg=NONE]]
 
 --[[ Key Mappings ]]
@@ -89,20 +83,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
--- Return to last position
-vim.api.nvim_create_autocmd("BufReadPost", {
-  callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    local lcount = vim.api.nvim_buf_line_count(0)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-})
-
--- Auto-resize windows
-vim.api.nvim_create_autocmd("VimResized", {
-  callback = function()
-    vim.cmd("wincmd =")
-  end,
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "txt" },
+  command = "setlocal spell spelllang=en_us,fr",
 })

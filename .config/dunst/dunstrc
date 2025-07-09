@@ -1,0 +1,86 @@
+[global]
+monitor = 0
+follow = none
+width = 300
+height = (0, 300)
+origin = top-right
+offset = (10, 50)
+scale = 0
+notification_limit = 3
+progress_bar = true
+progress_bar_height = 5
+progress_bar_frame_width = 1
+progress_bar_min_width = 150
+progress_bar_max_width = 300
+progress_bar_corner_radius = 0
+progress_bar_corners = all
+icon_corner_radius = 0
+icon_corners = all
+indicate_hidden = yes
+transparency = 0
+separator_height = 0
+padding = 8
+horizontal_padding = 8
+text_icon_padding = 0
+frame_width = 1
+frame_color = "#D0D0D0"
+gap_size = 1
+separator_color = frame
+sort = yes
+markup = full
+format = "<b>%s</b>\n%b"
+alignment = center
+vertical_alignment = center
+show_age_threshold = 60
+ellipsize = middle
+ignore_newline = no
+stack_duplicates = true
+hide_duplicate_count = false
+show_indicators = yes
+
+### Icons ###
+enable_recursive_icon_lookup = true
+icon_theme = Adwaita
+icon_position = left
+min_icon_size = 32
+max_icon_size = 128
+icon_path = /usr/share/icons/hicolor
+
+### History ###
+sticky_history = yes
+history_length = 5
+
+### Misc/Advanced ###
+dmenu = /usr/bin/dmenu -p dunst:
+browser = /usr/bin/xdg-open
+always_run_script = true
+title = Dunst
+class = Dunst
+corner_radius = 0
+corners = all
+ignore_dbusclose = false
+
+[play_sound]
+    summary = "*"
+    script = $HOME/.config/dunst/alert.sh
+
+[urgency_low]
+background = "#1C1C1C"
+foreground = "#888888"
+timeout = 10
+default_icon = dialog-information
+
+[urgency_normal]
+background = "#2E2E2E"
+foreground = "#D0D0D0"
+timeout = 10
+override_pause_level = 30
+default_icon = dialog-information
+
+[urgency_critical]
+background = "#3A3A3A"
+foreground = "#FFFFFF"
+frame_color = "#D0D0D0"
+timeout = 0
+override_pause_level = 60
+default_icon = dialog-warning

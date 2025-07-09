@@ -19,14 +19,14 @@ set $browser firefox
 # Appearance
 font pango:monospace 11
 seat * xcursor_theme Adwaita 15
-gaps inner 3
-gaps outer 3
+gaps inner 0
+gaps outer 5
 smart_gaps off
 smart_borders off
 
 ### Output Configuration
 output * {
-    bg $HOME/.local/share/wallpapers/wallpaper.jpg fill
+    bg $HOME/.local/share/wallpapers/wallpaper.png fill
     adaptive_sync on
     max_render_time 1
 }
@@ -61,7 +61,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 }
 
 input type:touchpad {
-    tap enabled
+    tap disabled
     natural_scroll enabled
     scroll_factor 0.5
     dwt enabled
@@ -219,19 +219,29 @@ for_window [class="vlc"] inhibit_idle focus
 assign [app_id="chromium"] workspace number 2
 assign [app_id="firefox"] workspace number 1
 
+### Color Scheme (Warm Earth Tones)
+# class                 border    bground    text      indicator   child_border
+client.focused          #c29559   #d29559    #202c39   #f2d492     #d29559
+client.focused_inactive #283845   #283845    #b8b08d   #283845     #283845
+client.unfocused        #202c39   #202c39    #b8b08d   #202c39     #202c39
+client.urgent           #f2d492   #c29559    #202c39   #d29559     #f2d492
+client.placeholder      #283845   #283845    #b8b08d   #283845     #283845
+client.background       #202c39
+
 ### Status Bar
 bar {
-    swaybar_command waybar
+    status_command i3status
+    position top
+    colors {
+        statusline #f2d492
+        background #202c39
+        focused_workspace    #c29559 #d29559 #202c39
+        active_workspace     #283845 #283845 #f2d492
+        inactive_workspace   #202c39 #202c39 #b8b08d
+        urgent_workspace     #c29559 #d29559 #202c39
+        binding_mode         #f2d492 #f2d492 #202c39
+    }
 }
-
-### Color Scheme (Minimal Dark)
-# class                 border    bground    text      indicator   child_border
-client.focused          #B0B0B0   #D0D0D0    #1A1A1A   #888888     #D0D0D0
-client.focused_inactive #2E2E2E   #2E2E2E    #AAAAAA   #2E2E2E     #2E2E2E
-client.unfocused        #1C1C1C   #141414    #888888   #1C1C1C     #1C1C1C
-client.urgent           #3A3A3A   #803030    #FFFFFF   #803030     #3A3A3A
-client.placeholder      #2A2A2A   #2A2A2A    #777777   #2A2A2A     #2A2A2A
-client.background       #101010
 
 ### Productivity Features
 
@@ -239,7 +249,5 @@ client.background       #101010
 focus_follows_mouse yes
 # No focus wrapping
 focus_wrapping no
-# Hide cursor after timeout
-seat * hide_cursor 5000
 # Performance optimizations
 xwayland enable

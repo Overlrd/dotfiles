@@ -4,7 +4,7 @@ general.import = []
 TERM = "alacritty"
 
 [colors.primary]
-background = "#0B0E14"
+background = "#1C1C1C"
 [colors.cursor]
 cursor = "#ffffff"
 
