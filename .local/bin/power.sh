@@ -3,7 +3,11 @@
 # Set dmenu colors to match the i3wm theme
 DMENU_COLORS="-nb #181818 -nf #BBBBBB -sb #2C3E50 -sf #FFFFFF"
 
-case "$(printf "Kill Process\nLock\nSuspend\nReboot\nShutdown" | dmenu -i -l 5 $DMENU_COLORS)" in
+case "$(printf "Network\nKill Process\nLock\nSuspend\nReboot\nShutdown" | dmenu -i -l 5 $DMENU_COLORS)" in
+    "Network")
+        # Launch connman applet cmst
+        cmst &
+        ;;
     "Kill Process")
         # Display list of processes and allow the user to kill one
         ps -u $USER -o pid,comm,%cpu,%mem | dmenu -i -l 10 -p Kill: $DMENU_COLORS | awk '{print $1}' | xargs -r kill
