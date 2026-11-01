@@ -1,14 +1,14 @@
-# Solid background matches the Sway desktop and Foot terminal.
-color=151E1B
+# Solid background matches the Ember Sway desktop.
+color=171512
 font=Iosevka Nerd Font
 font-size=20
 indicator-radius=60
 ignore-empty-password
 show-keyboard-layout
 indicator-caps-lock
-inside-color=151E1B
-ring-color=95B8A2
-key-hl-color=DDE7DE
-bs-hl-color=2D4038
-text-color=DDE7DE
-ring-wrong-color=D88980
+inside-color=171512
+ring-color=D99058
+key-hl-color=E8DFCF
+bs-hl-color=26221D
+text-color=E8DFCF
+ring-wrong-color=C96B62
