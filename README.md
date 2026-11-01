@@ -15,7 +15,7 @@ sudo xbps-install -S sway swaybg foot wmenu i3status mesa-dri dbus elogind \
   swayidle swaylock mako libnotify polkit polkit-gnome \
   xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr \
   zsh helix tmux ncurses-term zathura zathura-pdf-mupdf gammastep \
-  wl-clipboard xdg-utils git
+  wl-clipboard xdg-utils git brightnessctl grim slurp
 ```
 
 Iosevka Nerd Font is installed separately under ~/.local/share/fonts.
@@ -100,6 +100,9 @@ j/k/l/m navigation are retained.
 | Mod + n | Notes picker (wmenu + Foot) |
 | Mod + Shift + n | NetworkManager menu |
 | Mod + Shift + v | Audio mixer |
+| Brightness keys | Adjust intel_backlight by 5%, minimum 5% |
+| Print | Select area and copy PNG to clipboard |
+| Shift + Print | Save all outputs to ~/Pictures/Screenshots |
 | Mod + p (or Mod + Shift + p) | Power mode |
 | Mod + r | Resize mode |
 | Mod + Shift + c | Reload configuration |
@@ -111,8 +114,7 @@ In power mode: l locks, s locks then suspends, r reboots, p powers off.
 Press e to exit Sway (save your work first). Escape or Return cancels. Automatic locking happens after 5 minutes;
 displays switch off after 10 minutes. Keyboard/mouse activity turns them on.
 
-Screenshots, clipboard history, browser assignments, media-player keys and
-brightness keys are omitted until their applications are installed. The notes
+Clipboard history, browser assignments and media-player keys remain unconfigured. The notes
 picker is enabled: it creates `~/.notes` if necessary, opens Markdown notes in
 Foot using `${EDITOR:-hx}`. Mega backup is opt-in: configure `rclone`, then
 export `NOTES_BACKUP=1` to invoke the existing helper after editing.
@@ -124,7 +126,6 @@ The touchpad settings are retained: disabling tap does not disable the device.
 - Check `wpctl status` and `pactl info`; the latter should show PipeWire.
 - Test power-mode locking and unlocking before relying on automatic locking.
 - Check the status bar's network/battery readings.
-- Run `sh ~/.config/sway/check-setup.sh` for missing commands and packages.
 
 Reference: https://docs.voidlinux.org/config/media/pipewire.html
 
@@ -209,12 +210,25 @@ second night-colour daemon alongside it.
 
 ## Remaining setup checks
 
-Run `sh ~/.config/sway/check-setup.sh` inside Sway. This checks local dependencies,
-not just repository declarations; it does not change the machine.
-
-- Brightness keys, screenshots and clipboard history remain unconfigured.
-  brightnessctl, grim and slurp may have been installed manually; verify first.
+- Clipboard history remains unconfigured.
 - Firefox is installed separately. xdg-utils supplies file/URL association tools.
 - Bluetooth support, battery/power tuning and a login greeter are optional follow-ups.
 - Notes cloud backup stays disabled unless explicitly enabled.
 - GPU acceleration was reported working; no software-rendering override is added.
+
+## Backlight and screenshots
+
+Install brightnessctl, grim and slurp; wl-clipboard supplies wl-copy.
+The existing desktop-action.sh helper provides Mako feedback. Backlight controls
+target intel_backlight explicitly, with a 5% floor (rounded up to device units)
+and a 100% ceiling. They also work while locked.
+
+Print starts an area selection; Escape cancels and preserves the clipboard.
+Shift+Print captures all outputs without using the mouse and saves a uniquely
+named PNG in ~/Pictures/Screenshots. Screenshot bindings are not enabled while
+locked. Failed captures report an error rather than success.
+
+If brightness writes are denied, check your video-group membership and the
+brightnessctl udev rules; do not run Sway as root. On Void, adding your normal
+user with `sudo usermod -aG video "$(id -un)"` and logging out/in may be needed.
+The standalone Sway setup checker has been removed.
