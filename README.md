@@ -12,7 +12,8 @@ Install the explicit runtime dependencies (already-installed packages are skippe
 ```sh
 sudo xbps-install -S sway swaybg foot wmenu i3status mesa-dri dbus elogind \
   NetworkManager pipewire wireplumber pulseaudio-utils pavucontrol \
-  swayidle swaylock mako libnotify
+  swayidle swaylock mako libnotify polkit polkit-gnome \
+  xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
 ```
 
 Iosevka Nerd Font is installed separately under ~/.local/share/fonts.
@@ -33,8 +34,10 @@ ln -s /usr/share/examples/pipewire/20-pipewire-pulse.conf ~/.config/pipewire/pip
 ```
 
 Sway starts PipeWire directly. Do not also launch it through an autostart entry
-or another session service. No dex, GTK settings command or Polkit agent is
-launched. The NetworkManager terminal interface uses the network group access.
+or another session service. Sway also exports its Wayland environment to the
+D-Bus activation environment and starts the Polkit GNOME authentication agent.
+No dex or GTK settings command is launched. The NetworkManager terminal
+interface uses the network group access.
 
 ## Applying this branch
 
@@ -55,14 +58,9 @@ A reload applies bindings and appearance but does not rerun ordinary exec lines.
 dbus-run-session sway
 ```
 
-The Dell currently needs this temporary CPU-rendering fallback:
-
-```sh
-WLR_RENDERER=pixman dbus-run-session sway
-```
-
-GPU acceleration remains unresolved. The fallback is deliberately not exported
-globally or embedded in the dotfiles.
+After updating Void packages, the Intel GPU renderer starts normally. Do not
+export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
+fallback.
 
 ## Desktop controls
 
@@ -74,6 +72,7 @@ j/k/l/m navigation are retained.
 | Mod + Return | Terminal |
 | Mod + Shift + Return | Floating terminal |
 | Mod + d | Application launcher |
+| Mod + n | Notes picker (wmenu + Foot) |
 | Mod + Shift + n | NetworkManager menu |
 | Mod + Shift + v | Audio mixer |
 | Mod + p (or Mod + Shift + p) | Power mode |
@@ -87,8 +86,12 @@ In power mode: l locks, s locks then suspends, r reboots, p powers off.
 Press e to exit Sway (save your work first). Escape or Return cancels. Automatic locking happens after 5 minutes;
 displays switch off after 10 minutes. Keyboard/mouse activity turns them on.
 
-Screenshots, clipboard history, note scripts, browser assignments, media-player
-keys and brightness keys are omitted until their applications are installed.
+Screenshots, clipboard history, browser assignments, media-player keys and
+brightness keys are omitted until their applications are installed. The notes
+picker is enabled: it creates `~/.notes` if necessary, opens Markdown notes in
+Foot using `${EDITOR:-nvim}` (install `neovim` or set `EDITOR`), then runs the
+existing Mega backup helper if executable. Configure `rclone` for that backup
+or remove the helper locally if you do not want automatic uploads.
 The touchpad settings are retained: disabling tap does not disable the device.
 
 ## Checks on the target machine
