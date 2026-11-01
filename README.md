@@ -79,10 +79,12 @@ j/k/l/m navigation are retained.
 | Mod + p (or Mod + Shift + p) | Power mode |
 | Mod + r | Resize mode |
 | Mod + Shift + c | Reload configuration |
-| Mod + Shift + e | Exit confirmation |
+| Mod + Shift + e | Power mode (e confirms session exit) |
+| Mod + Ctrl + F9 | Disable both internal ALPS pointers |
+| Mod + Ctrl + F10 | Re-enable both internal ALPS pointers |
 
 In power mode: l locks, s locks then suspends, r reboots, p powers off.
-Escape or Return cancels. Automatic locking happens after 5 minutes;
+Press e to exit Sway (save your work first). Escape or Return cancels. Automatic locking happens after 5 minutes;
 displays switch off after 10 minutes. Keyboard/mouse activity turns them on.
 
 Screenshots, clipboard history, note scripts, browser assignments, media-player
@@ -98,3 +100,13 @@ The touchpad settings are retained: disabling tap does not disable the device.
 - Revisit the renderer error with the Sway debug log.
 
 Reference: https://docs.voidlinux.org/config/media/pipewire.html
+
+## Intermittent pointer fault
+
+Both internal ALPS devices remain enabled at startup. If clicking gets stuck,
+Mod + Ctrl + F9 disables only the internal stick and touchpad; external USB
+mice are unaffected. With no external mouse, use the keyboard, then restore
+internal input with Mod + Ctrl + F10. Recovery shortcuts are in the default
+binding mode; leave resize/power mode with Escape first. They also work while
+locked. This is a workaround, not a diagnosis or guaranteed reset of a stuck
+button. Capture libinput events during the fault to identify its source.
