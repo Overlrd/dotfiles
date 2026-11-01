@@ -29,9 +29,12 @@ smart_borders off
 output * bg #202c39 solid_color
 
 ### Session Startup
+# Export Wayland session details for D-Bus-activated desktop portals.
+exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway XDG_SESSION_TYPE=wayland
 # Run once per session, not on each config reload.
 exec pipewire
 exec mako
+exec /usr/libexec/polkit-gnome-authentication-agent-1
 
 ### Idle & Lock Configuration
 set $lock swaylock -f
@@ -141,6 +144,7 @@ bindsym --locked XF86AudioRaiseVolume exec $desktop_action volume-up
 bindsym --locked XF86AudioMicMute exec $desktop_action mic-mute
 
 ## Quick Actions
+bindsym $mod+n exec bash $HOME/.local/bin/write-notes.sh
 bindsym $mod+Shift+n exec $term --app-id floating_terminal -e nmtui
 bindsym $mod+Shift+v exec pavucontrol
 
