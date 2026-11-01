@@ -1,84 +1,62 @@
-# Zsh Configuration
-# References:
-# https://thevaluable.dev/zsh-install-configure-mouseless/
-# https://thevaluable.dev/zsh-line-editor-configuration-mouseless/
+# Lightweight Zsh: built-in completion, Git prompt and vi editing.
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
+setopt SHARE_HISTORY APPEND_HISTORY
+unsetopt CORRECT
 
-# Colors - Enable colored output for various commands
-autoload -U colors && colors
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
+export EDITOR="${EDITOR:-hx}"
+export VISUAL="${VISUAL:-$EDITOR}"
+export TERMINAL=foot
+typeset -U path PATH
+path=("$HOME/.local/bin" $path)
 
-# Shell Options
-setopt AUTO_CD              # Automatically change to directory if name is typed
-setopt CORRECT              # Command correction
-setopt AUTO_PUSHD           # Automatically push directories onto directory stack
-setopt PUSHD_IGNORE_DUPS    # Avoid duplicate directories in the stack
-setopt HIST_IGNORE_ALL_DUPS # Remove duplicate history entries
-setopt HIST_REDUCE_BLANKS   # Remove excess blanks in history
-setopt HIST_VERIFY          # Show command with history expansion to user before running it
-setopt SHARE_HISTORY        # Share history between all sessions
-setopt APPEND_HISTORY       # Append to history file, don't overwrite it
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=40000
 
-# Environment Variables
-export EDITOR="nvim"
-export TERMINAL="foot"
+autoload -Uz compinit
+compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu select
 
-# History Configuration
-export HISTFILE="$HOME/.zsh_history"
-export HISTSIZE=10000
-export SAVEHIST=10000
-
-# Enhanced Completion
-autoload -U compinit && compinit
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # Case-insensitive completion
-zstyle ':completion:*' menu select                   # Interactive menu selection
-
-# VCS Info Configuration
-autoload -Uz vcs_info
+autoload -Uz vcs_info add-zsh-hook
 setopt prompt_subst
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr ' *'
-zstyle ':vcs_info:*' stagedstr ' +'
+zstyle ':vcs_info:*' unstagedstr '*'
+zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:git:*' formats ' (%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats ' (%b|%a%u%c)'
-
-# Prompt Configuration
-autoload -Uz add-zsh-hook
 add-zsh-hook precmd vcs_info
-PS1='%B[%F{red}%n%f@%m] %2~${vcs_info_msg_0_}%b %# '
+# Failure code, working directory, Git branch/status, prompt.
+PROMPT='%(?..%F{white}exit %?%f )%F{white}%2~%f%F{8}${vcs_info_msg_0_}%f %# '
 
-# Key Bindings
-bindkey -v  # Use Vi keybindings
-
-# Line Editor Configuration
+bindkey -v
+KEYTIMEOUT=10
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey -M vicmd e edit-command-line
+bindkey -M viins '^X^E' edit-command-line
+bindkey -M vicmd '^X^E' edit-command-line
+bindkey -M viins '^R' history-incremental-search-backward
+bindkey -M viins '^[[A' history-search-backward
+bindkey -M viins '^[[B' history-search-forward
+# Free Ctrl+S for the tmux prefix instead of terminal flow control.
+[[ -t 0 ]] && stty -ixon
 
-# Key Bindings (common additions)
-bindkey '^R' history-incremental-search-backward
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
-
-# Aliases
-alias vim=nvim
 alias c=clear
-alias t='tmux new-session -A -D -s main'
 alias q=exit
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 alias ..='cd ..'
 alias ...='cd ../..'
-
-# PATH
-export PATH="$HOME/.local/bin:$PATH"
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# Avoid nesting tmux or detaching another client unexpectedly.
+t() {
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t main
+    else
+        tmux new-session -A -s main
+    fi
+}
