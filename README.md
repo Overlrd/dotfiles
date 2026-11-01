@@ -62,13 +62,14 @@ After updating Void packages, the Intel GPU renderer starts normally. Do not
 export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
 fallback.
 
-## Appearance: Coal & Brass
+## Appearance: Deep Pine
 
 The compact desktop uses Iosevka Nerd Font throughout: 11pt for Swaybar,
 wmenu, Mako and GTK; 13pt for Foot; 20pt for Swaylock. All UI uses square
-corners and restrained spacing. Core colors are charcoal `#181C20`, slate
-`#343A40`, brass `#C3A36A` and warm ivory `#E6E0D4`; soft red marks
-errors. Foot also defines a muted ANSI palette and a 6px inner margin.
+corners and restrained spacing. Core colors are deep pine `#151E1B`, forest
+`#2D4038`, sage `#95B8A2` and pale mist `#DDE7DE`; muted red marks
+errors and soft amber marks warnings. Foot uses a complementary ANSI palette
+and a 6px inner margin.
 
 The GTK 3/4 `settings.ini` files request a dark Adwaita appearance and the
 same font for compatible apps. They are new files: if your Stow setup links
