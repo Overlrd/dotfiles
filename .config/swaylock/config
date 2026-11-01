@@ -1,39 +1,14 @@
+# Solid background avoids wallpaper-path and shell-expansion dependencies.
+color=202c39
+font=Iosevka Nerd Font
+font-size=20
 indicator-radius=60
 ignore-empty-password
-daemonize
 show-keyboard-layout
 indicator-caps-lock
-
-font-size=20
-
-image=$HOME/.local/share/wallpapers/wallpaper.png
-
-# Inside
-inside-color=000000
-inside-clear-color=000000
-inside-caps-lock-color=000000
-inside-ver-color=000000
-inside-wrong-color=000000
-
-# Key highlight colors
-key-hl-color=aaaaaa
-bs-hl-color=000000
-caps-lock-bs-hl-color=000000
-caps-lock-key-hl-color=aaaaaa
-
-# Ring
-ring-color=aaaaaa
-ring-clear-color=aaaaaa
-ring-caps-lock-color=aaaaaa
-ring-ver-color=aaaaaa
+inside-color=202c39
+ring-color=c29559
+key-hl-color=f2d492
+bs-hl-color=b8b08d
+text-color=f2d492
 ring-wrong-color=ff4c4c
-
-# Separator
-separator-color=000000
-
-# Text
-text-color=aaaaaa
-text-clear-color=aaaaaa
-text-caps-lock-color=aaaaaa
-text-ver-color=aaaaaa
-text-wrong-color=ff4c4c
