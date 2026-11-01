@@ -12,7 +12,7 @@ Install the explicit runtime dependencies (already-installed packages are skippe
 ```sh
 sudo xbps-install -S sway swaybg foot wmenu i3status mesa-dri dbus elogind \
   NetworkManager pipewire wireplumber pulseaudio-utils pavucontrol \
-  swayidle swaylock mako
+  swayidle swaylock mako libnotify
 ```
 
 Iosevka Nerd Font is installed separately under ~/.local/share/fonts.
@@ -110,3 +110,16 @@ internal input with Mod + Ctrl + F10. Recovery shortcuts are in the default
 binding mode; leave resize/power mode with Escape first. They also work while
 locked. This is a workaround, not a diagnosis or guaranteed reset of a stuck
 button. Capture libinput events during the fault to identify its source.
+
+## Shortcut feedback
+
+libnotify supplies notify-send; Mako displays its messages. Pointer recovery,
+audio/microphone controls and config reload use .config/sway/desktop-action.sh.
+Audio notifications show the resulting volume and mute state. Reload validates
+the config first. Failed actions produce an error notification instead of a
+success message. Notifications expire after two seconds; they may not be visible
+while the screen is locked. Window navigation and app launches stay quiet because
+their results are already visible. The helper is invoked with sh, so it does not
+need an executable bit. After pulling, check that the helper exists through your
+Stow links; if .config/sway is linked file by file, re-run your original Stow command
+to link the newly added helper before reloading.
