@@ -13,7 +13,9 @@ Install the explicit runtime dependencies (already-installed packages are skippe
 sudo xbps-install -S sway swaybg foot wmenu i3status mesa-dri dbus elogind \
   NetworkManager pipewire wireplumber pulseaudio-utils pavucontrol \
   swayidle swaylock mako libnotify polkit polkit-gnome \
-  xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
+  xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr \
+  zsh helix tmux ncurses-term zathura zathura-pdf-mupdf gammastep \
+  wl-clipboard xdg-utils git
 ```
 
 Iosevka Nerd Font is installed separately under ~/.local/share/fonts.
@@ -112,9 +114,8 @@ displays switch off after 10 minutes. Keyboard/mouse activity turns them on.
 Screenshots, clipboard history, browser assignments, media-player keys and
 brightness keys are omitted until their applications are installed. The notes
 picker is enabled: it creates `~/.notes` if necessary, opens Markdown notes in
-Foot using `${EDITOR:-nvim}` (install `neovim` or set `EDITOR`), then runs the
-existing Mega backup helper if executable. Configure `rclone` for that backup
-or remove the helper locally if you do not want automatic uploads.
+Foot using `${EDITOR:-hx}`. Mega backup is opt-in: configure `rclone`, then
+export `NOTES_BACKUP=1` to invoke the existing helper after editing.
 The touchpad settings are retained: disabling tap does not disable the device.
 
 ## Checks on the target machine
@@ -123,7 +124,7 @@ The touchpad settings are retained: disabling tap does not disable the device.
 - Check `wpctl status` and `pactl info`; the latter should show PipeWire.
 - Test power-mode locking and unlocking before relying on automatic locking.
 - Check the status bar's network/battery readings.
-- Revisit the renderer error with the Sway debug log.
+- Run `sh ~/.config/sway/check-setup.sh` for missing commands and packages.
 
 Reference: https://docs.voidlinux.org/config/media/pipewire.html
 
@@ -149,3 +150,71 @@ their results are already visible. The helper is invoked with sh, so it does not
 need an executable bit. After pulling, check that the helper exists through your
 Stow links; if .config/sway is linked file by file, re-run your original Stow command
 to link the newly added helper before reloading.
+
+## Shell, editor and multiplexer
+
+.profile exports EDITOR=hx and VISUAL=hx for the desktop; .zprofile already
+sources it. Set Zsh as your login shell after installing it:
+
+```sh
+chsh -s "$(command -v zsh)"
+```
+
+Log out fully and back in to refresh the desktop environment. Zsh uses built-in
+completion and Git status, vi editing, and Ctrl+X Ctrl+E to edit a command in
+Helix. Ctrl+S flow control is disabled on interactive terminals for tmux.
+The t function attaches/creates main without forcibly detaching other clients.
+
+Foot now advertises TERM=foot (the Void package depends on foot-terminfo);
+the colors section is still absent. Remote SSH hosts may need Foot's terminfo
+installed, or use TERM=xterm-256color for that SSH command as a fallback.
+
+tmux retains Ctrl+S as prefix and h/j/k/l navigation. Press the prefix twice
+to send Ctrl+S to an application. Copy-mode y uses wl-copy. Closing a pane
+requires confirmation. RGB support is scoped to Foot; tmux-256color is used
+when installed, with screen-256color as a fallback. ncurses-term supplies
+the full terminfo collection. New Foot windows use the new TERM; existing
+tmux clients should detach/reattach. Reload existing tmux config with
+`tmux source-file ~/.tmux.conf`.
+
+Helix uses a custom Graphite theme with subdued syntax colours, relative line
+numbers, current-line highlighting and a buffer bar when multiple files are open.
+Re-run your original Stow command if necessary to link the new themes directory.
+Use `hx --health` to discover missing language servers and formatters; no
+speculative language-server bundle is installed by these dotfiles.
+
+## PDF reading
+
+Zathura needs a document plugin: install zathura-pdf-mupdf (or the alternative
+zathura-pdf-poppler, not both). Its interface matches Graphite. PDF colours are
+preserved by default; Ctrl+R toggles dark recolouring for reading. Set the PDF
+association after installation:
+
+```sh
+xdg-mime default org.pwmt.zathura.desktop application/pdf
+```
+
+## Night colour
+
+Sway starts:
+`gammastep -m wayland -l 6.1319:1.2228 -t 6500:4000`
+
+-l takes latitude:longitude, using approximate Lomé city coordinates.
+-t sets daytime:nighttime temperatures in kelvin. Daylight remains neutral
+at 6500 K; night becomes warm at 4000 K, with transitions based on the sun.
+No location daemon is needed. The system clock must be correct.
+This is an ordinary exec: reload does not start it; log in again, or run the
+command once manually if Gammastep is not already running. Do not start a
+second night-colour daemon alongside it.
+
+## Remaining setup checks
+
+Run `sh ~/.config/sway/check-setup.sh` inside Sway. This checks local dependencies,
+not just repository declarations; it does not change the machine.
+
+- Brightness keys, screenshots and clipboard history remain unconfigured.
+  brightnessctl, grim and slurp may have been installed manually; verify first.
+- Firefox is installed separately. xdg-utils supplies file/URL association tools.
+- Bluetooth support, battery/power tuning and a login greeter are optional follow-ups.
+- Notes cloud backup stays disabled unless explicitly enabled.
+- GPU acceleration was reported working; no software-rendering override is added.
