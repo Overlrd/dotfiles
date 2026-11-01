@@ -62,17 +62,22 @@ After updating Void packages, the Intel GPU renderer starts normally. Do not
 export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
 fallback.
 
-## Appearance: Ember
+## Appearance: Graphite
 
-The compact desktop uses Iosevka Nerd Font throughout: 11pt for Swaybar,
-wmenu, Mako and GTK; 13pt for Foot; 20pt for Swaylock. Square corners,
-2px borders and compact spacing are retained. The palette uses charcoal
-`#171512`, warm grey `#26221D`, ivory `#E8DFCF`, muted taupe `#A79A87`
-and ember `#D99058`. Warnings use gold `#D8B26E`; errors use soft red
-`#C96B62`. Both the application launcher and notes picker use this palette.
+A neutral black, white and grey desktop. Near-black #0E0E0E surfaces,
+#202020 raised surfaces, #DEDEDE text and muted grey secondary text.
+Windows use subtle 1px grey borders; unfocused borders blend into the
+background. The bar has no bright workspace boxes: the active workspace
+uses white text on dark grey. Urgent states use inverted white/black contrast.
 
-Foot retains its font and 6px inner margin, but has no colors section:
-terminal colours use Foot's defaults, as requested.
+Iosevka Nerd Font remains 11pt for Swaybar, launchers, Mako and GTK,
+13pt for Foot and 20pt for Swaylock. Zero inner/outer gaps keep tiled windows
+flush; square corners and quiet 1px notification borders keep the shell plain.
+Both the application launcher and notes picker use light-grey selection rows.
+
+Foot's colors section remains removed; its palette is the terminal default,
+while its font and 6px padding are retained. Application content and GTK apps
+can retain their own colours.
 
 The GTK 3/4 `settings.ini` files request a dark Adwaita appearance and the
 same font for compatible apps. They are new files: if your Stow setup links
