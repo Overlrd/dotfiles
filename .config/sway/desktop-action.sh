@@ -43,6 +43,48 @@ case "$1" in
         body=$(printf '%s\n' "$status" | awk '{printf "%.0f%%", $2 * 100; if ($3 == "[MUTED]") printf " — muted"}')
         notify "$title" "$body"
         ;;
+    brightness-up|brightness-down)
+        device=intel_backlight
+        maximum=$(brightnessctl -d "$device" max) || fail "Cannot read backlight maximum."
+        current=$(brightnessctl -d "$device" get) || fail "Cannot read backlight brightness."
+        case "$maximum:$current" in
+            *[!0-9:]*|:*|*:) fail "Invalid backlight values." ;;
+        esac
+        [ "$maximum" -gt 0 ] || fail "Invalid backlight maximum."
+        # Raw-device arithmetic: 5% steps, rounded up, with a 5% floor.
+        step=$(( (maximum + 19) / 20 ))
+        next=$((current - step))
+        [ "$1" = brightness-up ] && next=$((current + step))
+        [ "$next" -lt "$step" ] && next=$step
+        [ "$next" -gt "$maximum" ] && next=$maximum
+        brightnessctl -q -d "$device" set "$next" ||
+            fail "Cannot set brightness. Check backlight permissions."
+        actual=$(brightnessctl -d "$device" get) || fail "Cannot read new brightness."
+        notify "Brightness" "$(( (actual * 100 + maximum / 2) / maximum ))%"
+        ;;
+    screenshot-area)
+        # Escape in slurp cancels without changing the clipboard.
+        geometry=$(slurp) || exit 0
+        [ -n "$geometry" ] || exit 0
+        shot=$(mktemp "${XDG_RUNTIME_DIR:-/tmp}/sway-shot.XXXXXX") ||
+            fail "Cannot create temporary screenshot."
+        trap 'rm -f -- "$shot"' 0
+        trap 'exit 1' HUP INT TERM
+        grim -t png -g "$geometry" "$shot" || fail "Screenshot capture failed."
+        wl-copy --type image/png < "$shot" || fail "Could not copy screenshot."
+        notify "Screenshot copied" "Selected area is ready to paste."
+        ;;
+    screenshot-full)
+        directory="$HOME/Pictures/Screenshots"
+        mkdir -p "$directory" || fail "Cannot create screenshot directory."
+        shot=$(mktemp --suffix=.png "$directory/Screenshot-$(date +%Y-%m-%d_%H-%M-%S)-XXXXXX") ||
+            fail "Cannot create screenshot file."
+        if ! grim -t png "$shot"; then
+            rm -f -- "$shot"
+            fail "Screenshot capture failed."
+        fi
+        notify "Screenshot saved" "$shot"
+        ;;
     reload)
         sway -C -c "$HOME/.config/sway/config" >/dev/null 2>&1 ||
             fail "Config validation failed. Run sway -C -c ~/.config/sway/config."
