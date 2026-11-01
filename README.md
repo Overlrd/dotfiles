@@ -62,6 +62,20 @@ After updating Void packages, the Intel GPU renderer starts normally. Do not
 export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
 fallback.
 
+## Appearance: Coal & Brass
+
+The compact desktop uses Iosevka Nerd Font throughout: 11pt for Swaybar,
+wmenu, Mako and GTK; 13pt for Foot; 20pt for Swaylock. All UI uses square
+corners and restrained spacing. Core colors are charcoal `#181C20`, slate
+`#343A40`, brass `#C3A36A` and warm ivory `#E6E0D4`; soft red marks
+errors. Foot also defines a muted ANSI palette and a 6px inner margin.
+
+The GTK 3/4 `settings.ini` files request a dark Adwaita appearance and the
+same font for compatible apps. They are new files: if your Stow setup links
+individual files or directories, re-run your usual Stow command so the new
+`gtk-3.0` and `gtk-4.0` paths become active. Apps may require a restart,
+and applications with their own styling can ignore GTK preferences.
+
 ## Desktop controls
 
 Mod is the Windows/Super key. Existing French AZERTY workspace bindings and
