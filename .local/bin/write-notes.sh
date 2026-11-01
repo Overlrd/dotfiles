@@ -3,7 +3,7 @@ set -euo pipefail
 
 notes_dir="$HOME/.notes"
 upload_script="$HOME/.local/bin/upload-notes.sh"
-editor="${EDITOR:-nvim}"
+editor="${EDITOR:-hx}"
 menu=(wmenu -i -f "Iosevka Nerd Font 11"
     -N 0E0E0E -n DEDEDE -M 0E0E0E -m 888888 -S DEDEDE -s 0E0E0E)
 
@@ -34,7 +34,7 @@ fi
 
 foot -e "$editor" "$note_path"
 
-# Preserve the existing optional Mega backup after editing.
-if [[ -x "$upload_script" ]]; then
+# Optional backup: enable only after configuring the existing Mega remote.
+if [[ "${NOTES_BACKUP:-0}" == 1 ]] && command -v rclone >/dev/null && [[ -x "$upload_script" ]]; then
     "$upload_script" &
 fi
