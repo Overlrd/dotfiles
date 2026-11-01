@@ -12,7 +12,8 @@ set $right m
 
 # Applications
 set $term foot
-set $menu wmenu-run
+# Shared launcher typography and Coal & Brass palette.
+set $menu wmenu-run -i -f "Iosevka Nerd Font 11" -N 181C20 -n E6E0D4 -M 181C20 -m C3A36A -S C3A36A -s 181C20
 set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
@@ -200,6 +201,7 @@ client.background       #181c20
 bar {
     status_command i3status
     position top
+    height 26
     colors {
         statusline #e6e0d4
         background #181c20
