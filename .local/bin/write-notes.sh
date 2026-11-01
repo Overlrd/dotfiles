@@ -5,7 +5,7 @@ notes_dir="$HOME/.notes"
 upload_script="$HOME/.local/bin/upload-notes.sh"
 editor="${EDITOR:-nvim}"
 menu=(wmenu -i -f "Iosevka Nerd Font 11"
-    -N 181C20 -n E6E0D4 -M 181C20 -m C3A36A -S C3A36A -s 181C20)
+    -N 151E1B -n DDE7DE -M 151E1B -m 95B8A2 -S 95B8A2 -s 151E1B)
 
 mkdir -p -- "$notes_dir"
 
