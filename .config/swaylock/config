@@ -1,14 +1,14 @@
-# Solid background matches the Ember Sway desktop.
-color=171512
+# Solid background matches the Graphite Sway desktop.
+color=0E0E0E
 font=Iosevka Nerd Font
 font-size=20
 indicator-radius=60
 ignore-empty-password
 show-keyboard-layout
 indicator-caps-lock
-inside-color=171512
-ring-color=D99058
-key-hl-color=E8DFCF
-bs-hl-color=26221D
-text-color=E8DFCF
-ring-wrong-color=C96B62
+inside-color=0E0E0E
+ring-color=888888
+key-hl-color=DEDEDE
+bs-hl-color=202020
+text-color=DEDEDE
+ring-wrong-color=FFFFFF
