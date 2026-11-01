@@ -1,14 +1,14 @@
 # Solid background matches the Sway desktop and Foot terminal.
-color=181C20
+color=151E1B
 font=Iosevka Nerd Font
 font-size=20
 indicator-radius=60
 ignore-empty-password
 show-keyboard-layout
 indicator-caps-lock
-inside-color=181C20
-ring-color=C3A36A
-key-hl-color=E6E0D4
-bs-hl-color=343A40
-text-color=E6E0D4
-ring-wrong-color=CA786B
+inside-color=151E1B
+ring-color=95B8A2
+key-hl-color=DDE7DE
+bs-hl-color=2D4038
+text-color=DDE7DE
+ring-wrong-color=D88980
