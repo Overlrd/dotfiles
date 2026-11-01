@@ -12,22 +12,22 @@ set $right m
 
 # Applications
 set $term foot
-# Shared launcher typography and Ember palette.
-set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 171512 -n E8DFCF -M 171512 -m D99058 -S D99058 -s 171512
+# Shared launcher typography and Graphite palette.
+set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 0E0E0E -n DEDEDE -M 0E0E0E -m 888888 -S DEDEDE -s 0E0E0E
 set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
 font pango:Iosevka Nerd Font 11
-default_border pixel 2
-default_floating_border pixel 2
+default_border pixel 1
+default_floating_border pixel 1
 gaps inner 0
-gaps outer 5
+gaps outer 0
 smart_gaps off
 smart_borders off
 
 ### Output Configuration
 # Use the monitor's preferred mode; no hardware-specific output names.
-output * bg #171512 solid_color
+output * bg #0E0E0E solid_color
 
 ### Session Startup
 # Export Wayland session details for D-Bus-activated desktop portals.
@@ -187,15 +187,15 @@ bindsym $mod+Shift+e mode "$power_mode"
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
 
-### Color Scheme (Ember)
-# Core palette: charcoal #171512, warm grey #26221D, ember #D99058, ivory #E8DFCF.
+### Color Scheme (Graphite)
+# Neutral greys; focus uses a subtle edge, urgency uses inverse contrast.
 # class                 border    bground    text      indicator   child_border
-client.focused          #D99058   #26221D    #E8DFCF   #D99058     #D99058
-client.focused_inactive #26221D   #26221D    #A79A87   #26221D     #26221D
-client.unfocused        #171512   #171512    #A79A87   #171512     #171512
-client.urgent           #C96B62   #C96B62    #171512   #C96B62     #C96B62
-client.placeholder      #26221D   #26221D    #E8DFCF   #26221D     #26221D
-client.background       #171512
+client.focused          #606060   #202020    #DEDEDE   #888888     #606060
+client.focused_inactive #202020   #202020    #888888   #202020     #202020
+client.unfocused        #0E0E0E   #0E0E0E    #888888   #0E0E0E     #0E0E0E
+client.urgent           #FFFFFF   #FFFFFF    #0E0E0E   #FFFFFF     #FFFFFF
+client.placeholder      #202020   #202020    #DEDEDE   #202020     #202020
+client.background       #0E0E0E
 
 ### Status Bar
 bar {
@@ -203,13 +203,13 @@ bar {
     position top
     height 26
     colors {
-        statusline #E8DFCF
-        background #171512
-        focused_workspace    #D99058 #D99058 #171512
-        active_workspace     #26221D #26221D #E8DFCF
-        inactive_workspace   #171512 #171512 #A79A87
-        urgent_workspace     #C96B62 #C96B62 #171512
-        binding_mode         #D99058 #26221D #E8DFCF
+        statusline #DEDEDE
+        background #0E0E0E
+        focused_workspace    #202020 #202020 #FFFFFF
+        active_workspace     #202020 #202020 #DEDEDE
+        inactive_workspace   #0E0E0E #0E0E0E #888888
+        urgent_workspace     #FFFFFF #FFFFFF #0E0E0E
+        binding_mode         #202020 #202020 #FFFFFF
     }
 }
 
