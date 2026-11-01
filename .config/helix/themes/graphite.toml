@@ -1,0 +1,27 @@
+# Neutral interface, restrained syntax colours for reading code.
+inherits = "base16_default_dark"
+
+"ui.cursorline.primary" = { bg = "#181818" }
+"ui.linenr" = { fg = "#707070", bg = "#0e0e0e" }
+"ui.linenr.selected" = { fg = "#ffffff", bg = "#181818", modifiers = ["bold"] }
+"ui.gutter" = { bg = "#0e0e0e" }
+"ui.statusline.inactive" = { fg = "#888888", bg = "#0e0e0e" }
+"ui.bufferline.active" = { fg = "#ffffff", bg = "#202020", modifiers = ["bold"] }
+
+[palette]
+base00 = "#0e0e0e"
+base01 = "#202020"
+base02 = "#383838"
+base03 = "#808080"
+base04 = "#aaaaaa"
+base05 = "#dedede"
+base06 = "#eeeeee"
+base07 = "#ffffff"
+base08 = "#c18f8f"
+base09 = "#bba58c"
+base0A = "#bcb69c"
+base0B = "#a3b49b"
+base0C = "#9db8b3"
+base0D = "#9eafc1"
+base0E = "#b3a1ba"
+base0F = "#ad978b"
