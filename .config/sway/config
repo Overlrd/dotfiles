@@ -55,6 +55,13 @@ input type:touchpad {
     middle_emulation enabled
 }
 
+### Pointer Recovery
+# Exact identifiers from this Dell. Both devices remain enabled at startup.
+# Disable both internal pointers; a USB mouse is unaffected.
+bindsym --locked $mod+Ctrl+F9 input "2:8:AlpsPS/2_ALPS_DualPoint_Stick" events disabled; input "2:8:AlpsPS/2_ALPS_DualPoint_TouchPad" events disabled
+# Keyboard recovery remains possible even with no working pointer.
+bindsym --locked $mod+Ctrl+F10 input "2:8:AlpsPS/2_ALPS_DualPoint_Stick" events enabled; input "2:8:AlpsPS/2_ALPS_DualPoint_TouchPad" events enabled
+
 ### Key Bindings
 
 ## Core Actions
@@ -65,7 +72,6 @@ bindsym $mod+d exec $menu
 
 ## System Controls
 bindsym $mod+Shift+c reload
-bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
 ## Window Management
 floating_modifier $mod normal
@@ -157,18 +163,20 @@ bindsym $mod+r mode "resize"
 
 ### Power Mode
 # Enter the mode, then choose an action; Escape cancels.
-set $power_mode Power: [l] lock, [s] suspend, [r] reboot, [p] power off
+set $power_mode Power: [l] lock, [s] suspend, [r] reboot, [p] power off, [e] exit Sway
 mode "$power_mode" {
     bindsym l exec $lock, mode "default"
     # && requests suspend only after swaylock has established the lock.
     bindsym s exec swaylock -f && loginctl suspend, mode "default"
     bindsym r exec loginctl reboot, mode "default"
     bindsym p exec loginctl poweroff, mode "default"
+    bindsym e exit
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+p mode "$power_mode"
 bindsym $mod+Shift+p mode "$power_mode"
+bindsym $mod+Shift+e mode "$power_mode"
 
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
