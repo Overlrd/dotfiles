@@ -13,6 +13,7 @@ set $right m
 # Applications
 set $term foot
 set $menu wmenu-run
+set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
 font pango:Iosevka Nerd Font 11
@@ -58,9 +59,9 @@ input type:touchpad {
 ### Pointer Recovery
 # Exact identifiers from this Dell. Both devices remain enabled at startup.
 # Disable both internal pointers; a USB mouse is unaffected.
-bindsym --locked $mod+Ctrl+F9 input "2:8:AlpsPS/2_ALPS_DualPoint_Stick" events disabled; input "2:8:AlpsPS/2_ALPS_DualPoint_TouchPad" events disabled
+bindsym --locked $mod+Ctrl+F9 exec $desktop_action pointers-off
 # Keyboard recovery remains possible even with no working pointer.
-bindsym --locked $mod+Ctrl+F10 input "2:8:AlpsPS/2_ALPS_DualPoint_Stick" events enabled; input "2:8:AlpsPS/2_ALPS_DualPoint_TouchPad" events enabled
+bindsym --locked $mod+Ctrl+F10 exec $desktop_action pointers-on
 
 ### Key Bindings
 
@@ -71,7 +72,7 @@ bindsym $mod+q kill
 bindsym $mod+d exec $menu
 
 ## System Controls
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c exec $desktop_action reload
 
 ## Window Management
 floating_modifier $mod normal
@@ -134,10 +135,10 @@ bindsym $mod+Shift+a focus child
 
 ## Audio Keys
 # pactl talks to PipeWire's PulseAudio compatibility server.
-bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym --locked XF86AudioMute exec $desktop_action mute
+bindsym --locked XF86AudioLowerVolume exec $desktop_action volume-down
+bindsym --locked XF86AudioRaiseVolume exec $desktop_action volume-up
+bindsym --locked XF86AudioMicMute exec $desktop_action mic-mute
 
 ## Quick Actions
 bindsym $mod+Shift+n exec $term --app-id floating_terminal -e nmtui
