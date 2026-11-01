@@ -13,7 +13,7 @@ set $right m
 # Applications
 set $term foot
 # Shared launcher typography and Coal & Brass palette.
-set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 181C20 -n E6E0D4 -M 181C20 -m C3A36A -S C3A36A -s 181C20
+set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 151E1B -n DDE7DE -M 151E1B -m 95B8A2 -S 95B8A2 -s 151E1B
 set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
@@ -27,7 +27,7 @@ smart_borders off
 
 ### Output Configuration
 # Use the monitor's preferred mode; no hardware-specific output names.
-output * bg #181c20 solid_color
+output * bg #151e1b solid_color
 
 ### Session Startup
 # Export Wayland session details for D-Bus-activated desktop portals.
@@ -187,15 +187,15 @@ bindsym $mod+Shift+e mode "$power_mode"
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
 
-### Color Scheme (Coal & Brass)
-# Core palette: charcoal #181C20, slate #343A40, brass #C3A36A, ivory #E6E0D4.
+### Color Scheme (Deep Pine)
+# Core palette: deep pine #151E1B, forest #2D4038, sage #95B8A2, mist #DDE7DE.
 # class                 border    bground    text      indicator   child_border
-client.focused          #c3a36a   #343a40    #e6e0d4   #c3a36a     #c3a36a
-client.focused_inactive #343a40   #252b30    #b9b5ad   #343a40     #343a40
-client.unfocused        #181c20   #181c20    #aaa9a3   #181c20     #181c20
-client.urgent           #ca786b   #ca786b    #181c20   #ca786b     #ca786b
-client.placeholder      #343a40   #343a40    #e6e0d4   #343a40     #343a40
-client.background       #181c20
+client.focused          #95b8a2   #2d4038    #dde7de   #95b8a2     #95b8a2
+client.focused_inactive #2d4038   #22312a    #b8c7bc   #2d4038     #2d4038
+client.unfocused        #151e1b   #151e1b    #9bb0a1   #151e1b     #151e1b
+client.urgent           #d88980   #d88980    #151e1b   #d88980     #d88980
+client.placeholder      #2d4038   #2d4038    #dde7de   #2d4038     #2d4038
+client.background       #151e1b
 
 ### Status Bar
 bar {
@@ -203,13 +203,13 @@ bar {
     position top
     height 26
     colors {
-        statusline #e6e0d4
-        background #181c20
-        focused_workspace    #c3a36a #c3a36a #181c20
-        active_workspace     #343a40 #343a40 #e6e0d4
-        inactive_workspace   #181c20 #181c20 #aaa9a3
-        urgent_workspace     #ca786b #ca786b #181c20
-        binding_mode         #c3a36a #343a40 #e6e0d4
+        statusline #dde7de
+        background #151e1b
+        focused_workspace    #95b8a2 #95b8a2 #151e1b
+        active_workspace     #2d4038 #2d4038 #dde7de
+        inactive_workspace   #151e1b #151e1b #9bb0a1
+        urgent_workspace     #d88980 #d88980 #151e1b
+        binding_mode         #95b8a2 #2d4038 #dde7de
     }
 }
 
