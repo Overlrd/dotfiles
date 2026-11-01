@@ -146,6 +146,14 @@ bindsym --locked XF86AudioLowerVolume exec $desktop_action volume-down
 bindsym --locked XF86AudioRaiseVolume exec $desktop_action volume-up
 bindsym --locked XF86AudioMicMute exec $desktop_action mic-mute
 
+## Backlight and Screenshots
+bindsym --locked XF86MonBrightnessDown exec $desktop_action brightness-down
+bindsym --locked XF86MonBrightnessUp exec $desktop_action brightness-up
+# Trigger on release so the Print key is no longer held when slurp grabs input.
+bindsym --release Print exec $desktop_action screenshot-area
+# Keyboard-only capture of all outputs; deliberately unavailable while locked.
+bindsym --release Shift+Print exec $desktop_action screenshot-full
+
 ## Quick Actions
 bindsym $mod+n exec bash $HOME/.local/bin/write-notes.sh
 bindsym $mod+Shift+n exec $term --app-id floating_terminal -e nmtui
