@@ -4,6 +4,8 @@ set -euo pipefail
 notes_dir="$HOME/.notes"
 upload_script="$HOME/.local/bin/upload-notes.sh"
 editor="${EDITOR:-nvim}"
+menu=(wmenu -i -f "Iosevka Nerd Font 11"
+    -N 181C20 -n E6E0D4 -M 181C20 -m C3A36A -S C3A36A -s 181C20)
 
 mkdir -p -- "$notes_dir"
 
@@ -12,13 +14,13 @@ selection="$(
     {
         printf 'New note\n'
         find "$notes_dir" -maxdepth 1 -type f -name '*.md' -printf '%f\n' | sort -f
-    } | wmenu -i -l 10 -p 'Notes'
+    } | "${menu[@]}" -l 10 -p 'Notes'
 )" || exit 0
 
 [[ -n "$selection" ]] || exit 0
 
 if [[ "$selection" == "New note" ]]; then
-    name="$(printf '\n' | wmenu -p 'Note name (blank = timestamp)')" || exit 0
+    name="$(printf '\n' | "${menu[@]}" -p 'Name (Shift+Enter; blank = date)')" || exit 0
     name="${name%.md}"
     name="${name// /_}"
     name="${name//\//_}"
