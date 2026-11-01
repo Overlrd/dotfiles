@@ -26,7 +26,7 @@ smart_borders off
 
 ### Output Configuration
 # Use the monitor's preferred mode; no hardware-specific output names.
-output * bg #202c39 solid_color
+output * bg #181c20 solid_color
 
 ### Session Startup
 # Export Wayland session details for D-Bus-activated desktop portals.
@@ -186,27 +186,28 @@ bindsym $mod+Shift+e mode "$power_mode"
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
 
-### Color Scheme (Warm Earth Tones)
+### Color Scheme (Coal & Brass)
+# Core palette: charcoal #181C20, slate #343A40, brass #C3A36A, ivory #E6E0D4.
 # class                 border    bground    text      indicator   child_border
-client.focused          #c29559   #d29559    #202c39   #f2d492     #d29559
-client.focused_inactive #283845   #283845    #b8b08d   #283845     #283845
-client.unfocused        #202c39   #202c39    #b8b08d   #202c39     #202c39
-client.urgent           #f2d492   #c29559    #202c39   #d29559     #f2d492
-client.placeholder      #283845   #283845    #b8b08d   #283845     #283845
-client.background       #202c39
+client.focused          #c3a36a   #343a40    #e6e0d4   #c3a36a     #c3a36a
+client.focused_inactive #343a40   #252b30    #b9b5ad   #343a40     #343a40
+client.unfocused        #181c20   #181c20    #aaa9a3   #181c20     #181c20
+client.urgent           #ca786b   #ca786b    #181c20   #ca786b     #ca786b
+client.placeholder      #343a40   #343a40    #e6e0d4   #343a40     #343a40
+client.background       #181c20
 
 ### Status Bar
 bar {
     status_command i3status
     position top
     colors {
-        statusline #f2d492
-        background #202c39
-        focused_workspace    #c29559 #d29559 #202c39
-        active_workspace     #283845 #283845 #f2d492
-        inactive_workspace   #202c39 #202c39 #b8b08d
-        urgent_workspace     #c29559 #d29559 #202c39
-        binding_mode         #f2d492 #f2d492 #202c39
+        statusline #e6e0d4
+        background #181c20
+        focused_workspace    #c3a36a #c3a36a #181c20
+        active_workspace     #343a40 #343a40 #e6e0d4
+        inactive_workspace   #181c20 #181c20 #aaa9a3
+        urgent_workspace     #ca786b #ca786b #181c20
+        binding_mode         #c3a36a #343a40 #e6e0d4
     }
 }
 
