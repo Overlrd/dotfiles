@@ -12,7 +12,7 @@ set $right m
 
 # Applications
 set $term foot
-# Shared launcher typography and Coal & Brass palette.
+# Shared launcher typography and Deep Pine palette.
 set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 151E1B -n DDE7DE -M 151E1B -m 95B8A2 -S 95B8A2 -s 151E1B
 set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
