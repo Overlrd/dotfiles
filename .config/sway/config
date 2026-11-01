@@ -35,6 +35,8 @@ exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 # Run once per session, not on each config reload.
 exec pipewire
 exec mako
+# Lomé: latitude 6.1319 N, longitude 1.2228 E; day/night temperatures in kelvin.
+exec gammastep -m wayland -l 6.1319:1.2228 -t 6500:4000
 exec /usr/libexec/polkit-gnome-authentication-agent-1
 
 ### Idle & Lock Configuration
