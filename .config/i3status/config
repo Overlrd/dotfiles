@@ -3,9 +3,9 @@ general {
     output_format = "i3bar"
     colors = true
     interval = 5
-    color_good = "#E6E0D4"
-    color_degraded = "#C3A36A"
-    color_bad = "#CA786B"
+    color_good = "#DDE7DE"
+    color_degraded = "#C8B98A"
+    color_bad = "#D88980"
 }
 
 order += "ethernet _first_"
