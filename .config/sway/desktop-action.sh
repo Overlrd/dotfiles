@@ -4,8 +4,14 @@
 notify() {
     notify-send -a "Desktop" -t 2000 "$1" "$2" >/dev/null 2>&1 || :
 }
+# Mako replaces the matching app/tag in place; no ID files or extra daemon.
+notify_level() {
+    notify-send -a "Desktop" -t 1500 -c "desktop.$1" \
+        -h "string:x-canonical-private-synchronous:desktop-$1" \
+        "$2" "$3" >/dev/null 2>&1 || :
+}
 fail() {
-    notify "Desktop action failed" "$1"
+    notify-send -a "Desktop" -u critical "Desktop action failed" "$1" >/dev/null 2>&1 || :
     exit 1
 }
 sway_command() {
@@ -41,7 +47,7 @@ case "$1" in
             fail "Audio changed, but its current state could not be read."
         # wpctl reports a fractional volume and an optional [MUTED] marker.
         body=$(printf '%s\n' "$status" | awk '{printf "%.0f%%", $2 * 100; if ($3 == "[MUTED]") printf " — muted"}')
-        notify "$title" "$body"
+        notify_level "$target" "$title" "$body"
         ;;
     brightness-up|brightness-down)
         device=intel_backlight
@@ -60,7 +66,7 @@ case "$1" in
         brightnessctl -q -d "$device" set "$next" ||
             fail "Cannot set brightness. Check backlight permissions."
         actual=$(brightnessctl -d "$device" get) || fail "Cannot read new brightness."
-        notify "Brightness" "$(( (actual * 100 + maximum / 2) / maximum ))%"
+        notify_level brightness "Brightness" "$(( (actual * 100 + maximum / 2) / maximum ))%"
         ;;
     screenshot-area)
         # Escape in slurp cancels without changing the clipboard.
@@ -90,8 +96,8 @@ case "$1" in
         entries=$(cliphist list) || fail "Cannot read clipboard history."
         [ -n "$entries" ] || { notify "Clipboard" "History is empty."; exit 0; }
         selection=$(printf '%s\n' "$entries" | wmenu -i -l 8 -p "Clipboard" \
-            -f "Iosevka Nerd Font 11" -N E4E7EB -n 242A31 \
-            -M E4E7EB -m 456B87 -S 456B87 -s F5F7FA) || exit 0
+            -f "Iosevka Nerd Font 11" -N 16191F -n F3F4F5 \
+            -M 16191F -m 79C0FF -S 245782 -s FFFFFF) || exit 0
         [ -n "$selection" ] || exit 0
         # The selected line contains an opaque history ID; never evaluate it.
         clip=$(mktemp "${XDG_RUNTIME_DIR:-/tmp}/sway-clipboard.XXXXXX") ||
