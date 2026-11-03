@@ -12,8 +12,8 @@ set $right m
 
 # Applications
 set $term foot
-# Silver launcher: dark text, muted blue selection.
-set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N E4E7EB -n 242A31 -M E4E7EB -m 456B87 -S 456B87 -s F5F7FA
+# Dark surfaces, bright text, blue selection.
+set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 16191F -n F3F4F5 -M 16191F -m 79C0FF -S 245782 -s FFFFFF
 set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
@@ -29,25 +29,7 @@ smart_borders off
 # Use the monitor's preferred mode; no hardware-specific output names.
 output * bg #424950 solid_color
 
-### Session Startup
-# Export Wayland session details for D-Bus-activated desktop portals.
-exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway XDG_SESSION_TYPE=wayland
-# Run once per session, not on each config reload.
-exec pipewire
-exec mako
-# Store text and image clipboard entries; Super+Ctrl+BackSpace clears history.
-exec wl-paste --watch cliphist store
-# Lomé: latitude 6.1319 N, longitude 1.2228 E; day/night temperatures in kelvin.
-exec gammastep -m wayland -l 6.1319:1.2228 -t 6500:4000
-exec /usr/libexec/polkit-gnome-authentication-agent-1
-
-### Idle & Lock Configuration
-set $lock swaylock -f
-exec swayidle -w \
-    timeout 300 'swaylock -f' \
-    timeout 600 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"' \
-    before-sleep 'swaylock -f'
+include ~/.config/sway/startup.conf
 
 ### Input Configuration
 input type:keyboard {
@@ -64,174 +46,33 @@ input type:touchpad {
     middle_emulation enabled
 }
 
-### Pointer Recovery
-# Exact identifiers from this Dell. Both devices remain enabled at startup.
-# Disable both internal pointers; a USB mouse is unaffected.
-bindsym --locked $mod+Ctrl+F9 exec $desktop_action pointers-off
-# Keyboard recovery remains possible even with no working pointer.
-bindsym --locked $mod+Ctrl+F10 exec $desktop_action pointers-on
-
-### Key Bindings
-
-## Core Actions
-bindsym $mod+Return exec $term
-bindsym $mod+Shift+Return exec $term --app-id floating_terminal
-bindsym $mod+q kill
-bindsym $mod+d exec $menu
-bindsym $mod+w exec firefox
-
-## System Controls
-bindsym $mod+Shift+c exec $desktop_action reload
-
-## Window Management
-floating_modifier $mod normal
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space focus mode_toggle
-bindsym $mod+f fullscreen
-bindsym $mod+Shift+f fullscreen global
-
-## Focus Movement
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
-## Window Movement
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
-## Workspace Management (French AZERTY layout)
-bindsym $mod+ampersand workspace number 1
-bindsym $mod+eacute workspace number 2
-bindsym $mod+quotedbl workspace number 3
-bindsym $mod+apostrophe workspace number 4
-bindsym $mod+parenleft workspace number 5
-bindsym $mod+minus workspace number 6
-bindsym $mod+egrave workspace number 7
-bindsym $mod+underscore workspace number 8
-bindsym $mod+ccedilla workspace number 9
-bindsym $mod+agrave workspace number 10
-
-bindsym $mod+Shift+ampersand move container to workspace number 1
-bindsym $mod+Shift+eacute move container to workspace number 2
-bindsym $mod+Shift+quotedbl move container to workspace number 3
-bindsym $mod+Shift+apostrophe move container to workspace number 4
-bindsym $mod+Shift+parenleft move container to workspace number 5
-bindsym $mod+Shift+minus move container to workspace number 6
-bindsym $mod+Shift+egrave move container to workspace number 7
-bindsym $mod+Shift+underscore move container to workspace number 8
-bindsym $mod+Shift+ccedilla move container to workspace number 9
-bindsym $mod+Shift+agrave move container to workspace number 10
-
-## Layout Controls
-bindsym $mod+h splith
-bindsym $mod+v splitv
-bindsym $mod+s layout stacking
-bindsym $mod+z layout tabbed
-bindsym $mod+e layout toggle split
-bindsym $mod+a focus parent
-bindsym $mod+Shift+a focus child
-
-## Audio Keys
-# pactl talks to PipeWire's PulseAudio compatibility server.
-bindsym --locked XF86AudioMute exec $desktop_action mute
-bindsym --locked XF86AudioLowerVolume exec $desktop_action volume-down
-bindsym --locked XF86AudioRaiseVolume exec $desktop_action volume-up
-bindsym --locked XF86AudioMicMute exec $desktop_action mic-mute
-
-## Backlight and Screenshots
-bindsym --locked XF86MonBrightnessDown exec $desktop_action brightness-down
-bindsym --locked XF86MonBrightnessUp exec $desktop_action brightness-up
-# Trigger on release so the Print key is no longer held when slurp grabs input.
-bindsym --release Print exec $desktop_action screenshot-area
-# Keyboard-only capture of all outputs; deliberately unavailable while locked.
-bindsym --release Shift+Print exec $desktop_action screenshot-full
-
-## Media Keys
-bindsym --locked XF86AudioPlay exec $desktop_action media-toggle
-bindsym --locked XF86AudioNext exec $desktop_action media-next
-bindsym --locked XF86AudioPrev exec $desktop_action media-previous
-
-## Quick Actions
-bindsym $mod+Shift+b exec thunar
-bindsym $mod+c exec $desktop_action clipboard-pick
-bindsym $mod+Ctrl+BackSpace exec $desktop_action clipboard-clear
-bindsym $mod+n exec bash $HOME/.local/bin/write-notes.sh
-bindsym $mod+Shift+n exec $term --app-id floating_terminal -e nmtui
-bindsym $mod+Shift+v exec pavucontrol
-
-### Resize Mode
-mode "resize" {
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+r mode "default"
-}
-bindsym $mod+r mode "resize"
-
-### Power Mode
-# Enter the mode, then choose an action; Escape cancels.
-set $power_mode Power: [l] lock, [s] suspend, [r] reboot, [p] power off, [e] exit Sway
-mode "$power_mode" {
-    bindsym l exec $lock, mode "default"
-    # && requests suspend only after swaylock has established the lock.
-    bindsym s exec swaylock -f && loginctl suspend, mode "default"
-    bindsym r exec loginctl reboot, mode "default"
-    bindsym p exec loginctl poweroff, mode "default"
-    bindsym e exit
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+p mode "$power_mode"
-bindsym $mod+Shift+p mode "$power_mode"
-bindsym $mod+Shift+e mode "$power_mode"
+include ~/.config/sway/bindings.conf
 
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
 
-### Color Scheme (Silver)
-# Thin neutral edges; blue is reserved for focus and selection.
+### Color Scheme: Ink
 # class                 border    background text      indicator child_border
-client.focused          #8EA8BC   #3B4652    #F0F2F5   #8EA8BC   #8EA8BC
-client.focused_inactive #59616B   #343B43    #CDD2D8   #59616B   #59616B
-client.unfocused        #424950   #30363D    #ADB5BF   #424950   #424950
-client.urgent           #A63C47   #A63C47    #FFFFFF   #A63C47   #A63C47
-client.placeholder     #59616B   #343B43    #CDD2D8   #59616B   #59616B
+client.focused          #79C0FF   #233D53    #FFFFFF   #79C0FF   #79C0FF
+client.focused_inactive #707984   #252A32    #E4E7EB   #707984   #707984
+client.unfocused        #424950   #1B1F26    #B8C0CC   #424950   #424950
+client.urgent           #FF7B86   #652E38    #FFFFFF   #FF7B86   #FF7B86
+client.placeholder     #707984   #252A32    #E4E7EB   #707984   #707984
 client.background      #424950
 
-### Status Bar
 bar {
     status_command i3status
     position top
     height 28
     colors {
-        statusline #242A31
-        background #CDD2D8
-        separator #929CA7
-        focused_workspace    #456B87 #456B87 #FFFFFF
-        active_workspace     #B7C0C9 #B7C0C9 #242A31
-        inactive_workspace   #CDD2D8 #CDD2D8 #4C5662
-        urgent_workspace     #A63C47 #A63C47 #FFFFFF
-        binding_mode         #456B87 #B7C0C9 #242A31
+        statusline #F3F4F5
+        background #16191F
+        separator #707984
+        focused_workspace    #79C0FF #245782 #FFFFFF
+        active_workspace     #707984 #303640 #F3F4F5
+        inactive_workspace   #16191F #16191F #B8C0CC
+        urgent_workspace     #FF7B86 #652E38 #FFFFFF
+        binding_mode         #FFD580 #503E23 #FFF1D6
     }
 }
 
