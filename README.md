@@ -15,7 +15,8 @@ sudo xbps-install -S sway swaybg foot wmenu i3status mesa-dri dbus elogind \
   swayidle swaylock mako libnotify polkit polkit-gnome \
   xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr \
   zsh helix tmux ncurses-term zathura zathura-pdf-mupdf gammastep \
-  wl-clipboard xdg-utils git brightnessctl grim slurp
+  wl-clipboard xdg-utils git brightnessctl grim slurp \
+  cliphist playerctl firefox Thunar
 ```
 
 Iosevka Nerd Font is installed separately under ~/.local/share/fonts.
@@ -64,28 +65,20 @@ After updating Void packages, the Intel GPU renderer starts normally. Do not
 export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
 fallback.
 
-## Appearance: Graphite
+## Appearance: Silver
 
-A neutral black, white and grey desktop. Near-black #0E0E0E surfaces,
-#202020 raised surfaces, #DEDEDE text and muted grey secondary text.
-Windows use subtle 1px grey borders; unfocused borders blend into the
-background. The bar has no bright workspace boxes: the active workspace
-uses white text on dark grey. Urgent states use inverted white/black contrast.
+The desktop now has a silver-grey bar (#CDD2D8) with dark text (#242A31),
+light launchers and notifications (#E4E7EB), and a slate background (#424950).
+Muted blue marks focus/selection; green, amber and red distinguish normal,
+warning and error states. Borders stay 1px and tiled windows remain flush.
+The bar is 28px high so its status text has room to breathe.
 
-Iosevka Nerd Font remains 11pt for Swaybar, launchers, Mako and GTK,
-13pt for Foot and 20pt for Swaylock. Zero inner/outer gaps keep tiled windows
-flush; square corners and quiet 1px notification borders keep the shell plain.
-Both the application launcher and notes picker use light-grey selection rows.
-
-Foot's colors section remains removed; its palette is the terminal default,
-while its font and 6px padding are retained. Application content and GTK apps
-can retain their own colours.
-
-The GTK 3/4 `settings.ini` files request a dark Adwaita appearance and the
-same font for compatible apps. They are new files: if your Stow setup links
-individual files or directories, re-run your usual Stow command so the new
-`gtk-3.0` and `gtk-4.0` paths become active. Apps may require a restart,
-and applications with their own styling can ignore GTK preferences.
+Iosevka remains 11pt for desktop UI, 13pt in Foot and 20pt on the lock screen.
+Helix uses lighter charcoal surfaces and a silver status line; the existing
+graphite.toml filename is retained for compatibility. tmux and Zathura match.
+GTK preferences now request light Adwaita; applications can override these.
+Foot's colors section remains absent as requested, so its own default palette
+is not controlled by this theme.
 
 ## Desktop controls
 
@@ -97,6 +90,11 @@ j/k/l/m navigation are retained.
 | Mod + Return | Terminal |
 | Mod + Shift + Return | Floating terminal |
 | Mod + d | Application launcher |
+| Mod + w | Firefox |
+| Mod + Shift + b | Thunar file manager |
+| Mod + c | Clipboard history picker |
+| Mod + Ctrl + BackSpace | Clear clipboard history and current clipboard |
+| Media play/next/previous keys | Control the active media player |
 | Mod + n | Notes picker (wmenu + Foot) |
 | Mod + Shift + n | NetworkManager menu |
 | Mod + Shift + v | Audio mixer |
@@ -114,7 +112,7 @@ In power mode: l locks, s locks then suspends, r reboots, p powers off.
 Press e to exit Sway (save your work first). Escape or Return cancels. Automatic locking happens after 5 minutes;
 displays switch off after 10 minutes. Keyboard/mouse activity turns them on.
 
-Clipboard history, browser assignments and media-player keys remain unconfigured. The notes
+Clipboard history, Firefox/Thunar launch shortcuts and media keys are configured. The notes
 picker is enabled: it creates `~/.notes` if necessary, opens Markdown notes in
 Foot using `${EDITOR:-hx}`. Mega backup is opt-in: configure `rclone`, then
 export `NOTES_BACKUP=1` to invoke the existing helper after editing.
@@ -178,7 +176,7 @@ the full terminfo collection. New Foot windows use the new TERM; existing
 tmux clients should detach/reattach. Reload existing tmux config with
 `tmux source-file ~/.tmux.conf`.
 
-Helix uses a custom Graphite theme with subdued syntax colours, relative line
+Helix uses a custom Silver-styled theme with subdued syntax colours, relative line
 numbers, current-line highlighting and a buffer bar when multiple files are open.
 Re-run your original Stow command if necessary to link the new themes directory.
 Use `hx --health` to discover missing language servers and formatters; no
@@ -187,7 +185,7 @@ speculative language-server bundle is installed by these dotfiles.
 ## PDF reading
 
 Zathura needs a document plugin: install zathura-pdf-mupdf (or the alternative
-zathura-pdf-poppler, not both). Its interface matches Graphite. PDF colours are
+zathura-pdf-poppler, not both). Its interface matches Silver. PDF colours are
 preserved by default; Ctrl+R toggles dark recolouring for reading. Set the PDF
 association after installation:
 
@@ -210,8 +208,7 @@ second night-colour daemon alongside it.
 
 ## Remaining setup checks
 
-- Clipboard history remains unconfigured.
-- Firefox is installed separately. xdg-utils supplies file/URL association tools.
+- xdg-utils supplies file/URL association tools.
 - Bluetooth support, battery/power tuning and a login greeter are optional follow-ups.
 - Notes cloud backup stays disabled unless explicitly enabled.
 - GPU acceleration was reported working; no software-rendering override is added.
@@ -232,3 +229,30 @@ If brightness writes are denied, check your video-group membership and the
 brightnessctl udev rules; do not run Sway as root. On Void, adding your normal
 user with `sudo usermod -aG video "$(id -un)"` and logging out/in may be needed.
 The standalone Sway setup checker has been removed.
+
+## Completing the local rollout
+
+The repository configures the desktop; it cannot install packages or change
+the laptop's services remotely. Install the listed dependencies, pull this
+branch, then validate Sway and start a fresh session so the new clipboard
+watcher starts once. No setup-check script is installed.
+
+```sh
+git pull --ff-only
+sway -C -c ~/.config/sway/config && swaymsg reload
+makoctl reload
+```
+
+Open a new Zsh shell (or source ~/.zshrc) for the simplified directory/Git prompt:
+numeric exit status is no longer displayed. Restart GTK apps and Helix for the
+theme change. Existing tmux servers need tmux source-file ~/.tmux.conf.
+
+Clipboard history stores text and images locally until cleared; Super+C opens
+the picker and Super+Ctrl+BackSpace clears it. Escape cancels selection.
+The watcher starts on login, not reload. To start it in the current session,
+only if none is running: wl-paste --watch cliphist store.
+
+Bluetooth, automatic mounts and a greeter are separate system-level choices,
+not silently enabled. Check PDF and browser associations with xdg-mime/xdg-settings.
+NetworkManager should be the sole network manager; a stale dhcpcd process or
+resolv.conf ownership needs fixing on the machine, not in Sway.
