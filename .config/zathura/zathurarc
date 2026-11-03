@@ -1,4 +1,4 @@
-# Graphite UI; PDF content stays faithful until Ctrl+R toggles recolouring.
+# Silver UI; PDF content stays faithful until Ctrl+R toggles recolouring.
 set font "Iosevka Nerd Font 11"
 set scroll-step 100
 set zoom-step 5
@@ -6,35 +6,35 @@ set window-title-basename true
 set selection-clipboard clipboard
 set adjust-open best-fit
 
-set default-bg "#0e0e0e"
-set default-fg "#dedede"
-set statusbar-bg "#202020"
-set statusbar-fg "#dedede"
-set inputbar-bg "#202020"
-set inputbar-fg "#dedede"
-set completion-bg "#0e0e0e"
-set completion-fg "#dedede"
-set completion-group-bg "#202020"
-set completion-group-fg "#888888"
-set completion-highlight-bg "#dedede"
-set completion-highlight-fg "#0e0e0e"
-set index-bg "#0e0e0e"
-set index-fg "#dedede"
-set index-active-bg "#dedede"
-set index-active-fg "#0e0e0e"
-set notification-bg "#202020"
-set notification-fg "#dedede"
-set notification-warning-bg "#202020"
-set notification-warning-fg "#ffffff"
-set notification-error-bg "#dedede"
-set notification-error-fg "#0e0e0e"
+set default-bg "#E4E7EB"
+set default-fg "#242A31"
+set statusbar-bg "#CDD2D8"
+set statusbar-fg "#242A31"
+set inputbar-bg "#CDD2D8"
+set inputbar-fg "#242A31"
+set completion-bg "#E4E7EB"
+set completion-fg "#242A31"
+set completion-group-bg "#CDD2D8"
+set completion-group-fg "#59616B"
+set completion-highlight-bg "#242A31"
+set completion-highlight-fg "#E4E7EB"
+set index-bg "#E4E7EB"
+set index-fg "#242A31"
+set index-active-bg "#242A31"
+set index-active-fg "#E4E7EB"
+set notification-bg "#CDD2D8"
+set notification-fg "#242A31"
+set notification-warning-bg "#CDD2D8"
+set notification-warning-fg "#A63C47"
+set notification-error-bg "#242A31"
+set notification-error-fg "#E4E7EB"
 set highlight-color "rgba(160,160,160,0.4)"
 set highlight-active-color "rgba(220,220,220,0.5)"
 set render-loading true
-set render-loading-bg "#0e0e0e"
-set render-loading-fg "#888888"
-set recolor-lightcolor "#0e0e0e"
-set recolor-darkcolor "#dedede"
+set render-loading-bg "#E4E7EB"
+set render-loading-fg "#59616B"
+set recolor-lightcolor "#292F36"
+set recolor-darkcolor "#E4E7EB"
 set recolor-keephue true
 set recolor false
 map <C-r> recolor
