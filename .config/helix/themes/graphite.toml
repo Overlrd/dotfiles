@@ -1,4 +1,4 @@
-# Silver interface; filename retained so existing Helix config keeps working.
+# Ink interface; filename retained so existing Helix config keeps working.
 inherits = "base16_default_dark"
 
 "ui.cursorline.primary" = { bg = "#343c45" }
@@ -8,8 +8,8 @@ inherits = "base16_default_dark"
 "ui.statusline.inactive" = { fg = "#b0b8c2", bg = "#292f36" }
 "ui.bufferline.active" = { fg = "#ffffff", bg = "#3b4550", modifiers = ["bold"] }
 
-"ui.statusline" = { fg = "#242A31", bg = "#CDD2D8" }
-"ui.menu.selected" = { fg = "#FFFFFF", bg = "#456B87" }
+"ui.statusline" = { fg = "#F3F4F5", bg = "#233D53" }
+"ui.menu.selected" = { fg = "#FFFFFF", bg = "#245782" }
 
 [palette]
 base00 = "#292f36"
@@ -20,11 +20,11 @@ base04 = "#cdd2d8"
 base05 = "#e4e7eb"
 base06 = "#eeeeee"
 base07 = "#ffffff"
-base08 = "#c18f8f"
-base09 = "#bba58c"
-base0A = "#bcb69c"
-base0B = "#a3b49b"
-base0C = "#9db8b3"
-base0D = "#9eafc1"
-base0E = "#b3a1ba"
+base08 = "#ff7b86"
+base09 = "#ffb86b"
+base0A = "#ffd580"
+base0B = "#a5e075"
+base0C = "#70e0d0"
+base0D = "#79c0ff"
+base0E = "#d2a8ff"
 base0F = "#ad978b"
