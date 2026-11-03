@@ -12,8 +12,8 @@ set $right m
 
 # Applications
 set $term foot
-# Shared launcher typography and Graphite palette.
-set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N 0E0E0E -n DEDEDE -M 0E0E0E -m 888888 -S DEDEDE -s 0E0E0E
+# Silver launcher: dark text, muted blue selection.
+set $menu wmenu-run -i -l 8 -f "Iosevka Nerd Font 11" -N E4E7EB -n 242A31 -M E4E7EB -m 456B87 -S 456B87 -s F5F7FA
 set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
@@ -27,7 +27,7 @@ smart_borders off
 
 ### Output Configuration
 # Use the monitor's preferred mode; no hardware-specific output names.
-output * bg #0E0E0E solid_color
+output * bg #424950 solid_color
 
 ### Session Startup
 # Export Wayland session details for D-Bus-activated desktop portals.
@@ -35,6 +35,8 @@ exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 # Run once per session, not on each config reload.
 exec pipewire
 exec mako
+# Store text and image clipboard entries; Super+Ctrl+BackSpace clears history.
+exec wl-paste --watch cliphist store
 # Lomé: latitude 6.1319 N, longitude 1.2228 E; day/night temperatures in kelvin.
 exec gammastep -m wayland -l 6.1319:1.2228 -t 6500:4000
 exec /usr/libexec/polkit-gnome-authentication-agent-1
@@ -76,6 +78,7 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec $term --app-id floating_terminal
 bindsym $mod+q kill
 bindsym $mod+d exec $menu
+bindsym $mod+w exec firefox
 
 ## System Controls
 bindsym $mod+Shift+c exec $desktop_action reload
@@ -154,7 +157,15 @@ bindsym --release Print exec $desktop_action screenshot-area
 # Keyboard-only capture of all outputs; deliberately unavailable while locked.
 bindsym --release Shift+Print exec $desktop_action screenshot-full
 
+## Media Keys
+bindsym --locked XF86AudioPlay exec $desktop_action media-toggle
+bindsym --locked XF86AudioNext exec $desktop_action media-next
+bindsym --locked XF86AudioPrev exec $desktop_action media-previous
+
 ## Quick Actions
+bindsym $mod+Shift+b exec thunar
+bindsym $mod+c exec $desktop_action clipboard-pick
+bindsym $mod+Ctrl+BackSpace exec $desktop_action clipboard-clear
 bindsym $mod+n exec bash $HOME/.local/bin/write-notes.sh
 bindsym $mod+Shift+n exec $term --app-id floating_terminal -e nmtui
 bindsym $mod+Shift+v exec pavucontrol
@@ -197,29 +208,30 @@ bindsym $mod+Shift+e mode "$power_mode"
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
 
-### Color Scheme (Graphite)
-# Neutral greys; focus uses a subtle edge, urgency uses inverse contrast.
-# class                 border    bground    text      indicator   child_border
-client.focused          #606060   #202020    #DEDEDE   #888888     #606060
-client.focused_inactive #202020   #202020    #888888   #202020     #202020
-client.unfocused        #0E0E0E   #0E0E0E    #888888   #0E0E0E     #0E0E0E
-client.urgent           #FFFFFF   #FFFFFF    #0E0E0E   #FFFFFF     #FFFFFF
-client.placeholder      #202020   #202020    #DEDEDE   #202020     #202020
-client.background       #0E0E0E
+### Color Scheme (Silver)
+# Thin neutral edges; blue is reserved for focus and selection.
+# class                 border    background text      indicator child_border
+client.focused          #8EA8BC   #3B4652    #F0F2F5   #8EA8BC   #8EA8BC
+client.focused_inactive #59616B   #343B43    #CDD2D8   #59616B   #59616B
+client.unfocused        #424950   #30363D    #ADB5BF   #424950   #424950
+client.urgent           #A63C47   #A63C47    #FFFFFF   #A63C47   #A63C47
+client.placeholder     #59616B   #343B43    #CDD2D8   #59616B   #59616B
+client.background      #424950
 
 ### Status Bar
 bar {
     status_command i3status
     position top
-    height 26
+    height 28
     colors {
-        statusline #DEDEDE
-        background #0E0E0E
-        focused_workspace    #202020 #202020 #FFFFFF
-        active_workspace     #202020 #202020 #DEDEDE
-        inactive_workspace   #0E0E0E #0E0E0E #888888
-        urgent_workspace     #FFFFFF #FFFFFF #0E0E0E
-        binding_mode         #202020 #202020 #FFFFFF
+        statusline #242A31
+        background #CDD2D8
+        separator #929CA7
+        focused_workspace    #456B87 #456B87 #FFFFFF
+        active_workspace     #B7C0C9 #B7C0C9 #242A31
+        inactive_workspace   #CDD2D8 #CDD2D8 #4C5662
+        urgent_workspace     #A63C47 #A63C47 #FFFFFF
+        binding_mode         #456B87 #B7C0C9 #242A31
     }
 }
 
