@@ -1,12 +1,16 @@
 font=Iosevka Nerd Font 11
-background-color=#0E0E0E
-text-color=#DEDEDE
-border-color=#333333
+background-color=#E4E7EB
+text-color=#242A31
+border-color=#A8B3BF
 border-size=1
 border-radius=0
-padding=10
-width=330
-height=100
+padding=12
+width=350
+height=120
 default-timeout=5000
 max-visible=3
 anchor=top-right
+
+[urgency=critical]
+border-color=#A63C47
+default-timeout=0
