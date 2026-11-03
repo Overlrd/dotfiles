@@ -81,28 +81,31 @@ not replaced or automatically launched by this branch.
 All bindings are in .config/sway/bindings.conf; startup programs are in
 .config/sway/startup.conf. The main config holds settings, input and appearance.
 
-Press **Super+Escape** to open Desktop mode. The bar shows the choices.
-Release Super, then press a category key and an action key:
+Each mode opens directly with **Ctrl+Alt+letter** (use left Alt, not AltGr).
+These combinations were unused in the tracked Sway configuration.
+Release the modifiers, then press an action key; the bar shows the choices.
 
-| Category | Actions |
+| Shortcut | Mode and actions |
 | --- | --- |
-| a — Apps | b browser, f files, n notes, t floating terminal, d launcher |
-| s — System | n network, a audio mixer, r reload, d/e pointers off/on, m dismiss notification |
-| c — Clipboard/capture | p history picker, x clear history, a area screenshot, f full screenshot |
-| p — Power | l lock, s suspend, r reboot, p power off, e exit Sway |
-| r — Resize | j/k/l/m or arrows; Return finishes |
+| Ctrl+Alt+a | Apps: b browser, f files, n notes, t floating terminal, d launcher |
+| Ctrl+Alt+s | System: n network, a audio mixer, r reload, d/e pointers off/on |
+| Ctrl+Alt+c | Clipboard: p history picker, x clear history |
+| Ctrl+Alt+n | Notifications: d dismiss, a dismiss all, h restore from history |
+| Ctrl+Alt+p | Session: l lock, s suspend, r reboot, p power off, e exit Sway |
+| Ctrl+Alt+r | Resize: j/k/l/m or arrows; Return finishes |
 
-Escape leaves any mode; BackSpace returns from submenus to Desktop.
+Escape or Return leaves any mode. Selecting an action returns to default mode,
+except resizing, which stays active until finished. No parent menu or submenus.
 Power actions execute immediately on their action key: save work before reboot,
-poweroff or exit. Other actions return automatically to normal bindings.
+poweroff or exit.
 
 Frequent controls stay direct: Super+Return terminal, Super+d launcher,
-Super+r resize, Print area screenshot, Shift+Print full screenshot, media and
-brightness keys. French AZERTY workspaces, j/k/l/m navigation and window/layout
-controls are retained. Super+Ctrl+F9/F10 disable/restore internal pointers.
-These direct bindings operate in default mode; press Escape to leave a menu first.
-The former individual app, clipboard, reload and power shortcuts are replaced
-by the menus above.
+Print area screenshot, Shift+Print full screenshot, media and brightness keys.
+French AZERTY workspaces, j/k/l/m navigation and window/layout controls are retained,
+including Super+a for parent focus and Super+s for stacking.
+Existing Super+Ctrl+F9/F10 emergency pointer recovery is retained; no new mode uses Super.
+Direct bindings operate in default mode; press Escape to leave a mode first.
+Super+Escape's former parent menu and Super+r's resize binding have been removed.
 
 Automatic lock is after 5 minutes; displays switch off after 10 minutes.
 Notes use ~/.notes and ${EDITOR:-hx}; NOTES_BACKUP=1 opts into the configured
@@ -239,7 +242,7 @@ Open a new Zsh shell (or source ~/.zshrc) for the blue-directory/green-Git promp
 numeric exit status is no longer displayed. Restart GTK apps and Helix for the
 theme change. Existing tmux servers need tmux source-file ~/.tmux.conf.
 
-Clipboard history stores text and images locally until cleared; Desktop > Clipboard
+Clipboard history stores text and images locally until cleared; Ctrl+Alt+c
 opens the picker (p) or clears it (x). Escape cancels selection.
 The watcher starts on login, not reload. To start it in the current session,
 only if none is running: wl-paste --watch cliphist store.
