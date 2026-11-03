@@ -28,8 +28,8 @@ zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:git:*' formats ' (%b%u%c)'
 zstyle ':vcs_info:git:*' actionformats ' (%b|%a%u%c)'
 add-zsh-hook precmd vcs_info
-# Failure code, working directory, Git branch/status, prompt.
-PROMPT='%(?..%F{white}exit %?%f )%F{white}%2~%f%F{8}${vcs_info_msg_0_}%f %# '
+# Working directory and Git status; no exit-code decoration.
+PROMPT='%F{white}%2~%f %F{7}${vcs_info_msg_0_}%f %# '
 
 bindkey -v
 KEYTIMEOUT=10
