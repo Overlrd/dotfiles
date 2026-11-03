@@ -1,14 +1,14 @@
-# Solid background matches the Graphite Sway desktop.
-color=0E0E0E
+# Solid background matches the Silver Sway desktop.
+color=424950
 font=Iosevka Nerd Font
 font-size=20
 indicator-radius=60
 ignore-empty-password
 show-keyboard-layout
 indicator-caps-lock
-inside-color=0E0E0E
-ring-color=888888
-key-hl-color=DEDEDE
-bs-hl-color=202020
-text-color=DEDEDE
-ring-wrong-color=FFFFFF
+inside-color=424950
+ring-color=CDD2D8
+key-hl-color=F0F2F5
+bs-hl-color=8EA8BC
+text-color=F0F2F5
+ring-wrong-color=D88B91
