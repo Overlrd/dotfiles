@@ -1,20 +1,23 @@
-# Neutral interface, restrained syntax colours for reading code.
+# Silver interface; filename retained so existing Helix config keeps working.
 inherits = "base16_default_dark"
 
-"ui.cursorline.primary" = { bg = "#181818" }
-"ui.linenr" = { fg = "#707070", bg = "#0e0e0e" }
-"ui.linenr.selected" = { fg = "#ffffff", bg = "#181818", modifiers = ["bold"] }
-"ui.gutter" = { bg = "#0e0e0e" }
-"ui.statusline.inactive" = { fg = "#888888", bg = "#0e0e0e" }
-"ui.bufferline.active" = { fg = "#ffffff", bg = "#202020", modifiers = ["bold"] }
+"ui.cursorline.primary" = { bg = "#343c45" }
+"ui.linenr" = { fg = "#939da9", bg = "#292f36" }
+"ui.linenr.selected" = { fg = "#ffffff", bg = "#343c45", modifiers = ["bold"] }
+"ui.gutter" = { bg = "#292f36" }
+"ui.statusline.inactive" = { fg = "#b0b8c2", bg = "#292f36" }
+"ui.bufferline.active" = { fg = "#ffffff", bg = "#3b4550", modifiers = ["bold"] }
+
+"ui.statusline" = { fg = "#242A31", bg = "#CDD2D8" }
+"ui.menu.selected" = { fg = "#FFFFFF", bg = "#456B87" }
 
 [palette]
-base00 = "#0e0e0e"
-base01 = "#202020"
-base02 = "#383838"
-base03 = "#808080"
-base04 = "#aaaaaa"
-base05 = "#dedede"
+base00 = "#292f36"
+base01 = "#3b4550"
+base02 = "#4a5866"
+base03 = "#939da9"
+base04 = "#cdd2d8"
+base05 = "#e4e7eb"
 base06 = "#eeeeee"
 base07 = "#ffffff"
 base08 = "#c18f8f"
