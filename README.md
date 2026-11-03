@@ -46,7 +46,8 @@ interface uses the network group access.
 
 Check `git status` before switching; preserve any local edits first.
 Existing Stow symlinks continue to point to the same tracked files after a
-branch switch. There is no need to re-stow those files.
+branch switch. New bindings.conf and startup.conf files may need links: rerun your original Stow
+command before validation if the directory is linked file by file.
 
 Validate on the desktop before starting a new session:
 
@@ -65,58 +66,47 @@ After updating Void packages, the Intel GPU renderer starts normally. Do not
 export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
 fallback.
 
-## Appearance: Silver
+## Appearance: Ink
 
-The desktop now has a silver-grey bar (#CDD2D8) with dark text (#242A31),
-light launchers and notifications (#E4E7EB), and a slate background (#424950).
-Muted blue marks focus/selection; green, amber and red distinguish normal,
-warning and error states. Borders stay 1px and tiled windows remain flush.
-The bar is 28px high so its status text has room to breathe.
-
-Iosevka remains 11pt for desktop UI, 13pt in Foot and 20pt on the lock screen.
-Helix uses lighter charcoal surfaces and a silver status line; the existing
-graphite.toml filename is retained for compatibility. tmux and Zathura match.
-GTK preferences now request light Adwaita; applications can override these.
-Foot's colors section remains absent as requested, so its own default palette
-is not controlled by this theme.
+Dark bars, menus and notifications use near-white text. Bright blue marks focus,
+green marks good status and Git, amber marks modes/brightness, red marks errors.
+tmux shows the session in blue, a blue active window, green activity, and visible
+PREFIX/ZOOM indicators. Helix uses brighter syntax accents and a dark status line.
+Foot's colors section remains absent. Zathura and GTK retain their existing settings.
+There is no Conky configuration tracked here; an installed/local Conky setup is
+not replaced or automatically launched by this branch.
 
 ## Desktop controls
 
-Mod is the Windows/Super key. Existing French AZERTY workspace bindings and
-j/k/l/m navigation are retained.
+All bindings are in .config/sway/bindings.conf; startup programs are in
+.config/sway/startup.conf. The main config holds settings, input and appearance.
 
-| Shortcut | Action |
+Press **Super+Escape** to open Desktop mode. The bar shows the choices.
+Release Super, then press a category key and an action key:
+
+| Category | Actions |
 | --- | --- |
-| Mod + Return | Terminal |
-| Mod + Shift + Return | Floating terminal |
-| Mod + d | Application launcher |
-| Mod + w | Firefox |
-| Mod + Shift + b | Thunar file manager |
-| Mod + c | Clipboard history picker |
-| Mod + Ctrl + BackSpace | Clear clipboard history and current clipboard |
-| Media play/next/previous keys | Control the active media player |
-| Mod + n | Notes picker (wmenu + Foot) |
-| Mod + Shift + n | NetworkManager menu |
-| Mod + Shift + v | Audio mixer |
-| Brightness keys | Adjust intel_backlight by 5%, minimum 5% |
-| Print | Select area and copy PNG to clipboard |
-| Shift + Print | Save all outputs to ~/Pictures/Screenshots |
-| Mod + p (or Mod + Shift + p) | Power mode |
-| Mod + r | Resize mode |
-| Mod + Shift + c | Reload configuration |
-| Mod + Shift + e | Power mode (e confirms session exit) |
-| Mod + Ctrl + F9 | Disable both internal ALPS pointers |
-| Mod + Ctrl + F10 | Re-enable both internal ALPS pointers |
+| a — Apps | b browser, f files, n notes, t floating terminal, d launcher |
+| s — System | n network, a audio mixer, r reload, d/e pointers off/on, m dismiss notification |
+| c — Clipboard/capture | p history picker, x clear history, a area screenshot, f full screenshot |
+| p — Power | l lock, s suspend, r reboot, p power off, e exit Sway |
+| r — Resize | j/k/l/m or arrows; Return finishes |
 
-In power mode: l locks, s locks then suspends, r reboots, p powers off.
-Press e to exit Sway (save your work first). Escape or Return cancels. Automatic locking happens after 5 minutes;
-displays switch off after 10 minutes. Keyboard/mouse activity turns them on.
+Escape leaves any mode; BackSpace returns from submenus to Desktop.
+Power actions execute immediately on their action key: save work before reboot,
+poweroff or exit. Other actions return automatically to normal bindings.
 
-Clipboard history, Firefox/Thunar launch shortcuts and media keys are configured. The notes
-picker is enabled: it creates `~/.notes` if necessary, opens Markdown notes in
-Foot using `${EDITOR:-hx}`. Mega backup is opt-in: configure `rclone`, then
-export `NOTES_BACKUP=1` to invoke the existing helper after editing.
-The touchpad settings are retained: disabling tap does not disable the device.
+Frequent controls stay direct: Super+Return terminal, Super+d launcher,
+Super+r resize, Print area screenshot, Shift+Print full screenshot, media and
+brightness keys. French AZERTY workspaces, j/k/l/m navigation and window/layout
+controls are retained. Super+Ctrl+F9/F10 disable/restore internal pointers.
+These direct bindings operate in default mode; press Escape to leave a menu first.
+The former individual app, clipboard, reload and power shortcuts are replaced
+by the menus above.
+
+Automatic lock is after 5 minutes; displays switch off after 10 minutes.
+Notes use ~/.notes and ${EDITOR:-hx}; NOTES_BACKUP=1 opts into the configured
+Mega helper. No backup is enabled by default.
 
 ## Checks on the target machine
 
@@ -133,7 +123,7 @@ Both internal ALPS devices remain enabled at startup. If clicking gets stuck,
 Mod + Ctrl + F9 disables only the internal stick and touchpad; external USB
 mice are unaffected. With no external mouse, use the keyboard, then restore
 internal input with Mod + Ctrl + F10. Recovery shortcuts are in the default
-binding mode; leave resize/power mode with Escape first. They also work while
+binding mode; leave any mode with Escape first. They also work while
 locked. This is a workaround, not a diagnosis or guaranteed reset of a stuck
 button. Capture libinput events during the fault to identify its source.
 
@@ -143,7 +133,9 @@ libnotify supplies notify-send; Mako displays its messages. Pointer recovery,
 audio/microphone controls and config reload use .config/sway/desktop-action.sh.
 Audio notifications show the resulting volume and mute state. Reload validates
 the config first. Failed actions produce an error notification instead of a
-success message. Notifications expire after two seconds; they may not be visible
+success message. Volume/brightness notifications update in place using Mako stack tags and expire
+after 1.5 seconds. Other success notices expire after two seconds; errors persist.
+Notifications may not be visible
 while the screen is locked. Window navigation and app launches stay quiet because
 their results are already visible. The helper is invoked with sh, so it does not
 need an executable bit. After pulling, check that the helper exists through your
@@ -176,7 +168,7 @@ the full terminfo collection. New Foot windows use the new TERM; existing
 tmux clients should detach/reattach. Reload existing tmux config with
 `tmux source-file ~/.tmux.conf`.
 
-Helix uses a custom Silver-styled theme with subdued syntax colours, relative line
+Helix uses a custom Ink theme with bright syntax colours, relative line
 numbers, current-line highlighting and a buffer bar when multiple files are open.
 Re-run your original Stow command if necessary to link the new themes directory.
 Use `hx --health` to discover missing language servers and formatters; no
@@ -243,12 +235,12 @@ sway -C -c ~/.config/sway/config && swaymsg reload
 makoctl reload
 ```
 
-Open a new Zsh shell (or source ~/.zshrc) for the simplified directory/Git prompt:
+Open a new Zsh shell (or source ~/.zshrc) for the blue-directory/green-Git prompt:
 numeric exit status is no longer displayed. Restart GTK apps and Helix for the
 theme change. Existing tmux servers need tmux source-file ~/.tmux.conf.
 
-Clipboard history stores text and images locally until cleared; Super+C opens
-the picker and Super+Ctrl+BackSpace clears it. Escape cancels selection.
+Clipboard history stores text and images locally until cleared; Desktop > Clipboard
+opens the picker (p) or clears it (x). Escape cancels selection.
 The watcher starts on login, not reload. To start it in the current session,
 only if none is running: wl-paste --watch cliphist store.
 
