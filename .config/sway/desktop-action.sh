@@ -85,6 +85,38 @@ case "$1" in
         fi
         notify "Screenshot saved" "$shot"
         ;;
+    clipboard-pick)
+        command -v cliphist >/dev/null || fail "Install cliphist for clipboard history."
+        entries=$(cliphist list) || fail "Cannot read clipboard history."
+        [ -n "$entries" ] || { notify "Clipboard" "History is empty."; exit 0; }
+        selection=$(printf '%s\n' "$entries" | wmenu -i -l 8 -p "Clipboard" \
+            -f "Iosevka Nerd Font 11" -N E4E7EB -n 242A31 \
+            -M E4E7EB -m 456B87 -S 456B87 -s F5F7FA) || exit 0
+        [ -n "$selection" ] || exit 0
+        # The selected line contains an opaque history ID; never evaluate it.
+        clip=$(mktemp "${XDG_RUNTIME_DIR:-/tmp}/sway-clipboard.XXXXXX") ||
+            fail "Cannot create clipboard buffer."
+        trap 'rm -f -- "$clip"' 0
+        trap 'exit 1' HUP INT TERM
+        printf '%s\n' "$selection" | cliphist decode > "$clip" ||
+            fail "Cannot decode clipboard entry."
+        wl-copy < "$clip" || fail "Cannot restore clipboard."
+        notify "Clipboard restored" "Ready to paste."
+        ;;
+    clipboard-clear)
+        cliphist wipe || fail "Cannot clear clipboard history."
+        wl-copy --clear || fail "History cleared; current clipboard could not be cleared."
+        notify "Clipboard cleared" "History and current clipboard cleared."
+        ;;
+    media-toggle|media-next|media-previous)
+        case "$1" in
+            media-toggle) playerctl play-pause ;;
+            media-next) playerctl next ;;
+            media-previous) playerctl previous ;;
+        esac || fail "No controllable media player found."
+        status=$(playerctl status 2>/dev/null) || status="Command sent"
+        notify "Media" "$status"
+        ;;
     reload)
         sway -C -c "$HOME/.config/sway/config" >/dev/null 2>&1 ||
             fail "Config validation failed. Run sway -C -c ~/.config/sway/config."
