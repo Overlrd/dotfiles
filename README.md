@@ -66,15 +66,15 @@ After updating Void packages, the Intel GPU renderer starts normally. Do not
 export `WLR_RENDERER=pixman`; that is only a software-rendering troubleshooting
 fallback.
 
-## Appearance: Ink
+## Appearance: Dusk
 
-Dark bars, menus and notifications use near-white text. Bright blue marks focus,
-green marks good status and Git, amber marks modes/brightness, red marks errors.
-tmux shows the session in blue, a blue active window, green activity, and visible
-PREFIX/ZOOM indicators. Helix uses brighter syntax accents and a dark status line.
-Foot's colors section remains absent. Zathura and GTK retain their existing settings.
-There is no Conky configuration tracked here; an installed/local Conky setup is
-not replaced or automatically launched by this branch.
+Sway uses a layered blue-gray wallpaper, mint focus borders and a translucent
+slate bar. Tiled windows have a small gap when more than one is visible.
+The bar uses mint for a connected network, amber for degraded signal and coral
+for offline or low battery. The warm clock anchors the right edge.
+Swaylock uses an opaque slate field, with mint verification, coral errors and
+amber Caps Lock. The wallpaper lives at `~/.config/sway/dusk.png`; when Stow
+links individual files, rerun your usual Stow command to link it.
 
 ## Desktop controls
 

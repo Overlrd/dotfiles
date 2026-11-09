@@ -1,11 +1,12 @@
-# Workspaces are displayed by Swaybar itself.
+# Text and color both identify the state; the clock anchors the right edge.
 general {
     output_format = "i3bar"
+    markup = "pango"
     colors = true
     interval = 5
-    color_good = "#A5E075"
-    color_degraded = "#FFD580"
-    color_bad = "#FF7B86"
+    color_good = "#93E5CF"
+    color_degraded = "#FFD399"
+    color_bad = "#FFA697"
 }
 
 order += "ethernet _first_"
@@ -14,20 +15,27 @@ order += "battery all"
 order += "tztime local"
 
 ethernet _first_ {
-    format_up = "ETH %ip"
+    format_up = "LAN %ip"
     format_down = ""
 }
 
 wireless _first_ {
-    format_up = "WIFI %essid"
-    format_down = "WIFI down"
+    format_up = "Wi-Fi %essid %quality"
+    format_down = "Wi-Fi offline"
 }
 
 battery all {
-    format = "BAT %status %percentage"
+    format = "%status %percentage"
+    format_percentage = "%.0f%s"
     format_down = ""
+    status_chr = "<span foreground='#A7E8D8'>Charging</span>"
+    status_bat = "Battery"
+    status_full = "<span foreground='#A7E8D8'>Full</span>"
+    status_idle = "Idle"
+    threshold_type = "percentage"
+    low_threshold = 20
 }
 
 tztime local {
-    format = "%a %d %b %H:%M"
+    format = "<span foreground='#CFDAE4'>%a %d %b</span>  <span foreground='#FFE1B5' weight='bold'>%H:%M</span>"
 }

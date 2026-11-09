@@ -18,16 +18,16 @@ set $desktop_action sh $HOME/.config/sway/desktop-action.sh
 
 # Appearance
 font pango:Iosevka Nerd Font 11
-default_border pixel 1
-default_floating_border pixel 1
-gaps inner 0
+default_border pixel 2
+default_floating_border pixel 2
+gaps inner 4
 gaps outer 0
-smart_gaps off
+smart_gaps on
 smart_borders off
 
 ### Output Configuration
 # Use the monitor's preferred mode; no hardware-specific output names.
-output * bg #424950 solid_color
+output * bg ~/.config/sway/dusk.png fill #718795
 
 include ~/.config/sway/startup.conf
 
@@ -51,28 +51,28 @@ include ~/.config/sway/bindings.conf
 ### Window Rules
 for_window [app_id="floating_terminal"] floating enable, resize set 800 600, move center
 
-### Color Scheme: Ink
+### Color Scheme: Dusk
 # class                 border    background text      indicator child_border
-client.focused          #79C0FF   #233D53    #FFFFFF   #79C0FF   #79C0FF
-client.focused_inactive #707984   #252A32    #E4E7EB   #707984   #707984
-client.unfocused        #424950   #1B1F26    #B8C0CC   #424950   #424950
-client.urgent           #FF7B86   #652E38    #FFFFFF   #FF7B86   #FF7B86
-client.placeholder     #707984   #252A32    #E4E7EB   #707984   #707984
-client.background      #424950
+client.focused          #8FE5D3   #305B63    #F4FFFC   #FFCA91   #8FE5D3
+client.focused_inactive #7896A7   #435A6B    #F3F6F9   #A1BDCD   #7896A7
+client.unfocused        #647E90   #354958    #D8E2EB   #7896A7   #647E90
+client.urgent           #FFA697   #743F48    #FFF7F4   #FFA697   #FFA697
+client.placeholder      #647E90   #354958    #D8E2EB   #7896A7   #647E90
+client.background       #607889
 
 bar {
     status_command i3status
     position top
-    height 28
+    height 30
     colors {
-        statusline #F3F4F5
-        background #16191F
-        separator #707984
-        focused_workspace    #79C0FF #245782 #FFFFFF
-        active_workspace     #707984 #303640 #F3F4F5
-        inactive_workspace   #16191F #16191F #B8C0CC
-        urgent_workspace     #FF7B86 #652E38 #FFFFFF
-        binding_mode         #FFD580 #503E23 #FFF1D6
+        statusline #F4F5F3
+        background #293E50EB
+        separator #879FB0
+        focused_workspace    #8FE5D3 #315A60 #EBFFF9
+        active_workspace     #7896A7 #40586B #F4F7FA
+        inactive_workspace   #00000000 #00000000 #D6E2EB
+        urgent_workspace     #FFA697 #743F48 #FFF7F4
+        binding_mode         #FFCA91 #624C39 #FFF2DE
     }
 }
 

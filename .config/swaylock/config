@@ -1,14 +1,30 @@
-# Solid background matches the Silver Sway desktop.
-color=424950
+# Dusk: opaque slate field with a distinct ring for each unlock state.
+color=647D90
 font=Iosevka Nerd Font
 font-size=20
-indicator-radius=60
+indicator-radius=65
+indicator-thickness=5
+indicator-idle-visible
 ignore-empty-password
 show-keyboard-layout
 indicator-caps-lock
-inside-color=424950
-ring-color=CDD2D8
-key-hl-color=F0F2F5
-bs-hl-color=8EA8BC
-text-color=F0F2F5
-ring-wrong-color=D88B91
+inside-color=30495B
+inside-ver-color=30495B
+inside-wrong-color=663E49
+inside-clear-color=30495B
+inside-caps-lock-color=584C41
+ring-color=A5C5D2
+ring-ver-color=8FE5D3
+ring-wrong-color=FFA697
+ring-clear-color=A5C5D2
+ring-caps-lock-color=FFD399
+key-hl-color=8FE5D3
+bs-hl-color=FFCA91
+line-uses-inside
+text-color=F5FAFC
+text-ver-color=F5FAFC
+text-wrong-color=FFF4EE
+text-clear-color=F5FAFC
+text-caps-lock-color=FFF2DE
+layout-bg-color=30495B
+layout-text-color=F5FAFC
