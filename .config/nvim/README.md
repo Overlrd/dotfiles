@@ -10,7 +10,7 @@ On Windows, provide these executables on PATH and use Neovim's standard config
 directory (`%LOCALAPPDATA%/nvim`). No shell-specific configuration is required.
 
 Run `:SetupTools`, let installation finish, then reopen Neovim. It installs the
-pinned language tools and missing parsers. Retry the command after a failed
+latest available versions of missing language tools and missing parsers. Retry the command after a failed
 download. Inspect failures in `:MasonLog`; use `:checkhealth` for dependencies.
 French and English spell dictionaries can be downloaded through Neovim's
 built-in prompt when first enabling spelling in a text file.
@@ -18,16 +18,18 @@ built-in prompt when first enabling spelling in a text file.
 - Space Space finds files; Space b lists buffers; Space e opens the explorer.
 - Space s opens search bindings; Space c exposes code actions and formatting.
 - Space d exposes diagnostics; Space p exposes tool management.
-- Ctrl+n / Ctrl+p select a completion. Enter accepts the selected item.
+- Up / Down select a completion. Enter accepts the selected item.
 - Enter inserts a newline when nothing is selected. Ctrl+e closes completion.
 - Tab / Shift+Tab move through active snippet placeholders.
 - Space cf formats; Space ct toggles format-on-save for the current buffer.
 - Space ci organises imports through the attached language server.
 
-Edit language/tool versions and the system-tool preference near the top of
-`init.lua`. Plugin commits are pinned there too. To upgrade a plugin, change its
-commit, restart and use `:lua vim.pack.update()` to synchronise. Commit the
-resulting lockfile. After a Treesitter plugin upgrade, run `:TSUpdate` as well.
+Edit the language list and system-tool preference near the top of init.lua.
+Use Mason to update installed tools. Space pu reviews plugin updates through
+vim.pack; commit the resulting lockfile to reproduce installed revisions.
+After a Treesitter plugin upgrade, run :TSUpdate as well.
+
+The UI uses Neovim's default dark colorscheme and mini.statusline.
 
 Pyright respects `pyrightconfig.json`, otherwise it discovers the active
 virtual environment or a project `.venv`. Configure Odoo source paths in your

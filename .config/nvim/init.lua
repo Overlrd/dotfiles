@@ -1,36 +1,34 @@
 -- Neovim 0.12+. Run :SetupTools once, then reopen Neovim.
 -- Tools: git, fzf, ripgrep, Node/npm, Go, curl, tar, C compiler, tree-sitter CLI >= 0.26.1.
 local prefer_system_tools = false
-local transparent = false
 local large_file_bytes = 1024 * 1024
 
--- Tool versions are separate from the plugin lockfile.
+-- Languages and tools installed by :SetupTools.
 local languages = {
-	{ server = 'pyright', package = 'pyright', version = '1.1.414', parser = 'python' },
-	{ server = 'ruff', package = 'ruff', version = '0.17.6' },
-	{ server = 'gopls', package = 'gopls', version = 'v0.24.0', parser = 'go' },
-	{ server = 'bashls', package = 'bash-language-server', version = '5.8.1', parser = 'bash' },
+	{ server = 'pyright', package = 'pyright', parser = 'python' },
+	{ server = 'ruff', package = 'ruff' },
+	{ server = 'gopls', package = 'gopls', parser = 'go' },
+	{ server = 'bashls', package = 'bash-language-server', parser = 'bash' },
 	{
 		server = 'dockerls',
 		package = 'dockerfile-language-server',
-		version = '0.15.0',
+
 		parser = 'dockerfile',
 	},
 	{
 		server = 'docker_compose_language_service',
 		package = 'docker-compose-language-service',
-		version = '1.0.0',
 	},
-	{ server = 'yamlls', package = 'yaml-language-server', version = '2.0.0', parser = 'yaml' },
-	{ server = 'jsonls', package = 'json-lsp', version = '4.10.0', parser = 'json' },
-	{ server = 'taplo', package = 'taplo', version = '0.10.0', parser = 'toml' },
-	{ server = 'lua_ls', package = 'lua-language-server', version = '3.19.2', parser = 'lua' },
+	{ server = 'yamlls', package = 'yaml-language-server', parser = 'yaml' },
+	{ server = 'jsonls', package = 'json-lsp', parser = 'json' },
+	{ server = 'taplo', package = 'taplo', parser = 'toml' },
+	{ server = 'lua_ls', package = 'lua-language-server', parser = 'lua' },
 }
 local extra_tools = {
-	{ package = 'shellcheck', version = 'v0.11.0', cmd = 'shellcheck' },
-	{ package = 'shfmt', version = 'v3.14.1', cmd = 'shfmt' },
-	{ package = 'stylua', version = 'v2.6.0', cmd = 'stylua' },
-	{ package = 'prettier', version = '3.10.1', cmd = 'prettier' },
+	{ package = 'shellcheck', cmd = 'shellcheck' },
+	{ package = 'shfmt', cmd = 'shfmt' },
+	{ package = 'stylua', cmd = 'stylua' },
+	{ package = 'prettier', cmd = 'prettier' },
 }
 local parsers = { 'markdown', 'markdown_inline', 'gomod', 'gosum', 'vim', 'vimdoc', 'query' }
 for _, language in ipairs(languages) do
@@ -67,12 +65,6 @@ opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.timeoutlen = 500
 opt.updatetime = 300
 opt.laststatus = 3
-opt.statusline = ' %{mode()}  %<%f %m%r%=%{v:lua.DotfilesDiagnostics()}  %l:%c  %p%% '
-function _G.DotfilesDiagnostics()
-	local count = vim.diagnostic.count(0)
-	return string.format('E:%d W:%d', count[1] or 0, count[2] or 0)
-end
-
 local group = vim.api.nvim_create_augroup('Dotfiles', { clear = true })
 local function autocmd(event, opts)
 	opts.group = group
@@ -86,21 +78,8 @@ local function warn(message)
 		vim.notify(message, vim.log.levels.WARN)
 	end)
 end
-local function theme()
-	local hl = vim.api.nvim_set_hl
-	hl(0, 'Normal', { fg = '#e2e8ef', bg = transparent and 'NONE' or '#243442' })
-	hl(0, 'NormalFloat', { fg = '#e2e8ef', bg = '#304657' })
-	hl(0, 'FloatBorder', { fg = '#8fe5d3', bg = '#304657' })
-	hl(0, 'StatusLine', { fg = '#eafff9', bg = '#315a60' })
-	hl(0, 'StatusLineNC', { fg = '#bfd0dc', bg = '#304657' })
-	hl(0, 'CursorLine', { bg = '#304657' })
-	hl(0, 'Visual', { bg = '#456579' })
-	hl(0, 'Pmenu', { fg = '#e2e8ef', bg = '#304657' })
-	hl(0, 'PmenuSel', { fg = '#182b31', bg = '#8fe5d3' })
-end
-vim.cmd.colorscheme('habamax')
-theme()
-autocmd('ColorScheme', { callback = theme })
+opt.background = 'dark'
+vim.cmd.colorscheme('default')
 autocmd('TextYankPost', {
 	callback = function()
 		vim.hl.on_yank({ timeout = 150 })
@@ -159,47 +138,24 @@ map('n', '<leader>dp', function()
 	vim.diagnostic.jump({ count = -1, float = true })
 end, 'Previous diagnostic')
 map('n', '<leader>dd', vim.diagnostic.open_float, 'Diagnostic details')
-vim.diagnostic.config({ virtual_text = false, severity_sort = true, float = { border = 'rounded' } })
+vim.diagnostic.config({ virtual_text = false, severity_sort = true })
 
 if vim.fn.has('nvim-0.12') == 0 then
 	warn('This config needs Neovim 0.12+. Core editing remains available.')
 	return
 end
 
--- Pinned commits also make copying init.lua alone reproducible.
+-- Installed plugin revisions are recorded in nvim-pack-lock.json.
 local plugins = {
-	{
-		src = 'https://github.com/mason-org/mason.nvim',
-		version = '2a6940af80375532e5e9e7c1f2fc6319a1b7a69d',
-	},
-	{
-		src = 'https://github.com/mason-org/mason-lspconfig.nvim',
-		version = 'a5671269a1ddfa7790cdf97c14e600e269da550f',
-	},
-	{
-		src = 'https://github.com/neovim/nvim-lspconfig',
-		version = '4648fd8ba5c678d7e2db75ae44ffac269bb589d8',
-	},
-	{
-		src = 'https://github.com/folke/which-key.nvim',
-		version = 'fcbf4eea17cb299c02557d576f0d568878e354a4',
-	},
-	{
-		src = 'https://github.com/stevearc/conform.nvim',
-		version = '3543d000dafbc41cc7761d860cfdb24e82154f75',
-	},
-	{
-		src = 'https://github.com/ibhagwan/fzf-lua',
-		version = 'a8312697c30b4d3b110fa3dc56e3699107aed9a0',
-	},
-	{
-		src = 'https://github.com/saghen/blink.cmp',
-		version = '78336bc89ee5365633bcf754d93df01678b5c08f',
-	},
-	{
-		src = 'https://github.com/nvim-treesitter/nvim-treesitter',
-		version = '52773f0d13a0c11d0c3ef33c14ab6ecc1c17148b',
-	},
+	'https://github.com/nvim-mini/mini.statusline',
+	'https://github.com/mason-org/mason.nvim',
+	'https://github.com/mason-org/mason-lspconfig.nvim',
+	'https://github.com/neovim/nvim-lspconfig',
+	'https://github.com/folke/which-key.nvim',
+	'https://github.com/stevearc/conform.nvim',
+	'https://github.com/ibhagwan/fzf-lua',
+	'https://github.com/saghen/blink.cmp',
+	'https://github.com/nvim-treesitter/nvim-treesitter',
 }
 local ok, err = pcall(vim.pack.add, plugins, { confirm = false })
 if not ok then
@@ -207,7 +163,9 @@ if not ok then
 	return
 end
 
--- One completion engine, with explicit selection before Enter accepts.
+require('mini.statusline').setup()
+
+-- Enter accepts only a selected completion.
 local blink = require('blink.cmp')
 blink.setup({
 	enabled = function()
@@ -217,8 +175,8 @@ blink.setup({
 	keymap = {
 		preset = 'none',
 		['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-		['<C-n>'] = { 'select_next', 'fallback' },
-		['<C-p>'] = { 'select_prev', 'fallback' },
+		['<Down>'] = { 'select_next', 'fallback' },
+		['<Up>'] = { 'select_prev', 'fallback' },
 		['<CR>'] = { 'accept', 'fallback' },
 		['<C-e>'] = { 'hide', 'fallback' },
 		['<Tab>'] = { 'snippet_forward', 'fallback' },
@@ -228,13 +186,7 @@ blink.setup({
 	},
 	completion = {
 		list = { selection = { preselect = false, auto_insert = false } },
-		documentation = { auto_show = true, window = { border = 'rounded' } },
-		menu = {
-			border = 'rounded',
-			draw = {
-				columns = { { 'label', 'label_description', gap = 1 }, { 'kind', 'source_name' } },
-			},
-		},
+		documentation = { auto_show = true },
 	},
 	sources = {
 		default = { 'lsp', 'path', 'snippets', 'buffer' },
@@ -248,7 +200,7 @@ blink.setup({
 			},
 		},
 	},
-	signature = { enabled = true, window = { border = 'rounded' } },
+	signature = { enabled = true },
 })
 
 require('mason').setup({
@@ -256,7 +208,6 @@ require('mason').setup({
 	registry_cache = { refresh = false },
 	ui = {
 		check_outdated_packages_on_open = false,
-		icons = { package_installed = '+', package_pending = '~', package_uninstalled = '-' },
 	},
 })
 vim.lsp.config('*', { capabilities = blink.get_lsp_capabilities() })
@@ -333,7 +284,6 @@ local function get_finder()
 		finder.setup({
 			file_icons = false,
 			git_icons = false,
-			winopts = { border = 'rounded' },
 			previewers = {
 				builtin = { syntax_limit_b = large_file_bytes, limit_b = large_file_bytes * 2 },
 			},
@@ -524,12 +474,9 @@ vim.api.nvim_create_user_command('SetupTools', function()
 				local use_system = prefer_system_tools and vim.fn.executable(executable) == 1
 				local found, package = pcall(registry.get_package, tool.package)
 				if found and not use_system and not package:is_installing() then
-					if
-						not package:is_installed()
-						or package:get_installed_version() ~= tool.version
-					then
+					if not package:is_installed() then
 						package:install(
-							{ version = tool.version },
+							{},
 							vim.schedule_wrap(function(installed)
 								if installed then
 									enable_servers()
@@ -557,11 +504,11 @@ vim.api.nvim_create_user_command('SetupTools', function()
 			'Parsers need tree-sitter CLI >= 0.26.1, curl, tar and a C compiler. Install them, then retry :SetupTools.'
 		)
 	end
-end, { desc = 'Install pinned language tools and Treesitter parsers' })
+end, { desc = 'Install missing language tools and Treesitter parsers' })
 map('n', '<leader>ps', '<cmd>SetupTools<cr>', 'Install language tools')
 map('n', '<leader>pu', function()
 	vim.pack.update()
-end, 'Sync pinned plugins')
+end, 'Review plugin updates')
 
 autocmd('VimEnter', {
 	once = true,
@@ -569,7 +516,6 @@ autocmd('VimEnter', {
 		require('which-key').setup({
 			delay = 300,
 			icons = { mappings = false },
-			win = { border = 'rounded' },
 		})
 		require('which-key').add({
 			{ '<leader>f', group = 'Files' },
