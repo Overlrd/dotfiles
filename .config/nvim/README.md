@@ -24,7 +24,8 @@ built-in prompt when first enabling spelling in a text file.
 - Space cf formats; Space ct toggles format-on-save for the current buffer.
 - Space ci organises imports through the attached language server.
 
-Edit the language list and system-tool preference near the top of init.lua.
+Edit the language list near the top of init.lua. Mason tools take precedence
+over system tools when installed; otherwise system tools on PATH are used.
 Use Mason to update installed tools. Space pu reviews plugin updates through
 vim.pack; commit the resulting lockfile to reproduce installed revisions.
 After a Treesitter plugin upgrade, run :TSUpdate as well.
@@ -34,3 +35,4 @@ The UI uses Neovim's default dark colorscheme and mini.statusline.
 Pyright respects `pyrightconfig.json`, otherwise it discovers the active
 virtual environment or a project `.venv`. Configure Odoo source paths in your
 project. Files larger than 1 MiB skip completion and Treesitter and detach LSP.
+

@@ -1,6 +1,5 @@
 -- Neovim 0.12+. Run :SetupTools once, then reopen Neovim.
 -- Tools: git, fzf, ripgrep, Node/npm, Go, curl, tar, C compiler, tree-sitter CLI >= 0.26.1.
-local prefer_system_tools = false
 local large_file_bytes = 1024 * 1024
 
 -- Languages and tools installed by :SetupTools.
@@ -12,7 +11,6 @@ local languages = {
 	{
 		server = 'dockerls',
 		package = 'dockerfile-language-server',
-
 		parser = 'dockerfile',
 	},
 	{
@@ -25,10 +23,10 @@ local languages = {
 	{ server = 'lua_ls', package = 'lua-language-server', parser = 'lua' },
 }
 local extra_tools = {
-	{ package = 'shellcheck', cmd = 'shellcheck' },
-	{ package = 'shfmt', cmd = 'shfmt' },
-	{ package = 'stylua', cmd = 'stylua' },
-	{ package = 'prettier', cmd = 'prettier' },
+	{ package = 'shellcheck' },
+	{ package = 'shfmt' },
+	{ package = 'stylua' },
+	{ package = 'prettier' },
 }
 local parsers = { 'markdown', 'markdown_inline', 'gomod', 'gosum', 'vim', 'vimdoc', 'query' }
 for _, language in ipairs(languages) do
@@ -45,7 +43,6 @@ opt.relativenumber = true
 opt.cursorline = true
 opt.signcolumn = 'yes'
 opt.scrolloff = 6
-opt.termguicolors = true
 opt.showmode = false
 opt.splitright = true
 opt.splitbelow = true
@@ -55,13 +52,8 @@ opt.expandtab = true
 opt.tabstop = 4
 opt.shiftwidth = 4
 opt.wrap = false
-opt.autowrite = false
 opt.undofile = true
-local undo_dir = vim.fn.stdpath('state') .. '/undo'
-vim.fn.mkdir(undo_dir, 'p')
-opt.undodir = undo_dir
 opt.clipboard = 'unnamedplus'
-opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.timeoutlen = 500
 opt.updatetime = 300
 opt.laststatus = 3
@@ -173,23 +165,14 @@ blink.setup({
 	end,
 	fuzzy = { implementation = 'lua' },
 	keymap = {
-		preset = 'none',
-		['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-		['<Down>'] = { 'select_next', 'fallback' },
-		['<Up>'] = { 'select_prev', 'fallback' },
+		preset = 'default',
 		['<CR>'] = { 'accept', 'fallback' },
-		['<C-e>'] = { 'hide', 'fallback' },
-		['<Tab>'] = { 'snippet_forward', 'fallback' },
-		['<S-Tab>'] = { 'snippet_backward', 'fallback' },
-		['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-		['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
 	},
 	completion = {
 		list = { selection = { preselect = false, auto_insert = false } },
 		documentation = { auto_show = true },
 	},
 	sources = {
-		default = { 'lsp', 'path', 'snippets', 'buffer' },
 		providers = {
 			buffer = {
 				opts = {
@@ -203,13 +186,7 @@ blink.setup({
 	signature = { enabled = true },
 })
 
-require('mason').setup({
-	PATH = prefer_system_tools and 'append' or 'prepend',
-	registry_cache = { refresh = false },
-	ui = {
-		check_outdated_packages_on_open = false,
-	},
-})
+require('mason').setup()
 vim.lsp.config('*', { capabilities = blink.get_lsp_capabilities() })
 vim.lsp.config('pyright', {
 	settings = {
@@ -217,7 +194,6 @@ vim.lsp.config('pyright', {
 		python = {
 			analysis = {
 				typeCheckingMode = 'basic',
-				diagnosticMode = 'openFilesOnly',
 				diagnosticSeverityOverrides = {
 					reportUnusedImport = 'none',
 					reportUnusedVariable = 'none',
@@ -275,7 +251,7 @@ vim.filetype.add({
 		['.*/docker%-compose%.[^/]+%.ya?ml'] = 'yaml.docker-compose',
 	},
 })
-require('mason-lspconfig').setup({ ensure_installed = {}, automatic_enable = false })
+require('mason-lspconfig').setup({ automatic_enable = false })
 
 local finder
 local function get_finder()
@@ -316,18 +292,11 @@ autocmd('LspAttach', {
 		end
 		lmap('gd', vim.lsp.buf.definition, 'Definition')
 		lmap('gr', function()
-			if vim.fn.executable('fzf') == 0 then
-				return vim.lsp.buf.references()
-			end
 			get_finder().lsp_references()
 		end, 'References')
-		lmap('K', vim.lsp.buf.hover, 'Documentation')
 		lmap('<leader>cr', vim.lsp.buf.rename, 'Rename symbol')
 		lmap('<leader>ca', vim.lsp.buf.code_action, 'Code actions')
 		lmap('<leader>cs', function()
-			if vim.fn.executable('fzf') == 0 then
-				return vim.lsp.buf.document_symbol()
-			end
 			get_finder().lsp_document_symbols()
 		end, 'Document symbols')
 		lmap('<leader>ci', function()
@@ -374,14 +343,6 @@ local function project_root()
 end
 local function picker(name, opts)
 	return function()
-		if vim.fn.executable('fzf') == 0 then
-			return warn('Install fzf to use the finder.')
-		end
-		if (name == 'live_grep' or name == 'grep_cword') and vim.fn.executable('rg') == 0 then
-			return warn(
-				'Install ripgrep for project search; :vimgrep is available in the meantime.'
-			)
-		end
 		get_finder()[name](vim.tbl_extend('force', { cwd = project_root() }, opts or {}))
 	end
 end
@@ -411,56 +372,6 @@ autocmd('FileType', {
 		end
 	end,
 })
--- Keep a selection history so shrinking returns to the previous node.
-local selections = {}
-local function select_node(shrink)
-	local buf = vim.api.nvim_get_current_buf()
-	local state = selections[buf]
-	local visual = vim.fn.mode():match('[vV]')
-	if not visual or not state or state.tick ~= vim.api.nvim_buf_get_changedtick(buf) then
-		local success, node = pcall(vim.treesitter.get_node)
-		if not success or not node then
-			return warn('No Treesitter parser for this buffer.')
-		end
-		state = { nodes = { node }, tick = vim.api.nvim_buf_get_changedtick(buf) }
-		selections[buf] = state
-	elseif shrink then
-		if #state.nodes > 1 then
-			table.remove(state.nodes)
-		end
-	else
-		local parent = state.nodes[#state.nodes]:parent()
-		if parent then
-			table.insert(state.nodes, parent)
-		end
-	end
-	local sr, sc, er, ec = state.nodes[#state.nodes]:range()
-	if er == sr and ec == sc then
-		return
-	end
-	if ec == 0 then
-		er = er - 1
-		ec = #vim.api.nvim_buf_get_lines(buf, er, er + 1, false)[1]
-	end
-	if visual then
-		vim.cmd('normal! \27')
-	end
-	vim.api.nvim_win_set_cursor(0, { sr + 1, sc })
-	vim.cmd('normal! v')
-	vim.api.nvim_win_set_cursor(0, { er + 1, math.max(ec - 1, 0) })
-end
-map({ 'n', 'x' }, '<leader>v', function()
-	select_node(false)
-end, 'Expand syntax selection')
-map('x', '<leader>V', function()
-	select_node(true)
-end, 'Shrink syntax selection')
-autocmd('BufWipeout', {
-	callback = function(ev)
-		selections[ev.buf] = nil
-	end,
-})
-
 vim.api.nvim_create_user_command('SetupTools', function()
 	local registry = require('mason-registry')
 	registry.update(function(success)
@@ -470,24 +381,9 @@ vim.api.nvim_create_user_command('SetupTools', function()
 			end
 			local tools = vim.list_extend(vim.deepcopy(languages), extra_tools)
 			for _, tool in ipairs(tools) do
-				local executable = tool.cmd or vim.lsp.config[tool.server].cmd[1]
-				local use_system = prefer_system_tools and vim.fn.executable(executable) == 1
-				local found, package = pcall(registry.get_package, tool.package)
-				if found and not use_system and not package:is_installing() then
-					if not package:is_installed() then
-						package:install(
-							{},
-							vim.schedule_wrap(function(installed)
-								if installed then
-									enable_servers()
-								else
-									warn(tool.package .. ' failed. See :MasonLog.')
-								end
-							end)
-						)
-					end
-				elseif not found then
-					warn('Mason package missing: ' .. tool.package)
+				local package = registry.get_package(tool.package)
+				if not package:is_installed() and not package:is_installing() then
+					package:install()
 				end
 			end
 			vim.cmd.Mason()
